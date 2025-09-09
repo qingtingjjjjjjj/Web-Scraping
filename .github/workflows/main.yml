@@ -10,13 +10,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout 仓库（公开仓库，无需 SSH）
+      # 1️⃣ Checkout 仓库（使用内置 GITHUB_TOKEN）
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          persist-credentials: true  # 使用默认 GitHub token，公开仓库其实可以不写
+          token: ${{ secrets.GITHUB_TOKEN }}
 
-      # 2️⃣ 设置 Python
+      # 2️⃣ 设置 Python 环境
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
@@ -40,6 +40,8 @@ jobs:
           git add live.txt live.m3u live_lite.txt live_lite.m3u others.txt
           git commit -m ":tada: Daily AutoUpdate $(date +'%Y%m%d')" || echo "No changes to commit"
 
-      # 6️⃣ 推送到远程仓库（HTTPS）
+      # 6️⃣ 推送到远程仓库
       - name: Push changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: git push origin main
