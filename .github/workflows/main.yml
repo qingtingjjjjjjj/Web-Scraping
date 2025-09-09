@@ -6,13 +6,16 @@ on:
   workflow_dispatch:
 
 jobs:
-  run_job:
+  run_daily_job:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout 仓库
+      # 1️⃣ Checkout 仓库并使用 SSH
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          persist-credentials: false  # 禁用 HTTPS token
 
       # 2️⃣ 设置 Python
       - name: Set up Python
@@ -30,16 +33,14 @@ jobs:
       - name: Run Python script
         run: python main.py
 
-      # 5️⃣ 提交更改（无改动也不会失败）
+      # 5️⃣ 提交更改（无改动不会报错）
       - name: Commit changes
         run: |
           git config --local user.email "actions@github.com"
           git config --local user.name "github_actions[bot]"
           git add live.txt live.m3u live_lite.txt live_lite.m3u others.txt
-          git commit -m ":tada: AutoUpdate $(date +'%Y%m%d')" || echo "No changes to commit"
+          git commit -m ":tada: Daily AutoUpdate $(date +'%Y%m%d')" || echo "No changes to commit"
 
-      # 6️⃣ 推送到远程仓库（官方方式）
+      # 6️⃣ 推送到远程仓库（SSH）
       - name: Push changes
         run: git push origin main
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
