@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - main  # 如果你的主分支不是 main，请改成 master 或其他分支
+      - main  # 如果主分支不是 main，请改成 master 或其他
 
 jobs:
   sync:
@@ -41,4 +41,16 @@ jobs:
       # 4️⃣ 上传 live.txt 到 R2 存储桶 zhixue-tv
       - name: Sync live.txt to Cloudflare R2
         run: |
+          # 检查文件是否存在
+          if [ ! -f "./live.txt" ]; then
+            echo "ERROR: live.txt 文件不存在"
+            exit 1
+          fi
+
+          # 上传文件
           rclone copy ./live.txt cloudflare_r2:zhixue-tv/ --progress
+
+      # 5️⃣ 显示桶内文件（调试用，可选）
+      - name: List files in zhixue-tv
+        run: |
+          rclone ls cloudflare_r2:zhixue-tv/
