@@ -533,10 +533,13 @@ utc_time = datetime.now(timezone.utc)
 beijing_time = utc_time + timedelta(hours=8)
 # 格式化为所需的格式
 formatted_time = beijing_time.strftime("%Y%m%d %H:%M")
-version=formatted_time+",https://gcalic.v.myalicdn.com/gc/wgw05_1/index.m3u8?contentid=2820180516001"
+about_video1="https://d.kstore.dev/download/8880/%E5%85%AC%E5%91%8A.mp4"
+about_video2="https://gcalic.v.myalicdn.com/gc/wgw05_1/index.m3u8?contentid=2820180516001"
+version=formatted_time+","+about_video1
+about="关于本源(塔利班维护),"+about_video2
 
 # 瘦身版
-all_lines_simple =  ["更新时间,#genre#"] + [version] + ['\n'] +\
+all_lines_simple =  ["更新时间,#genre#"] + [version] +[about]+['\n'] +\
                     ["央视频道,#genre#"] + sort_data(ys_dictionary,ys_lines) + ['\n'] + \
                     ["卫视频道,#genre#"] + sort_data(ws_dictionary,ws_lines) + ['\n'] + \
                     ["港澳台,#genre#"] + sort_data(gat_dictionary,gat_lines) + ['\n'] + \
@@ -676,3 +679,4 @@ print(f"others.txt行数: {other_lines_hj} ")
 #备用1：http://tonkiang.us
 #备用2：https://www.zoomeye.hk,https://www.shodan.io,https://tv.cctv.com/live/
 #备用3：(BlackList检测对象)http,rtmp,p3p,rtp（rtsp，p2p）
+
