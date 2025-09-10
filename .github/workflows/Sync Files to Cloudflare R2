@@ -1,0 +1,44 @@
+name: Sync Files to Cloudflare R2
+
+on:
+  schedule:
+    - cron: '10 0 * * *'  # 每天 UTC 00:10（北京时间 08:10）
+  workflow_dispatch:
+  push:
+    branches:
+      - main  # 如果你的主分支不是 main，请改成 master 或其他分支
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ Checkout 仓库
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 2️⃣ 安装 rclone
+      - name: Install rclone
+        run: |
+          curl https://rclone.org/install.sh | sudo bash
+
+      # 3️⃣ 配置 rclone 连接 Cloudflare R2
+      - name: Configure rclone with Cloudflare R2
+        env:
+          R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+        run: |
+          rclone config create cloudflare_r2 s3 \
+            provider "Other" \
+            env_auth "false" \
+            access_key_id "${R2_ACCESS_KEY_ID}" \
+            secret_access_key "${R2_SECRET_ACCESS_KEY}" \
+            endpoint "https://${R2_ACCOUNT_ID}.r2.cloudflarestorage.com" \
+            location "auto" \
+            acl "private"
+
+      # 4️⃣ 上传 live.txt 到 R2 存储桶 zhixue-tv
+      - name: Sync live.txt to Cloudflare R2
+        run: |
+          rclone copy ./live.txt cloudflare_r2:zhixue-tv/ --progress
