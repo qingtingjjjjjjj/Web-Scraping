@@ -26,6 +26,7 @@ Now星影
 Now爆谷
 Now新闻
 Now财经
+寰宇新闻
 Astro AEC
 爱奇艺
 HBO电影
@@ -35,6 +36,15 @@ thrill电影
 美亚电影
 天映
 美亚电影闽
+Fgm电影
+Cinem电影
+Plus综合高清
+myTV SUPER 18台
+搜狐剧场
+唐唐
+Astro AOD
+Astro QJ
+Astro欢喜台
 千禧经典
 香港佛陀
 八大戏剧
@@ -88,3 +98,4 @@ GOODTV好医生
 GOODTV旅行
 GOODTV经典音乐河
 RTHK32
+
