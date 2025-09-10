@@ -1,5 +1,5 @@
 更新时间,#genre#
-20250910 22:46,https://d.kstore.dev/download/8880/%E5%85%AC%E5%91%8A.mp4
+20250911 04:19,https://d.kstore.dev/download/8880/%E5%85%AC%E5%91%8A.mp4
 关于本源(塔利班维护),https://gcalic.v.myalicdn.com/gc/wgw05_1/index.m3u8?contentid=2820180516001
 
 
@@ -2257,7 +2257,7 @@ CETV4,http://kkk.888.3116598.xyz/api.php?n=tttt&id=rhrCc8&tk=FgM0vQMejxvG
 浙江卫视,http://101.66.198.170:9901/tsfile/live/0124_1.m3u8?key=txiptv&playlive=0&authid=0
 浙江卫视,https://stream1.freetv.fun/zhe-jiang-wei-shi-80.ctv
 浙江卫视,https://stream1.freetv.fun/zhe-jiang-wei-shi-99.ctv
-浙江卫视,http://zwebl02.cztv.com/live/channel01720Pnew.m3u8?auth_key=1757512501-9b752a3094e4422a030a7f1daaf9b8f4-0-16233cd40b1e732437e4ecbc2b734e7b
+浙江卫视,http://zwebl02.cztv.com/live/channel01720Pnew.m3u8?auth_key=1757532914-d09118f04352391d7ffb544cdcb02262-0-e07467e0305ee2c9cd365e2a7d6b78e5
 浙江卫视,http://123.130.84.106:8154/tsfile/live/0124_1.m3u8?key=txiptv&playlive=1&authid=0
 浙江卫视,http://120.76.248.139/live/bfgd/4200000094.m3u8
 浙江卫视,http://qjrhc.jydjd.top:2911/udp/224.1.100.52:11111
@@ -2673,10 +2673,9 @@ CETV4,http://kkk.888.3116598.xyz/api.php?n=tttt&id=rhrCc8&tk=FgM0vQMejxvG
 安徽卫视,http://ygbh.site/php/bfgd.php?id=096
 安徽卫视,https://stream1.freetv.fun/an-hui-wei-shi-62.ctv
 安徽卫视,https://stream1.freetv.fun/an-hui-wei-shi-51.ctv
-安徽卫视,http://1b6467f415.iok.la:9931/tsfile/live/1062_1.m3u8
 安徽卫视,http://183.11.239.36:808/hls/40/index.m3u8
 安徽卫视,https://migu.188766.xyz/?migutoken=5b3405d3c4bfc76c7b5f57725d16e1b4&id=ahws&type=sz
-安徽卫视,https://piccpndks.v.kcdnvip.com/audio/anhui_2/index.m3u8
+安徽卫视,http://1b6467f415.iok.la:9931/tsfile/live/1062_1.m3u8
 安徽卫视,https://www.yangshipin.cn/tv/home?pid=600002532
 安徽卫视,http://120.76.248.139/live/bfgd/4200000096.m3u8
 安徽卫视,http://qjrhc.jydjd.top:2911/udp/224.1.100.66:11111
@@ -4547,8 +4546,9 @@ CETV4,http://kkk.888.3116598.xyz/api.php?n=tttt&id=rhrCc8&tk=FgM0vQMejxvG
 河南卫视,http://1.94.31.214/php/hntv.php?id=hnws
 河南卫视,http://xxwx.yoesun.com/xxw/河南网.php?id=hnws
 河南卫视,http://cdn6.bkpcp.top/tl/tuiliu.php?id=hnws
-河南卫视,http://cssbyd.imwork.net:8082/hls/37/index.m3u8
 河南卫视,http://lxajh.top/tv/hn.php?id=hnws
+河南卫视,http://cssbyd.imwork.net:8082/hls/37/index.m3u8
+河南卫视,http://tvcdn.stream3.hndt.com/tv/65c4a6d5017e1000b2b6ea2500000000_transios/playlist.m3u8?wsSecret=2836ea74ed89a6ac3f7a2ab4053afd1e&wsTime=1757547738
 河南卫视,http://221.2.148.205:8154/tsfile/live/0139_1.m3u8?key=txiptv&playlive=1&authid=0
 河南卫视,http://120.76.248.139/live/bfgd/4200000339.m3u8
 河南卫视,http://qjrhc.jydjd.top:2911/udp/224.1.100.73:11111
@@ -5242,7 +5242,7 @@ CETV4,http://kkk.888.3116598.xyz/api.php?n=tttt&id=rhrCc8&tk=FgM0vQMejxvG
 重庆卫视,http://124.116.183.146:9901/tsfile/live/0142_1.m3u8
 重庆卫视,https://migu.188766.xyz/?migutoken=742c9c7b9fe7e7ab390f4e6371d55092&id=cqws&type=sz
 重庆卫视,http://61.156.228.12:8154/tsfile/live/0142_1.m3u8
-重庆卫视,http://p.ytelc.com/videojs.php?id=https://sjlivecdn9.cbg.cn/202509102019/app_2/_definst_/ls_2.stream/chunklist.m3u8
+重庆卫视,http://p.ytelc.com/videojs.php?id=https://sjlivecdn9.cbg.cn/202509110305/app_2/_definst_/ls_2.stream/chunklist.m3u8
 重庆卫视,http://221.2.148.205:8154/tsfile/live/0142_1.m3u8?key=txiptv&playlive=1&authid=0
 重庆卫视,http://120.76.248.139/live/bfgd/4200000107.m3u8
 重庆卫视,http://z.b.bkpcp.top/m.php?id=cqws
@@ -5313,7 +5313,7 @@ CETV4,http://kkk.888.3116598.xyz/api.php?n=tttt&id=rhrCc8&tk=FgM0vQMejxvG
 陕西卫视,http://www.cdnstv.com:6398/hls/1129/index.m3u8
 陕西卫视,http://z.b.bkpcp.top/m.php?id=sxws
 陕西卫视,http://1b6467f415.iok.la:9931/tsfile/live/1083_1.m3u8
-陕西卫视,http://stream.snrtv.com/sxbc-star-myFNVZ.m3u8
+陕西卫视,http://stream.snrtv.com/sxbc-star-bcdkO8.m3u8
 陕西卫视,http://gat.bkpcp.top/ymg.php?id=sxws
 陕西卫视,http://goo.bkpcp.top/mg/sxws
 陕西卫视,http://223.159.9.168:8099/tsfile/live/0136_1.m3u8?key=txiptv&playlive=0&authid=0
@@ -6407,6 +6407,7 @@ CHC影迷电影,http://124.93.18.238:9002//hls/77/index.m3u8
 东方影视,https://stream1.freetv.fun/dong-fang-ying-shi-12.ctv
 东方影视,https://www.freetv.top/migu/617290047.m3u8?migutoken=86c02ad0875d5cc49d77bcc8bdb628f2c9d508ffc323b964a03c8f92dde4afafa0345cf5a8fefbdf915c748e3d11c6c18e27ae1e21a609cec31a45e6c437db26a7a243625f9cf35c271171a22c
 东方影视,http://8.138.7.223/tv/migu3.php?id=dfys
+东方影视,https://stream1.freetv.fun/dong-fang-ying-shi-4.ctv
 东方影视,http://[2409:8087:1e03:21::2]:6060/cms001/ch00000090990000001016/index.m3u8
 东方影视,http://[2409:8087:1e03:21::2]:6060/cms001/ch00000090990000001016/index.m3u8?
 东方影视,http://[2409:8087:1e04:21::102]:6060/cms001/ch00000090990000001016/1.m3u8
@@ -6512,11 +6513,11 @@ AMC电影,http://61.221.215.25:8800/hls/43/index.m3u8
 甄子丹,https://stream1.freetv.fun/zhen-zi-dan-1.m3u8
 甄子丹,https://stream1.freetv.fun/zhen-zi-dan-2.m3u8
 甄子丹,http://cfss.cc/cdn/hy/11352935.m3u8
+甄子丹,http://iptv.jxpan.vip:18888/aio/huya/11352935
 甄子丹,https://stream1.freetv.fun/zhen-zi-dan-dian-ying-2.ctv
 甄子丹,https://stream1.freetv.fun/zhen-zi-dan-dian-ying-1.ctv
 甄子丹,https://isus.cc/php/huya.php?id=11352935
 甄子丹,http://live.iill.top/huya.php?id=11352935
-甄子丹,http://iptv.jxpan.vip:18888/aio/huya/11352935
 甄子丹,http://live.nctv.top/huya.php?id=11352935
 甄子丹,http://cfss.cc/cdn/hy/11352935.flv
 甄子丹,https://live.metshop.top/huya/11352935
@@ -7180,7 +7181,6 @@ iHOT,#genre#
 解说_扁豆看电影,http://live.nctv.top/huya.php?id=16028551
 解说_扁豆看电影,https://live.iill.top/huya/16028551
 解说_扁豆看电影,https://live.metshop.top/huya/16028551
-解说_扁豆看电影,https://mursor.ottiptv.cc/huya/16028551
 解说_扁豆看电影,https://www.goodiptv.club/huya/16028551
 解说_斌哥漫说,http://live.nctv.top/huya.php?id=18632116
 解说_斌哥漫说,https://live.metshop.top/huya/18632116
