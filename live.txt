@@ -6087,6 +6087,8 @@ Now财经,http://iptv.4666888.xyz/iptv.php?id=20085
 美亚电影,https://stream1.freetv.fun/mei-ya-dian-ying-2.ctv
 美亚电影,https://live.tvfix.org/live/mydy/index.m3u8
 美亚电影国流,http://bxtv.3a.ink/api.php?id=meiya
+Now星影,http://iptv.4666888.xyz/iptv.php?id=20086
+Now爆谷,http://iptv.4666888.xyz/iptv.php?id=20087
 天映,http://185.243.7.13:80/play/live.php?mac=00:1A:79:45:5E:9A&stream=941618&extension=ts&play_token=kr082FQvzN
 天映,https://stream1.freetv.fun/tian-ying-1.m3u8
 天映电影,https://stream1.freetv.fun/tian-ying-dian-ying-1.m3u8
