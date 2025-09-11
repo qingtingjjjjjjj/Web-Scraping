@@ -1,8 +1,21 @@
 更新时间,#genre#
 20250911 22:06,https://d.kstore.dev/download/8880/%E5%85%AC%E5%91%8A.mp4
 关于本源(塔利班维护),https://gcalic.v.myalicdn.com/gc/wgw05_1/index.m3u8?contentid=2820180516001
-
-
+凤凰中文,https://migu.188766.xyz/?migutoken=5cd6b23ca0e2cc9f904026a0160af17d&id=fhzw&pp=1
+凤凰资讯,https://migu.188766.xyz/?migutoken=1bf0a2948355448fd5906c75dc0be26b&id=fhzx&pp=1
+凤凰香港,https://migu.188766.xyz/?migutoken=0fb2d87f7ca146b4d275fd82e434b9a2&id=fhhk&pp=1
+翡翠台,https://migu.188766.xyz/?migutoken=199367a0499b91aba533a4e32357d4ec&id=jade_twn&type=dy
+无线新闻,https://migu.188766.xyz/?migutoken=35e96622b36adb0dba0eff1bcc60efe2&id=inews_twn&type=dy
+TVB星河,https://migu.188766.xyz/?migutoken=5708e7797e9542cfc184d2f2a778a16a&id=Xinhe&type=dy
+明珠台,https://migu.188766.xyz/?migutoken=705844bb26b3d9505532fedad6fbee75&id=pearl_twn&type=dy
+华丽翡翠台,https://migu.188766.xyz/?migutoken=3f6f40c0daefc3a8e09f111954cef905&id=Tvbjade&type=dy
+千禧经典,https://migu.188766.xyz/?migutoken=d81f77c6510c43c1362056e4398b8ce0&id=Tvbclassic&type=dy
+天映经典,https://migu.188766.xyz/?migutoken=7ab310bc33a13445fa804c274e1bd934&id=Celestial2&type=dy
+天映电影,https://migu.188766.xyz/?migutoken=bd8940d3ff7170c54b489a589ed4227f&id=Celestial&type=dy
+Astro AOD,https://migu.188766.xyz/?migutoken=9a9dd03cd6b9ed2888d2377c414f1a5a&id=Aodhd&type=dy
+Astro AEC,https://migu.188766.xyz/?migutoken=ef3429417dda3f3f6375dee1f27a231e&id=AEC&type=dy
+Astro QJ,https://migu.188766.xyz/?migutoken=db3196abbba191c679b0f6ecfc208f6e&id=Quanjia&type=dy
+Astro 欢喜,https://migu.188766.xyz/?migutoken=4c76c258e2bc079282397a10ff76f481&id=Huahee&type=dy
 央视频道,#genre#
 CCTV1,http://ottrrs.hl.chinamobile.com/PLTV/88888888/224/3221226016/index.m3u8
 CCTV1,http://ottrrs.hl.chinamobile.com/PLTV/88888888/224/3221226559/index.m3u8
