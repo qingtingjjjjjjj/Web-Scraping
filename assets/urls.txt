@@ -72,4 +72,4 @@ http://txt.kesug.com/users/hulanlu.txt
 http://dd.ma/St217ljz
 http://bxtv.3a.ink/live.m3u
 https://gongdian.top/tv/bingcha
-https://ghfast.top/raw.githubusercontent.com/Supprise0901/TVBox_live/main/live.txt
+https://raw.githubusercontent.com/Supprise0901/TVBox_live/main/live.txt
