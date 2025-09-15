@@ -74,5 +74,5 @@ http://txt.kesug.com/users/HKTV.txt
 http://txt.kesug.com/users/hulanlu.txt
 http://dd.ma/St217ljz
 http://bxtv.3a.ink/live.m3u
-https://gongdian.top/tv/bingcha
+
 
