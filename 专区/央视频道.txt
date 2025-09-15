@@ -1,3 +1,23 @@
+CCTV1, https://migu.188766.xyz/?migutoken=83b815014cf40cf131126a928c1e1ca6&id=CCTV1&type=yy
+CCTV2, https://migu.188766.xyz/?migutoken=6ef17d39341d067267ab453982b35a47&id=CCTV2&type=yy
+CCTV3, https://migu.188766.xyz/?migutoken=8b22b6dca709bb1bb2176725f2bc332e&id=CCTV3&type=yy
+CCTV4, https://migu.188766.xyz/?migutoken=d94262cc851c2a281219d6e62902ae22&id=CCTV4&type=yy
+CCTV5, https://migu.188766.xyz/?migutoken=87d3425b4fcf777c38f735437f14ef3a&id=CCTV5&type=yy
+CCTV5+, https://migu.188766.xyz/?migutoken=2db8817ae830eb40eebee5428dbf54b1&id=CCTV5p&type=yy
+CCTV6, https://migu.188766.xyz/?migutoken=ca2a083fbaff371c883613ed8325d2b1&id=CCTV6&type=yy
+CCTV7, https://migu.188766.xyz/?migutoken=2bf135e07ab3eb2c5c8a4e6e7414b5ac&id=CCTV7&type=yy
+CCTV8, https://migu.188766.xyz/?migutoken=492e4f615d39d42235794f8ce9bea0ae&id=CCTV8&type=yy
+CCTV9, https://migu.188766.xyz/?migutoken=6828c782960ac1b2778e1148ca69acfa&id=CCTV9&type=yy
+CCTV10, https://migu.188766.xyz/?migutoken=702d632d2b1ea822c820bb7298b225d3&id=CCTV10&type=yy
+CCTV11, https://migu.188766.xyz/?migutoken=4e03a49748de5ba9fccacec38278da9d&id=CCTV11&type=yy
+CCTV12, https://migu.188766.xyz/?migutoken=3a145e42ff2b6aba178e34c7e7080e31&id=CCTV12&type=yy
+CCTV13, https://migu.188766.xyz/?migutoken=ba1949e9352dad373a00a976129fdc6c&id=CCTV13&type=yy
+CCTV14, https://migu.188766.xyz/?migutoken=451a896086762dfa37ffabbdaa3f75c2&id=CCTV14&type=yy
+CCTV15, https://migu.188766.xyz/?migutoken=4eb91cf1db1030d4b93927536b180c3e&id=CCTV15&type=yy
+CCTV17, https://migu.188766.xyz/?migutoken=da9a4878e0c27c0aa11e53e833885011&id=CCTV17&type=yy
+CCTV4欧洲, https://migu.188766.xyz/?migutoken=ef9474454a1246dc1deb8bacc23b98af&id=CCTV4%E6%AC%A7%E6%B4%B2&type=yy
+CCTV4美洲, https://migu.188766.xyz/?migutoken=cdd41f6ef11df1375db1a5f392013590&id=CCTV4%E7%BE%8E%E6%B4%B2&type=yy
+
 CCTV1,http://124.165.251.82:85/tsfile/live/0001_1.m3u8?key=txiptv&playlive=1&authid=0
 CCTV1,http://153.0.171.163:9901/tsfile/live/0001_1.m3u8?key=txiptv&playlive=1&authid=0
 CCTV1,https://migu.188766.xyz/?migutoken=e148b21c7376f378ac2589557117a4ec&id=CCTV1&type=yy
