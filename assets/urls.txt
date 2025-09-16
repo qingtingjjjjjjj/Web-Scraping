@@ -1,6 +1,7 @@
 https://raw.githubusercontent.com/adminouyang/231006/refs/heads/main/py/%E4%BC%98%E8%B4%A8%E6%BA%90/output/ipv4/result.txt
 https://raw.githubusercontent.com/Supprise0901/TVBox_live/refs/heads/main/live.txt
 https://raw.githubusercontent.com/qingtingjjjjjjj/config-tv/refs/heads/main/live.txt
+https://ghfast.top/https://raw.githubusercontent.com/XO-TV/iptv/refs/heads/master/output/iptv.txt
 http://47.120.41.246:8899/zb.txt
 https://3043.kstore.space/bhvip/bhzb.txt
 https://tv.iill.top/m3u/Gather
