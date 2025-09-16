@@ -1,34 +1,10 @@
 更新时间,#genre#
-20250916 19:54,https://d.kstore.dev/download/8880/%E5%85%AC%E5%91%8A.mp4
+20250916 20:05,https://d.kstore.dev/download/8880/%E5%85%AC%E5%91%8A.mp4
 关于本源(塔利班维护),https://v.cdnlz12.com/20250131/18183_a5e8965b/index.m3u8
 
 
 央视频道,#genre#
 ████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████#
-CCTV-1,http://go.bkpcp.top/mg/cctv1
-CCTV-2,http://go.bkpcp.top/mg/cctv2
-CCTV-3,http://go.bkpcp.top/mg/cctv3
-CCTV-4,http://go.bkpcp.top/mg/cctv4
-CCTV-5,http://go.bkpcp.top/mg/cctv5
-CCTV-5+,http://go.bkpcp.top/mg/cctv5p
-CCTV-6,http://go.bkpcp.top/mg/cctv6
-CCTV-7,http://go.bkpcp.top/mg/cctv7
-CCTV-8,http://go.bkpcp.top/mg/cctv8
-CCTV-9,http://go.bkpcp.top/mg/cctv9
-CCTV-10,http://go.bkpcp.top/mg/cctv10
-CCTV-11,http://go.bkpcp.top/mg/cctv11
-CCTV-12,http://go.bkpcp.top/mg/cctv12
-CCTV-13,http://go.bkpcp.top/mg/cctv13
-CCTV-14,http://go.bkpcp.top/mg/cctv14
-CCTV-15,http://go.bkpcp.top/mg/cctv15
-CCTV-16,http://go.bkpcp.top/mg/cctv16
-CCTV-17,http://go.bkpcp.top/mg/cctv17
-cct4欧洲,http://go.bkpcp.top/mg/cctv4o
-cct4美洲,http://go.bkpcp.top/mg/cctv4m
-CGTN-西,http://go.bkpcp.top/mg/cgtne
-CGTN-阿,http://go.bkpcp.top/mg/cgtna
-CGTN-法,http://go.bkpcp.top/mg/cgtnf
-
 CCTV1,http://124.165.251.82:85/tsfile/live/0001_1.m3u8?key=txiptv&playlive=1&authid=0
 CCTV1,http://153.0.171.163:9901/tsfile/live/0001_1.m3u8?key=txiptv&playlive=1&authid=0
 CCTV2,http://124.165.251.82:85/tsfile/live/0002_1.m3u8?key=txiptv&playlive=1&authid=0
@@ -5945,7 +5921,6 @@ CETV4,http://139.129.231.228/rtp/239.21.1.222:5002
 河南卫视,rtsp://183.59.156.166/PLTV/88888905/224/3221230114/367378146.smil?rrsip=125.88.70.140
 河南卫视,http://120.238.94.10:9901/tsfile/live/1068_1.m3u8
 河南卫视,http://www.cdnstv.com:6398/hls/47/index.m3u8
-河南卫视,https://stream1.freetv.fun/he-nan-wei-shi-39.ctv
 河南卫视,http://113.57.111.4:1111/tsfile/live/1025_1.m3u8
 河南卫视,http://120.76.248.139/live/bfgd/4200000339.m3u8
 河南卫视,http://180.165.6.184:4022/rtp/239.45.0.3:5140
@@ -6482,8 +6457,6 @@ CETV4,http://139.129.231.228/rtp/239.21.1.222:5002
 贵州卫视,http://116.235.57.40:4022/rtp/239.45.1.80:5140
 贵州卫视,rtsp://183.59.156.166/PLTV/88888905/224/3221228286/10000100000000060000000007781468_0.smil?rrsip=125.88.70.140
 贵州卫视,http://1b6467f415.iok.la:9931/tsfile/live/1071_1.m3u8
-贵州卫视,https://stream1.freetv.fun/gui-zhou-wei-shi-44.m3u8
-贵州卫视,https://stream1.freetv.fun/gui-zhou-wei-shi-76.ctv
 贵州卫视,http://120.76.248.139/live/bfgd/4200000101.m3u8
 贵州卫视,http://182.150.23.74:808/hls/26/index.m3u8
 贵州卫视,http://113.25.252.226:9901/tsfile/live/0120_1.m3u8
@@ -7833,6 +7806,7 @@ Astro欢喜台,http://php.jdshipin.com:8880/smt.php?id=Huahee
 凤凰中文,http://qjrhc.jydjd.top:2911/udp/224.1.100.3:11111
 凤凰中文,http://php.jdshipin.com/TVOD/iptv.php?id=fhzw
 凤凰中文,http://120.55.49.231:3095/rtp/233.50.200.191:5140
+凤凰中文,https://stream1.freetv.fun/feng-huang-zhong-wen-9.ctv
 凤凰中文,https://stream1.freetv.fun/2cd8b0d0e8b7bda9c76ae4e0d554782532055b48e88e266f743eaa21ca7e44e0.ctv
 凤凰中文,http://playtv-live.ifeng.com/live/06OLEGEGM4G_audio.m3u8
 凤凰资讯,http://203.205.191.53/qctv.fengshows.cn/live/0701pin72.flv
@@ -8058,7 +8032,6 @@ Now新闻,http://iptv.4666888.xyz/iptv.php?id=20084
 天映经典,https://smt.1789.dpdns.org/smt3.2.1.php?id=Celestial2
 天映经典,https://live.tvfix.org/live/tyjd/index.m3u8
 天映经典,https://stream1.freetv.fun/tian-ying-jing-dian-10.ctv
-天映经典,https://stream1.freetv.fun/tian-ying-jing-dian-4.m3u8
 美亚电影,https://stream1.freetv.fun/mei-ya-dian-ying-5.ctv
 美亚电影,https://stream1.freetv.fun/mei-ya-dian-ying-7.m3u8
 美亚电影,https://stream1.freetv.fun/mei-ya-dian-ying-2.ctv
@@ -8477,7 +8450,6 @@ TVBS台剧,http://iptv.4666888.xyz/iptv.php?id=20193
 龙华偶像,https://smart.pendy.dpdns.org/Smart.php?id=lunghuaidol_twn
 龙华偶像,http://xg.52sw.top/play/4gtv/dxlitv.php?id=litv-longturn12
 龙华偶像,http://iptv.4666888.xyz/iptv.php?id=20243
-龙华偶像,https://stream1.freetv.fun/long-hua-ou-xiang-2.ctv
 龙华日韩,https://stream1.freetv.fun/long-hua-ri-han-3.m3u8
 龙华日韩,http://iptv.4666888.xyz/iptv.php?id=20244
 龙华经典,https://cdn8.163189.xyz/live/lhjd/stream.m3u8
@@ -9402,6 +9374,7 @@ iHOT,#genre#
 解说_扁豆看电影,http://live.nctv.top/huya.php?id=16028551
 解说_扁豆看电影,https://live.iill.top/huya/16028551
 解说_扁豆看电影,https://live.metshop.top/huya/16028551
+解说_扁豆看电影,https://www.goodiptv.club/huya/16028551
 解说_斌哥漫说,http://live.nctv.top/huya.php?id=18632116
 解说_斌哥漫说,https://live.metshop.top/huya/18632116
 解说_涵哥评电影,http://live.nctv.top/huya.php?id=16865726
