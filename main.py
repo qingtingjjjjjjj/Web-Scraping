@@ -43,6 +43,7 @@ ty_lines = [] #体育频道
 dy_lines = [] #电影频道
 dsj_lines = [] #电视剧频道
 gat_lines = [] #港澳台
+twt_lines = [] #台湾台
 gj_lines = [] #国际台
 jlp_lines = [] #记录片
 xq_lines = [] #戏曲
@@ -106,6 +107,7 @@ ty_dictionary=read_txt_to_array('主频道/体育频道.txt')
 dy_dictionary=read_txt_to_array('主频道/电影.txt') 
 dsj_dictionary=read_txt_to_array('主频道/电视剧.txt') 
 gat_dictionary=read_txt_to_array('主频道/港澳台.txt') 
+twt_dictionary=read_txt_to_array('主频道/台湾台.txt')
 gj_dictionary=read_txt_to_array('主频道/国际台.txt') 
 jlp_dictionary=read_txt_to_array('主频道/纪录片.txt') 
 xq_dictionary=read_txt_to_array('主频道/戏曲频道.txt') 
@@ -291,6 +293,9 @@ def process_channel_line(line):
             elif channel_name in gat_dictionary: #港澳台
                 if check_url_existence(gat_lines, channel_address):
                     gat_lines.append(line)
+            elif channel_name in twt_dictionary: #台湾台
+                if check_url_existence(twt_lines, channel_address):
+                    twt_lines.append(line)            
             elif channel_name in gj_dictionary: #国际台
                 if check_url_existence(gj_lines, channel_address):
                     gj_lines.append(line)
@@ -543,6 +548,7 @@ all_lines_simple =  ["更新时间,#genre#"] + [version] +[about]+['\n'] +\
                     ["央视频道,#genre#"] + read_txt_to_array('专区/央视频道.txt') + sort_data(ys_dictionary,ys_lines) + ['\n'] + \
                     ["卫视频道,#genre#"] + read_txt_to_array('专区/卫视频道.txt') + sort_data(ws_dictionary,ws_lines) + ['\n'] + \
                     ["港澳台,#genre#"] + read_txt_to_array('专区/港澳台.txt') + sort_data(gat_dictionary,gat_lines) + ['\n'] + \
+                    ["台湾台,#genre#"] + read_txt_to_array('专区/台湾台.txt') + sort_data(twt_dictionary,twt_lines) + ['\n'] + \
                     ["电影频道,#genre#"] + sort_data(dy_dictionary,dy_lines) + ['\n'] + \
                     ["电视剧频道,#genre#"] + sort_data(dsj_dictionary,dsj_lines) + ['\n'] + \
                     ["综艺频道,#genre#"] + sort_data(zy_dictionary,zy_lines) + ['\n'] + \
@@ -679,6 +685,7 @@ print(f"others.txt行数: {other_lines_hj} ")
 #备用1：http://tonkiang.us
 #备用2：https://www.zoomeye.hk,https://www.shodan.io,https://tv.cctv.com/live/
 #备用3：(BlackList检测对象)http,rtmp,p3p,rtp（rtsp，p2p）
+
 
 
 
