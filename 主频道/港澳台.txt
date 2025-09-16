@@ -101,4 +101,5 @@ GOODTV好医生
 GOODTV旅行
 GOODTV经典音乐河
 RTHK32
-
+Hub娱家台
+Hub都会台
