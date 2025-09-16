@@ -1,3 +1,8 @@
 天映,http://php.jdshipin.com/smt.php?id=Celestial
 Now星影,http://iptv.4666888.xyz/iptv.php?id=20086
 Now爆谷,http://iptv.4666888.xyz/iptv.php?id=20087
+Arirang,http://amdlive.ctnd.com.edgesuite.net/arirang_1ch/smil:arirang_1ch.smil/playlist.m3u8
+Astro AEC,https://migu.188766.xyz/?migutoken=d2931498c7e529f36af7809e0ae39b3a&id=AEC&type=dy
+Astro AOD,https://migu.188766.xyz/?migutoken=9aa6cddc73b79846a222fcf45624ade7&id=Aodhd&type=dy
+Astro QJ,https://migu.188766.xyz/?migutoken=3de96764904666c6f5bdc95c361e1410&id=Quanjia&type=dy
+Astro 欢喜,https://migu.188766.xyz/?migutoken=8462f433a68f1b1d3f2ff47b373561cd&id=Huahee&type=dy
