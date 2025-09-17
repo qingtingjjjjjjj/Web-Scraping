@@ -4,6 +4,7 @@ http://iptv.4666888.xyz/FYTV.m3u
 https://raw.githubusercontent.com/qingtingjjjjjjj/config-tv/refs/heads/main/live.txt
 https://raw.githubusercontent.com/XO-TV/iptv/refs/heads/master/output/hz.txt
 https://raw.githubusercontent.com/XO-TV/iptv/refs/heads/master/output/iptv.txt
+https://ghfast.top/https://raw.githubusercontent.com/qinvision/hpydy/refs/heads/main/hpydy.txt
 http://47.120.41.246:8899/zb.txt
 https://3043.kstore.space/bhvip/bhzb.txt
 https://tv.iill.top/m3u/Gather
