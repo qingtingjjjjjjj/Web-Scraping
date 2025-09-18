@@ -2,6 +2,7 @@ https://raw.githubusercontent.com/adminouyang/231006/refs/heads/main/py/%E4%BC%9
 https://raw.githubusercontent.com/Supprise0901/TVBox_live/refs/heads/main/live.txt
 http://iptv.4666888.xyz/FYTV.m3u
 https://raw.githubusercontent.com/develop202/migu_video/refs/heads/main/interface.txt
+https://develop202.github.io/migu_video/interface.txt
 https://raw.githubusercontent.com/alenin-zhang/IPTV/refs/heads/main/lenin.txt
 https://raw.githubusercontent.com/frxz751113/IPTVzb1/refs/heads/main/%E7%BD%91%E7%BB%9C%E6%94%B6%E9%9B%86.txt
 https://raw.githubusercontent.com/qingtingjjjjjjj/config-tv/refs/heads/main/live.txt
