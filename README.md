@@ -9,6 +9,7 @@
 # 📺 M3U 直播源自动更新
 
 [![M3U 直播源更新到 live.txt](https://github.com/qingtingjjjjjjj/IPTV-api/actions/workflows/update.yml/badge.svg)](https://github.com/qingtingjjjjjjj/IPTV-api/actions/workflows/update.yml)
+![Last Commit](https://img.shields.io/github/last-commit/qingtingjjjjjjj/IPTV-api?logo=github)
 
 本仓库会定时从远程地址抓取最新的 M3U 直播源，并更新到 `live.txt` 文件。  
 通过 **GitHub Actions** 自动运行，无需人工维护。
