@@ -45,40 +45,23 @@ for line in lines:
 
 # live.txt 文件路径
 live_file = "live.txt"
-if os.path.exists(live_file):
-    with open(live_file, "r", encoding="utf-8") as f:
-        old_lines = f.read().splitlines()
-else:
-    old_lines = []
 
 # 定义分组标签
 yangshi_tag = "央视频道,#genre#"
 weishi_tag = "卫视频道,#genre#"
 
-# 将已有直播源收集到 set 中（用于去重）
-existing_set = set(old_lines)
-
-# 去掉已经存在的直播源
-yangshi_new = [x for x in yangshi if x not in existing_set]
-weishi_new = [x for x in weishi if x not in existing_set]
-
-# 找到分组起始位置并插入新直播源
-def insert_group(existing_lines, tag, new_records):
-    if not new_records:
-        return existing_lines
-    if tag in existing_lines:
-        idx = existing_lines.index(tag) + 1
-        return existing_lines[:idx] + new_records + existing_lines[idx:]
-    else:
-        return [tag] + new_records + [""] + existing_lines
+# 每次只保留最新源，覆盖旧文件
+new_lines = []
 
 # 插入央视频道和卫视频道
-lines_after_yangshi = insert_group(old_lines, yangshi_tag, yangshi_new)
-lines_after_weishi = insert_group(lines_after_yangshi, weishi_tag, weishi_new)
+if yangshi:
+    new_lines += [yangshi_tag] + yangshi + [""]  # 分组标签+内容+空行
+if weishi:
+    new_lines += [weishi_tag] + weishi + [""]
 
-# 写回 live.txt
+# 写回 live.txt（覆盖旧文件）
 with open(live_file, "w", encoding="utf-8") as f:
-    f.write("\n".join(lines_after_weishi))
+    f.write("\n".join(new_lines))
 
 # 日志输出，带序号、颜色高亮
 def log_channels(name, records, color):
@@ -88,7 +71,7 @@ def log_channels(name, records, color):
             channel_name = rec.split(',')[0]
             print(f"{color}{i}. {channel_name}{RESET}")
 
-log_channels("央视频道", yangshi_new, GREEN)
-log_channels("卫视频道", weishi_new, YELLOW)
+log_channels("央视频道", yangshi, GREEN)
+log_channels("卫视频道", weishi, YELLOW)
 
-print(f"{RED}更新完成，已插入到对应分组最前面（保持顺序且去重）。{RESET}")
+print(f"{RED}更新完成，已覆盖旧源，保持每次只保留最新直播源。{RESET}")
