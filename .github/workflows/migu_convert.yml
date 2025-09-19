@@ -1,0 +1,72 @@
+name: M3U 直播源定时转换
+
+on:
+  schedule:
+    - cron: "0 */2 * * *"  # 每两小时运行一次
+  workflow_dispatch:       # 也可以手动触发
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install dependencies
+        run: |
+          pip install requests
+
+      - name: Fetch and convert M3U
+        run: |
+          import requests, os
+
+          url = "https://raw.githubusercontent.com/develop202/migu_video/refs/heads/main/interface.txt"
+          resp = requests.get(url)
+          resp.raise_for_status()
+          lines = resp.text.splitlines()
+
+          # 存放分组数据
+          yangshi, weishi = [], []
+          current_group = None
+
+          for line in lines:
+              if line.startswith("#EXTINF"):
+                  if "央视频道" in line:
+                      current_group = "yangshi"
+                  elif "卫视频道" in line:
+                      current_group = "weishi"
+                  else:
+                      current_group = None
+              elif line.startswith("http") and current_group:
+                  if current_group == "yangshi":
+                      yangshi.append(line)
+                  elif current_group == "weishi":
+                      weishi.append(line)
+
+          os.makedirs("专区", exist_ok=True)
+
+          with open("专区/央视频道.txt", "w", encoding="utf-8") as f:
+              f.write("\n".join(yangshi))
+
+          with open("专区/卫视频道.txt", "w", encoding="utf-8") as f:
+              f.write("\n".join(weishi))
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add 区域/央视频道.txt 区域/卫视频道.txt || true
+
+          if ! git diff --cached --quiet; then
+            git commit -m "更新央视频道和卫视频道直播源 [skip ci]"
+            git push
+          else
+            echo "文件无变化，不推送。"
+          fi
