@@ -34,17 +34,34 @@ jobs:
       - name: Configure Git user
         run: |
           git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      # 6️⃣ 添加 live.txt 文件
-      - name: Add live.txt
-        run: git add live.txt
+      # 6️⃣ 更新 README.md 时间戳、提示语和直播源行数（北京时间）
+      - name: Update README timestamp and stats
+        run: |
+          timestamp=$(TZ=Asia/Shanghai date +"%Y-%m-%d %H:%M:%S")
+          line_count=$(wc -l < live.txt | tr -d ' ')
+          # 构造三行内容
+          header="## ✨于 ${timestamp} 更新"
+          subline="**🎉最新可用IPTV源，觉得好用请点个STAR吧！**"
+          statline="📺 当前共收录 ${line_count} 条直播源"
 
-      # 7️⃣ 提交并推送变化
+          # 替换或插入内容
+          if grep -q "^## ✨于 " README.md; then
+            sed -i "1s|^## ✨于 .*|${header}\n${subline}\n${statline}|" README.md
+          else
+            echo -e "${header}\n${subline}\n${statline}\n" | cat - README.md > temp && mv temp README.md
+          fi
+
+      # 7️⃣ 添加更新的文件
+      - name: Add updated files
+        run: git add live.txt README.md
+
+      # 8️⃣ 提交并推送变化
       - name: Commit and push changes
         run: |
           if ! git diff --cached --quiet; then
-              git commit -m "更新央视频道和卫视频道直播源（覆盖上一次抓取） [skip ci]"
+              git commit -m "更新直播源、README时间戳和行数统计 [skip ci]"
               git push
           else
               echo "文件无变化，不推送。"
