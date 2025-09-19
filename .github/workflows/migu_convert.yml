@@ -24,30 +24,36 @@ jobs:
       - name: Fetch and convert M3U
         run: |
           python << 'EOF'
-          import requests
+          import requests, os
 
           url = "https://raw.githubusercontent.com/develop202/migu_video/refs/heads/main/interface.txt"
           resp = requests.get(url)
           resp.raise_for_status()
           lines = resp.text.splitlines()
 
-          # 存放分组数据
+          # 确保输出文件夹存在
+          os.makedirs("专区", exist_ok=True)
+
           yangshi, weishi = [], []
           current_group = None
+          current_name = None
 
-          for line in lines:
+          for i, line in enumerate(lines):
               if line.startswith("#EXTINF"):
-                  if "央视频道" in line:
+                  # 频道名在最后一个逗号后
+                  current_name = line.split(",")[-1].strip()
+                  if "央视" in line:
                       current_group = "yangshi"
-                  elif "卫视频道" in line:
+                  elif "卫视" in line:
                       current_group = "weishi"
                   else:
                       current_group = None
-              elif line.startswith("http") and current_group:
+              elif line.startswith("http") and current_group and current_name:
+                  record = f"{current_name},{line.strip()}"
                   if current_group == "yangshi":
-                      yangshi.append(line)
+                      yangshi.append(record)
                   elif current_group == "weishi":
-                      weishi.append(line)
+                      weishi.append(record)
 
           with open("专区/央视频道.txt", "w", encoding="utf-8") as f:
               f.write("\n".join(yangshi))
