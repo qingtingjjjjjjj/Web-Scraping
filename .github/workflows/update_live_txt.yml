@@ -22,7 +22,10 @@ jobs:
         run: pip install requests
 
       - name: Fetch and merge M3U into live.txt
-        run: python .github/workflows/update_live_txt.py
+        run: |
+          # 运行 Python 脚本并捕获输出
+          python .github/workflows/update_live_txt.py > output.log
+          cat output.log
 
       - name: Configure Git user
         run: git config --global user.name "github-actions[bot]"
@@ -36,8 +39,7 @@ jobs:
       - name: Commit and push changes
         run: |
           if ! git diff --cached --quiet; then
-            git commit -m "更新央视频道和卫视频道直播源（简化CCTV频道） [skip ci]"
+            git commit -m "更新央视频道和卫视频道直播源（简化CCTV频道，去重） [skip ci]"
             git push
           else
             echo "文件无变化，不推送。"
-          fi
