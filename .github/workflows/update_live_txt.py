@@ -10,7 +10,6 @@ lines = resp.text.splitlines()
 
 # 分组
 yangshi, weishi = [], []
-yangshi_names, weishi_names = [], []
 current_group = None
 current_name = None
 
@@ -24,7 +23,7 @@ def simplify_name(name):
 for line in lines:
     if line.startswith("#EXTINF"):
         current_name = line.split(",")[-1].strip()
-        current_name = simplify_name(current_name)  # 名称处理
+        current_name = simplify_name(current_name)
         if "央视" in line:
             current_group = "yangshi"
         elif "卫视" in line:
@@ -35,16 +34,8 @@ for line in lines:
         record = f"{current_name},{line.strip()}"
         if current_group == "yangshi":
             yangshi.append(record)
-            yangshi_names.append(current_name)
         elif current_group == "weishi":
             weishi.append(record)
-            weishi_names.append(current_name)
-
-# 日志输出
-print(f"新抓取央视频道数量: {len(yangshi)}")
-print(f"新抓取卫视频道数量: {len(weishi)}")
-print("新增央视频道频道列表:", yangshi_names)
-print("新增卫视频道频道列表:", weishi_names)
 
 # live.txt 文件路径
 live_file = "live.txt"
@@ -58,22 +49,33 @@ else:
 yangshi_tag = "央视频道,#genre#"
 weishi_tag = "卫视频道,#genre#"
 
-# 找到分组起始位置
+# 将已有直播源收集到 set 中（用于去重）
+existing_set = set(old_lines)
+
+# 去掉已经存在的直播源
+yangshi_new = [x for x in yangshi if x not in existing_set]
+weishi_new = [x for x in weishi if x not in existing_set]
+
+# 找到分组起始位置并插入新直播源
 def insert_group(existing_lines, tag, new_records):
+    if not new_records:
+        return existing_lines
     if tag in existing_lines:
         idx = existing_lines.index(tag) + 1
-        # 插入到分组最前面
+        # 插入到分组最前面，保持抓取顺序
         return existing_lines[:idx] + new_records + existing_lines[idx:]
     else:
         # 分组不存在，创建新分组放在文件最前面
         return [tag] + new_records + [""] + existing_lines
 
 # 插入央视频道和卫视频道
-lines_after_yangshi = insert_group(old_lines, yangshi_tag, yangshi)
-lines_after_weishi = insert_group(lines_after_yangshi, weishi_tag, weishi)
+lines_after_yangshi = insert_group(old_lines, yangshi_tag, yangshi_new)
+lines_after_weishi = insert_group(lines_after_yangshi, weishi_tag, weishi_new)
 
 # 写回 live.txt
 with open(live_file, "w", encoding="utf-8") as f:
     f.write("\n".join(lines_after_weishi))
 
-print("更新完成，已插入到对应分组最前面，CCTV频道名称已简化。")
+print(f"新增央视频道数量: {len(yangshi_new)}")
+print(f"新增卫视频道数量: {len(weishi_new)}")
+print("更新完成，已插入到对应分组最前面（保持顺序且去重）。")
