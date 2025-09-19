@@ -2,6 +2,12 @@ import requests
 import os
 import re
 
+# ANSI 颜色码
+RED = "\033[91m"
+GREEN = "\033[92m"
+YELLOW = "\033[93m"
+RESET = "\033[0m"
+
 # 抓取 M3U
 url = "https://raw.githubusercontent.com/develop202/migu_video/refs/heads/main/interface.txt"
 resp = requests.get(url)
@@ -74,9 +80,15 @@ lines_after_weishi = insert_group(lines_after_yangshi, weishi_tag, weishi_new)
 with open(live_file, "w", encoding="utf-8") as f:
     f.write("\n".join(lines_after_weishi))
 
-# 日志输出，只显示频道名字（去掉 URL）
-print(f"新增央视频道数量: {len(yangshi_new)}")
-print(f"新增卫视频道数量: {len(weishi_new)}")
-print("新增央视频道频道:", [x.split(',')[0] for x in yangshi_new])
-print("新增卫视频道频道:", [x.split(',')[0] for x in weishi_new])
-print("更新完成，已插入到对应分组最前面（保持顺序且去重）。")
+# 日志输出，带序号、颜色高亮
+def log_channels(name, records, color):
+    print(f"{color}新增{name}数量: {len(records)}{RESET}")
+    if records:
+        for i, rec in enumerate(records, 1):
+            channel_name = rec.split(',')[0]
+            print(f"{color}{i}. {channel_name}{RESET}")
+
+log_channels("央视频道", yangshi_new, GREEN)
+log_channels("卫视频道", weishi_new, YELLOW)
+
+print(f"{RED}更新完成，已插入到对应分组最前面（保持顺序且去重）。{RESET}")
