@@ -6,6 +6,13 @@
 
 ![telegram-cloud-photo-size-1-4902173344514813668-y](https://github.com/user-attachments/assets/3b641fd5-cb40-4d0d-abc7-7ffe4f494d88)
 
+# 📺 M3U 直播源自动更新
+
+[![M3U 直播源更新到 live.txt](https://github.com/qingtingjjjjjjj/IPTV-api/actions/workflows/update.yml/badge.svg)](https://github.com/qingtingjjjjjjj/IPTV-api/actions/workflows/update.yml)
+
+本仓库会定时从远程地址抓取最新的 M3U 直播源，并更新到 `live.txt` 文件。  
+通过 **GitHub Actions** 自动运行，无需人工维护。
+
 # 免责声明
 
 > [!important]
