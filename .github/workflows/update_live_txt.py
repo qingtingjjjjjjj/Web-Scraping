@@ -64,26 +64,18 @@ weishi_tag = "卫视频道,#genre#"
 def update_group(existing_lines, tag, new_records):
     """在分组最前面插入新抓取源，删除上一次抓取源，保留其他源"""
     if tag not in existing_lines:
-        # 分组不存在，直接添加
         return [tag] + new_records + [""] + existing_lines
 
-    # 找到分组起始位置
     idx = existing_lines.index(tag) + 1
-    # 找到分组结束（下一个空行或文件末尾）
     end_idx = idx
     while end_idx < len(existing_lines) and existing_lines[end_idx].strip() != "" and not existing_lines[end_idx].endswith(",#genre#"):
         end_idx += 1
 
-    # 分组原有源
     group_lines = existing_lines[idx:end_idx]
-
-    # 删除上一次抓取的源（假设是被抓取过的源，包含当前抓取列表的任何交集）
+    # 删除上一次抓取源（与新抓取源重叠的部分）
     filtered_group = [line for line in group_lines if line not in new_records]
-
-    # 新组内容 = 最新抓取源 + 原有未被替换的源
     updated_group = new_records + filtered_group
 
-    # 替换原有分组
     return existing_lines[:idx] + updated_group + existing_lines[end_idx:]
 
 # ===== 更新两个分组 =====
