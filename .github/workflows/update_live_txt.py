@@ -62,9 +62,10 @@ yangshi_tag = "央视频道,#genre#"
 weishi_tag = "卫视频道,#genre#"
 
 def update_group(existing_lines, tag, new_records):
-    """在分组最前面插入新抓取源，删除上一次抓取源，保留其他源"""
+    """在分组最前面插入新抓取源，按频道名覆盖上一次抓取的源"""
     if tag not in existing_lines:
-        return [tag] + new_records + [""] + existing_lines
+        # 分组不存在，直接追加到文件末尾
+        return existing_lines + ["", tag] + new_records + [""]
 
     idx = existing_lines.index(tag) + 1
     end_idx = idx
@@ -72,8 +73,11 @@ def update_group(existing_lines, tag, new_records):
         end_idx += 1
 
     group_lines = existing_lines[idx:end_idx]
-    # 删除上一次抓取源（与新抓取源重叠的部分）
-    filtered_group = [line for line in group_lines if line not in new_records]
+
+    # ===== 按频道名去重（覆盖旧的） =====
+    new_names = {rec.split(",")[0] for rec in new_records}
+    filtered_group = [line for line in group_lines if line.split(",")[0] not in new_names]
+
     updated_group = new_records + filtered_group
 
     return existing_lines[:idx] + updated_group + existing_lines[end_idx:]
@@ -88,10 +92,10 @@ with open(live_file, "w", encoding="utf-8") as f:
 
 # ===== 日志输出 =====
 def log_channels(name, records, color):
-    print(f"{color}新增{name}数量: {len(records)}{RESET}")
+    print(f"{color}{name}: 新增 {len(records)} 条{RESET}")
     for i, rec in enumerate(records, 1):
-        channel_name = rec.split(',')[0]
-        print(f"{color}{i}. {channel_name}{RESET}")
+        channel, url = rec.split(",", 1)
+        print(f"{color}{i}. {channel} -> {url}{RESET}")
 
 log_channels("央视频道", yangshi, GREEN)
 log_channels("卫视频道", weishi, YELLOW)
