@@ -27,56 +27,56 @@ jobs:
       # 4️⃣ 抓取 M3U 并更新 live.txt
       - name: Fetch and merge M3U into live.txt
         run: |
-          python3 << 'EOF'
-          import requests, os
+          python3 <<EOF
+import requests, os
 
-          # 抓取 M3U
-          url = "https://raw.githubusercontent.com/develop202/migu_video/refs/heads/main/interface.txt"
-          resp = requests.get(url)
-          resp.raise_for_status()
-          lines = resp.text.splitlines()
+# 抓取 M3U
+url = "https://raw.githubusercontent.com/develop202/migu_video/refs/heads/main/interface.txt"
+resp = requests.get(url)
+resp.raise_for_status()
+lines = resp.text.splitlines()
 
-          # 分组
-          yangshi, weishi = [], []
-          current_group = None
-          current_name = None
+# 分组
+yangshi, weishi = [], []
+current_group = None
+current_name = None
 
-          for line in lines:
-              if line.startswith("#EXTINF"):
-                  current_name = line.split(",")[-1].strip()
-                  if "央视" in line:
-                      current_group = "yangshi"
-                  elif "卫视" in line:
-                      current_group = "weishi"
-                  else:
-                      current_group = None
-              elif line.startswith("http") and current_group and current_name:
-                  record = f"{current_name},{line.strip()}"
-                  if current_group == "yangshi":
-                      yangshi.append(record)
-                  elif current_group == "weishi":
-                      weishi.append(record)
+for line in lines:
+    if line.startswith("#EXTINF"):
+        current_name = line.split(",")[-1].strip()
+        if "央视" in line:
+            current_group = "yangshi"
+        elif "卫视" in line:
+            current_group = "weishi"
+        else:
+            current_group = None
+    elif line.startswith("http") and current_group and current_name:
+        record = f"{current_name},{line.strip()}"
+        if current_group == "yangshi":
+            yangshi.append(record)
+        elif current_group == "weishi":
+            weishi.append(record)
 
-          # 打印日志
-          print(f"新抓取央视频道数量: {len(yangshi)}")
-          print(f"新抓取卫视频道数量: {len(weishi)}")
-          print(f"总共新插入 {len(yangshi) + len(weishi)} 条记录到 live.txt")
+# 日志输出
+print(f"新抓取央视频道数量: {len(yangshi)}")
+print(f"新抓取卫视频道数量: {len(weishi)}")
+print(f"总共新插入 {len(yangshi)+len(weishi)} 条记录到 live.txt")
 
-          # 读取原有 live.txt
-          live_file = "live.txt"
-          if os.path.exists(live_file):
-              with open(live_file, "r", encoding="utf-8") as f:
-                  old_content = f.read()
-          else:
-              old_content = ""
+# 读取原有 live.txt
+live_file = "live.txt"
+if os.path.exists(live_file):
+    with open(live_file, "r", encoding="utf-8") as f:
+        old_content = f.read()
+else:
+    old_content = ""
 
-          # 新内容 = 央视频道 + 卫视频道 + 原内容
-          new_content = "\n".join(yangshi + weishi) + ("\n" + old_content if old_content else "")
+# 新内容 = 央视频道 + 卫视频道 + 原内容
+new_content = "\n".join(yangshi + weishi) + ("\n" + old_content if old_content else "")
 
-          # 写回 live.txt
-          with open(live_file, "w", encoding="utf-8") as f:
-              f.write(new_content)
-          EOF
+# 写回 live.txt
+with open(live_file, "w", encoding="utf-8") as f:
+    f.write(new_content)
+EOF
 
       # 5️⃣ 提交并推送
       - name: Commit and push changes
