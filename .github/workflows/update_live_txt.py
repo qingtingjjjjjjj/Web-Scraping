@@ -1,5 +1,6 @@
 import requests
 import os
+import re
 
 # 抓取 M3U
 url = "https://raw.githubusercontent.com/develop202/migu_video/refs/heads/main/interface.txt"
@@ -13,9 +14,17 @@ yangshi_names, weishi_names = [], []
 current_group = None
 current_name = None
 
+# CCTV 统一简化规则
+def simplify_name(name):
+    match = re.match(r"(CCTV\d+)", name)
+    if match:
+        return match.group(1)
+    return name
+
 for line in lines:
     if line.startswith("#EXTINF"):
         current_name = line.split(",")[-1].strip()
+        current_name = simplify_name(current_name)  # 名称处理
         if "央视" in line:
             current_group = "yangshi"
         elif "卫视" in line:
@@ -67,4 +76,4 @@ lines_after_weishi = insert_group(lines_after_yangshi, weishi_tag, weishi)
 with open(live_file, "w", encoding="utf-8") as f:
     f.write("\n".join(lines_after_weishi))
 
-print("更新完成，已插入到对应分组最前面。")
+print("更新完成，已插入到对应分组最前面，CCTV频道名称已简化。")
