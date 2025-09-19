@@ -40,3 +40,4 @@ jobs:
             git push
           else
             echo "文件无变化，不推送。"
+          fi
