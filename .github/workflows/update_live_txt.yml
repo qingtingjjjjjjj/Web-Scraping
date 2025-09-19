@@ -23,15 +23,13 @@ jobs:
 
       - name: Fetch and merge M3U into live.txt
         run: |
-          # 运行 Python 脚本并捕获输出
           python .github/workflows/update_live_txt.py > output.log
           cat output.log
 
       - name: Configure Git user
-        run: git config --global user.name "github-actions[bot]"
-
-      - name: Configure Git email
-        run: git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Add live.txt
         run: git add live.txt || true
