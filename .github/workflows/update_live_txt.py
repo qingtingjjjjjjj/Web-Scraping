@@ -46,24 +46,22 @@ for line in lines:
 # live.txt 文件路径
 live_file = "live.txt"
 
-# 定义分组标签
+# 分组标签
 yangshi_tag = "央视频道,#genre#"
 weishi_tag = "卫视频道,#genre#"
 
-# 每次只保留最新源，覆盖旧文件
+# 每次覆盖旧文件，只保留最新源
 new_lines = []
 
-# 插入央视频道和卫视频道
 if yangshi:
     new_lines += [yangshi_tag] + yangshi + [""]  # 分组标签+内容+空行
 if weishi:
     new_lines += [weishi_tag] + weishi + [""]
 
-# 写回 live.txt（覆盖旧文件）
 with open(live_file, "w", encoding="utf-8") as f:
     f.write("\n".join(new_lines))
 
-# 日志输出，带序号、颜色高亮
+# 日志输出
 def log_channels(name, records, color):
     print(f"{color}新增{name}数量: {len(records)}{RESET}")
     if records:
