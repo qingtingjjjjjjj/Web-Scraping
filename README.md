@@ -11,6 +11,12 @@
 
 ![telegram-cloud-photo-size-1-4902173344514813668-y](https://github.com/user-attachments/assets/3b641fd5-cb40-4d0d-abc7-7ffe4f494d88)
 
+## 访客量
+
+<center>
+<img align="center" src="https://counter.oba.by/get/@qingtingjjjjjjj?theme=rule34" />
+</center>
+
 # 免责声明
 
 > [!important]
