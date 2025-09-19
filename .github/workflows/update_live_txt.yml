@@ -6,40 +6,45 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  update-live:
     runs-on: ubuntu-latest
 
     steps:
+      # 1️⃣ Checkout 仓库
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # 2️⃣ 设置 Python
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.x"
 
+      # 3️⃣ 安装依赖
       - name: Install dependencies
         run: pip install requests
 
-      - name: Fetch and merge M3U into live.txt
+      # 4️⃣ 执行抓取脚本（覆盖旧源）
+      - name: Fetch latest M3U and update live.txt
         run: |
           python .github/workflows/update_live_txt.py > output.log
           cat output.log
 
+      # 5️⃣ 配置 Git 用户
       - name: Configure Git user
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
+      # 6️⃣ 添加 live.txt 文件
       - name: Add live.txt
-        run: git add live.txt || true
+        run: git add live.txt
 
+      # 7️⃣ 提交并推送变化（覆盖旧源）
       - name: Commit and push changes
         run: |
-          # 如果 live.txt 有变化就 commit + push
           if ! git diff --cached --quiet; then
-            git commit -m "更新央视频道和卫视频道直播源（简化CCTV频道，去重） [skip ci]"
+            git commit -m "更新央视频道和卫视频道直播源（覆盖旧源） [skip ci]"
             git push
           else
             echo "文件无变化，不推送。"
-          fi
