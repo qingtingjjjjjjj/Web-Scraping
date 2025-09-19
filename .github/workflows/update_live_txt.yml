@@ -36,8 +36,10 @@ jobs:
 
       - name: Commit and push changes
         run: |
+          # 如果 live.txt 有变化就 commit + push
           if ! git diff --cached --quiet; then
             git commit -m "更新央视频道和卫视频道直播源（简化CCTV频道，去重） [skip ci]"
             git push
           else
             echo "文件无变化，不推送。"
+          fi
