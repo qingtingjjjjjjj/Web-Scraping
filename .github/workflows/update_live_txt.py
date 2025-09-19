@@ -62,10 +62,8 @@ def insert_group(existing_lines, tag, new_records):
         return existing_lines
     if tag in existing_lines:
         idx = existing_lines.index(tag) + 1
-        # 插入到分组最前面，保持抓取顺序
         return existing_lines[:idx] + new_records + existing_lines[idx:]
     else:
-        # 分组不存在，创建新分组放在文件最前面
         return [tag] + new_records + [""] + existing_lines
 
 # 插入央视频道和卫视频道
@@ -76,6 +74,9 @@ lines_after_weishi = insert_group(lines_after_yangshi, weishi_tag, weishi_new)
 with open(live_file, "w", encoding="utf-8") as f:
     f.write("\n".join(lines_after_weishi))
 
+# 日志输出，只显示频道名字（去掉 URL）
 print(f"新增央视频道数量: {len(yangshi_new)}")
 print(f"新增卫视频道数量: {len(weishi_new)}")
+print("新增央视频道频道:", [x.split(',')[0] for x in yangshi_new])
+print("新增卫视频道频道:", [x.split(',')[0] for x in weishi_new])
 print("更新完成，已插入到对应分组最前面（保持顺序且去重）。")
