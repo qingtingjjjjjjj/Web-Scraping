@@ -24,13 +24,17 @@ jobs:
       - name: Fetch and merge M3U into live.txt
         run: python .github/workflows/update_live_txt.py
 
+      - name: Configure Git user
+        run: git config --global user.name "github-actions[bot]"
+
+      - name: Configure Git email
+        run: git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Add live.txt
+        run: git add live.txt || true
+
       - name: Commit and push changes
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-
-          git add live.txt || true
-
           if ! git diff --cached --quiet; then
             git commit -m "更新央视频道和卫视频道直播源 [skip ci]"
             git push
