@@ -1,4 +1,4 @@
-name: M3U 直播源定时转换
+name: M3U 直播源定时更新到 live.txt
 
 on:
   schedule:
@@ -10,20 +10,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1️⃣ 拉取仓库
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # 2️⃣ 设置 Python
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.x"
 
+      # 3️⃣ 安装 requests
       - name: Install dependencies
         run: pip install requests
 
-      - name: Fetch and convert M3U
+      # 4️⃣ 抓取 M3U 并更新 TXT
+      - name: Fetch and merge M3U into live.txt
         run: |
-          python << 'EOF'
+          python3 << 'EOF'
           import requests, os
 
           url = "https://raw.githubusercontent.com/develop202/migu_video/refs/heads/main/interface.txt"
@@ -31,16 +35,17 @@ jobs:
           resp.raise_for_status()
           lines = resp.text.splitlines()
 
-          # 确保输出文件夹存在
-          os.makedirs("专区", exist_ok=True)
+          # 输出文件夹
+          out_dir = "live.txt"
+          os.makedirs(out_dir, exist_ok=True)
 
           yangshi, weishi = [], []
           current_group = None
           current_name = None
 
+          # 抓取并分类
           for i, line in enumerate(lines):
               if line.startswith("#EXTINF"):
-                  # 频道名在最后一个逗号后
                   current_name = line.split(",")[-1].strip()
                   if "央视" in line:
                       current_group = "yangshi"
@@ -55,23 +60,31 @@ jobs:
                   elif current_group == "weishi":
                       weishi.append(record)
 
-          with open("专区/央视频道.txt", "w", encoding="utf-8") as f:
-              f.write("\n".join(yangshi))
+          # 合并到现有文件，新的在前面
+          for group_name, records in [("央视频道", yangshi), ("卫视频道", weishi)]:
+              file_path = os.path.join(out_dir, f"{group_name}.txt")
+              if os.path.exists(file_path):
+                  with open(file_path, "r", encoding="utf-8") as f:
+                      old_lines = f.read().splitlines()
+              else:
+                  old_lines = []
 
-          with open("专区/卫视频道.txt", "w", encoding="utf-8") as f:
-              f.write("\n".join(weishi))
+              combined = records + old_lines
+
+              with open(file_path, "w", encoding="utf-8") as f:
+                  f.write("\n".join(combined))
           EOF
 
+      # 5️⃣ 提交并推送
       - name: Commit and push changes
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-          git add "专区/央视频道.txt" "专区/卫视频道.txt" || true
+          git add "live.txt/央视频道.txt" "live.txt/卫视频道.txt" || true
 
           if ! git diff --cached --quiet; then
             git commit -m "更新央视频道和卫视频道直播源 [skip ci]"
             git push
           else
             echo "文件无变化，不推送。"
-          fi
