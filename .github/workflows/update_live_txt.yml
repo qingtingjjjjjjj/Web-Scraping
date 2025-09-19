@@ -24,7 +24,7 @@ jobs:
       - name: Install dependencies
         run: pip install requests
 
-      # 4️⃣ 执行抓取脚本（覆盖旧源）
+      # 4️⃣ 执行抓取脚本（覆盖旧源，仅在抓取成功时）
       - name: Fetch latest M3U and update live.txt
         run: |
           python .github/workflows/update_live_txt.py > output.log
@@ -43,7 +43,6 @@ jobs:
       # 7️⃣ 提交并推送变化（覆盖旧源）
       - name: Commit and push changes
         run: |
-          # 注意：if 语句必须完整闭合
           if ! git diff --cached --quiet; then
               git commit -m "更新央视频道和卫视频道直播源（覆盖旧源） [skip ci]"
               git push
