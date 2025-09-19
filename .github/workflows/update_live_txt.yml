@@ -36,7 +36,7 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      # 6️⃣ 更新 README.md 时间戳、提示语和直播源行数（北京时间）
+      # 6️⃣ 更新 README.md 时间戳、提示语和直播源行数（北京时间，只保留一次）
       - name: Update README timestamp and stats
         run: |
           timestamp=$(TZ=Asia/Shanghai date +"%Y-%m-%d %H:%M:%S")
@@ -46,12 +46,11 @@ jobs:
           subline="**🎉最新可用IPTV源，觉得好用请点个STAR吧！**"
           statline="📺 当前共收录 ${line_count} 条直播源"
 
-          # 替换或插入内容
-          if grep -q "^## ✨于 " README.md; then
-            sed -i "1s|^## ✨于 .*|${header}\n${subline}\n${statline}|" README.md
-          else
-            echo -e "${header}\n${subline}\n${statline}\n" | cat - README.md > temp && mv temp README.md
-          fi
+          # 删除旧的三行（从更新时间开始）
+          sed -i '/^## ✨于 /,+2d' README.md
+
+          # 在开头插入最新内容
+          echo -e "${header}\n${subline}\n${statline}\n" | cat - README.md > temp && mv temp README.md
 
       # 7️⃣ 添加更新的文件
       - name: Add updated files
