@@ -20,8 +20,10 @@ sources = {
 def simplify_name(name: str) -> str:
     """
     清理频道名：
-    1. CCTV 后面保留数字，如 CCTV1HD -> CCTV1
-    2. 去掉 HD / BRTV / 其他多余前缀或后缀
+    1. 去掉常见后缀/前缀，如 HD / BRTV
+    2. CCTV 特殊处理：
+       - 去掉中间横杠，如 CCTV-1 -> CCTV1
+       - 保留数字
     3. 去掉前后空格
     """
     # 去掉常见后缀/前缀
@@ -29,10 +31,10 @@ def simplify_name(name: str) -> str:
     name = re.sub(r'\bBRTV\b', '', name, flags=re.IGNORECASE)
     name = name.strip()
 
-    # CCTV 特殊处理，只保留数字
-    cctv_match = re.match(r"(CCTV\d+)", name, re.IGNORECASE)
+    # CCTV 特殊处理
+    cctv_match = re.match(r"CCTV[-]?(\d+)", name, re.IGNORECASE)
     if cctv_match:
-        return cctv_match.group(1).upper()
+        return f"CCTV{cctv_match.group(1)}"
 
     return name
 
