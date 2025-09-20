@@ -1,37 +1,54 @@
-name: M3U + TXT 直播源更新
+name: M3U+TXT 直播源更新到 live.txt
 
 on:
   schedule:
-    - cron: "0 */2 * * *"
+    - cron: "0 */2 * * *"  # 每两小时运行一次
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: write  # 确保推送权限
 
 jobs:
   update-live:
     runs-on: ubuntu-latest
 
     steps:
+      # 1️⃣ Checkout 仓库
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # 2️⃣ 设置 Python
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.x"
 
+      # 3️⃣ 安装依赖
       - name: Install dependencies
         run: pip install requests
 
+      # 4️⃣ 抓取接口状态（可选，用于调试）
+      - name: Fetch M3U Source
+        run: |
+          echo ">>> 正在抓取 M3U 源"
+          curl -I -s https://raw.githubusercontent.com/develop202/migu_video/refs/heads/main/interface.txt | head -n 1
+
+      - name: Fetch TXT Source
+        run: |
+          echo ">>> 正在抓取 TXT 源"
+          curl -I -s https://raw.githubusercontent.com/lucheng7996/TE/refs/heads/main/outfiles/beijing_cucc.txt | head -n 1
+
+      # 5️⃣ 执行抓取脚本
       - name: Run update script
         run: python update_live_txt.py
 
+      # 6️⃣ 配置 Git 用户
       - name: Configure Git user
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
+      # 7️⃣ 提交并推送变化
       - name: Commit and push changes
         run: |
           git add live.txt README.md
