@@ -1,4 +1,4 @@
-name: M3U 直播源更新到 live.txt
+name: M3U+TXT 直播源更新到 live.txt
 
 on:
   schedule:
@@ -24,42 +24,45 @@ jobs:
       - name: Install dependencies
         run: pip install requests
 
-      # 4️⃣ 执行抓取脚本（只覆盖上一次抓取的源）
-      - name: Fetch latest M3U and update live.txt
+      # 4️⃣ 抓取接口状态（方便调试日志）
+      - name: Fetch M3U Source
+        run: |
+          echo ">>> 正在抓取 M3U 源"
+          curl -I -s https://raw.githubusercontent.com/develop202/migu_video/refs/heads/main/interface.txt | head -n 1
+
+      - name: Fetch TXT Source
+        run: |
+          echo ">>> 正在抓取 TXT 源"
+          curl -I -s https://raw.githubusercontent.com/lucheng7996/TE/refs/heads/main/outfiles/beijing_cucc.txt | head -n 1
+
+      # 5️⃣ 执行抓取脚本
+      - name: Fetch latest sources and update live.txt
         run: |
           python .github/workflows/update_live_txt.py > output.log
           cat output.log
 
-      # 5️⃣ 配置 Git 用户
+      # 6️⃣ 配置 Git 用户
       - name: Configure Git user
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      # 6️⃣ 更新 README.md 时间戳、提示语和直播源行数（北京时间，只保留一次）
+      # 7️⃣ 更新 README.md 时间戳和行数
       - name: Update README timestamp and stats
         run: |
           timestamp=$(TZ=Asia/Shanghai date +"%Y-%m-%d %H:%M:%S")
           line_count=$(wc -l < live.txt | tr -d ' ')
-          # 构造三行内容
           header="## ✨于 ${timestamp} 更新"
           subline="**🎉最新可用IPTV源，觉得好用请点个STAR吧！**"
           statline="📺 当前共收录 ${line_count} 条直播源"
-
-          # 删除旧的三行（从更新时间开始）
           sed -i '/^## ✨于 /,+2d' README.md
-
-          # 在开头插入最新内容
           echo -e "${header}\n${subline}\n${statline}\n" | cat - README.md > temp && mv temp README.md
-
-      # 7️⃣ 添加更新的文件
-      - name: Add updated files
-        run: git add live.txt README.md
 
       # 8️⃣ 提交并推送变化
       - name: Commit and push changes
         run: |
           if ! git diff --cached --quiet; then
+              git add live.txt README.md
               git commit -m "更新直播源、README时间戳和行数统计 [skip ci]"
               git push
           else
