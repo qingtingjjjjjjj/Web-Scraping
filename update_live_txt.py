@@ -27,8 +27,8 @@ def simplify_name(name: str) -> str:
     3. 去掉前后空格
     """
     # 去掉常见后缀/前缀
-    name = re.sub(r'\bHD\b', '', name, flags=re.IGNORECASE)
-    name = re.sub(r'\bBRTV\b', '', name, flags=re.IGNORECASE)
+    name = re.sub(r'HD', '', name, flags=re.IGNORECASE)
+    name = re.sub(r'BRTV', '', name, flags=re.IGNORECASE)
     name = name.strip()
 
     # CCTV 特殊处理
