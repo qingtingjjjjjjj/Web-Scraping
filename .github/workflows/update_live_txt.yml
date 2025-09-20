@@ -1,68 +1,41 @@
-name: M3U+TXT 直播源更新到 live.txt
+name: M3U + TXT 直播源更新
 
 on:
   schedule:
-    - cron: "0 */2 * * *"  # 每两小时运行一次
+    - cron: "0 */2 * * *"
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   update-live:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout 仓库
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2️⃣ 设置 Python
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.x"
 
-      # 3️⃣ 安装依赖
       - name: Install dependencies
         run: pip install requests
 
-      # 4️⃣ 抓取接口状态（方便调试日志）
-      - name: Fetch M3U Source
-        run: |
-          echo ">>> 正在抓取 M3U 源"
-          curl -I -s https://raw.githubusercontent.com/develop202/migu_video/refs/heads/main/interface.txt | head -n 1
+      - name: Run update script
+        run: python update_live_txt.py
 
-      - name: Fetch TXT Source
-        run: |
-          echo ">>> 正在抓取 TXT 源"
-          curl -I -s https://raw.githubusercontent.com/lucheng7996/TE/refs/heads/main/outfiles/beijing_cucc.txt | head -n 1
-
-      # 5️⃣ 执行抓取脚本
-      - name: Fetch latest sources and update live.txt
-        run: |
-          python .github/workflows/update_live_txt.py > output.log
-          cat output.log
-
-      # 6️⃣ 配置 Git 用户
       - name: Configure Git user
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      # 7️⃣ 更新 README.md 时间戳和行数
-      - name: Update README timestamp and stats
-        run: |
-          timestamp=$(TZ=Asia/Shanghai date +"%Y-%m-%d %H:%M:%S")
-          line_count=$(wc -l < live.txt | tr -d ' ')
-          header="## ✨于 ${timestamp} 更新"
-          subline="**🎉最新可用IPTV源，觉得好用请点个STAR吧！**"
-          statline="📺 当前共收录 ${line_count} 条直播源"
-          sed -i '/^## ✨于 /,+2d' README.md
-          echo -e "${header}\n${subline}\n${statline}\n" | cat - README.md > temp && mv temp README.md
-
-      # 8️⃣ 提交并推送变化
       - name: Commit and push changes
         run: |
+          git add live.txt README.md
           if ! git diff --cached --quiet; then
-              git add live.txt README.md
               git commit -m "更新直播源、README时间戳和行数统计 [skip ci]"
               git push
           else
