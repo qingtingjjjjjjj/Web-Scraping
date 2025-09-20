@@ -18,10 +18,23 @@ sources = {
 
 # ===== 工具函数 =====
 def simplify_name(name: str) -> str:
-    match = re.match(r"(CCTV\d+)", name, re.IGNORECASE)
-    if match:
-        return match.group(1).upper()
-    return name.strip()
+    """
+    清理频道名：
+    1. CCTV 后面保留数字，如 CCTV1HD -> CCTV1
+    2. 去掉 HD / BRTV / 其他多余前缀或后缀
+    3. 去掉前后空格
+    """
+    # 去掉常见后缀/前缀
+    name = re.sub(r'\bHD\b', '', name, flags=re.IGNORECASE)
+    name = re.sub(r'\bBRTV\b', '', name, flags=re.IGNORECASE)
+    name = name.strip()
+
+    # CCTV 特殊处理，只保留数字
+    cctv_match = re.match(r"(CCTV\d+)", name, re.IGNORECASE)
+    if cctv_match:
+        return cctv_match.group(1).upper()
+
+    return name
 
 def fetch_source(name, url):
     try:
@@ -35,6 +48,7 @@ def fetch_source(name, url):
 
 # ===== 初始化分组 =====
 yangshi, weishi = [], []
+yangshi_detail, weishi_detail = [], []  # 保存来源信息，用于日志
 
 # ===== 解析 M3U =====
 lines_m3u = fetch_source("M3U", sources["M3U"])
@@ -53,8 +67,10 @@ for line in lines_m3u:
         record = f"{current_name},{line.strip()}"
         if current_group == "yangshi":
             yangshi.append(record)
+            yangshi_detail.append(f"{current_name} -> {line.strip()} (M3U)")
         elif current_group == "weishi":
             weishi.append(record)
+            weishi_detail.append(f"{current_name} -> {line.strip()} (M3U)")
 
 # ===== 解析 TXT =====
 lines_txt = fetch_source("TXT", sources["TXT"])
@@ -62,10 +78,13 @@ for line in lines_txt:
     if "," in line:
         name, url = line.split(",", 1)
         name = simplify_name(name)
+        record = f"{name},{url.strip()}"
         if "CCTV" in name:
-            yangshi.append(f"{name},{url.strip()}")
+            yangshi.append(record)
+            yangshi_detail.append(f"{name} -> {url.strip()} (TXT)")
         elif "卫视" in name:
-            weishi.append(f"{name},{url.strip()}")
+            weishi.append(record)
+            weishi_detail.append(f"{name} -> {url.strip()} (TXT)")
 
 if not yangshi and not weishi:
     print(f"{RED}抓取到的直播源为空，保留旧的 live.txt 文件{RESET}")
@@ -136,12 +155,11 @@ if os.path.exists("README.md"):
         f.write(readme_content)
 
 # ===== 日志输出 =====
-def log_channels(name, records, color):
+def log_channels(name, records, detail_list, color):
     print(f"{color}{name}: 新增 {len(records)} 条{RESET}")
-    for i, rec in enumerate(records, 1):
-        channel, url = rec.split(",", 1)
-        print(f"{color}{i}. {channel} -> {url}{RESET}")
+    for i, rec in enumerate(detail_list, 1):
+        print(f"{color}{i}. {rec}{RESET}")
 
-log_channels("央视频道", yangshi, GREEN)
-log_channels("卫视频道", weishi, YELLOW)
+log_channels("央视频道", yangshi, yangshi_detail, GREEN)
+log_channels("卫视频道", weishi, weishi_detail, YELLOW)
 print(f"{RED}更新完成，已覆盖上一次抓取的源，保留组内其他直播源和其他分组。{RESET}")
