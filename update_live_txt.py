@@ -1,7 +1,7 @@
 import requests
 import os
 import re
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 
 RED = "\033[91m"
 GREEN = "\033[92m"
@@ -130,8 +130,9 @@ lines_after_weishi = update_group(lines_after_yangshi, weishi_tag, weishi)
 with open(live_file, "w", encoding="utf-8") as f:
     f.write("\n".join(lines_after_weishi))
 
-# ===== 更新 README.md 时间戳和统计 =====
-timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+# ===== 更新 README.md 时间戳和统计（北京时间 UTC+8） =====
+beijing_tz = timezone(timedelta(hours=8))
+timestamp = datetime.now(beijing_tz).strftime("%Y-%m-%d %H:%M:%S")
 line_count = len(lines_after_weishi)
 header = f"## ✨于 {timestamp} 更新"
 subline = "**🎉最新可用IPTV源，觉得好用请点个STAR吧！**"
