@@ -54,5 +54,4 @@ jobs:
       - name: Commit and push changes
         run: |
           git add live.txt README.md
-          git commit -m "定时更新直播源 (北京时间) [skip ci]" || echo "✅ 文件无变化，依然提交"
-          git push
+          git
