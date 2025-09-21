@@ -15,6 +15,8 @@ RESET = "\033[0m"
 
 live_file = "live.txt"
 backup_dir = "backup"
+marker_yangshi = "# LAST_UPDATE_YANGSHI"
+marker_weishi = "# LAST_UPDATE_WEISHI"
 
 # ===== 接口地址 =====
 sources = {
@@ -108,30 +110,26 @@ if os.path.exists(live_file):
 else:
     old_lines = []
 
-# ===== 分组标签 =====
-yangshi_tag = "央视频道,#genre#"
-weishi_tag = "卫视频道,#genre#"
+# ===== 更新分组函数 =====
+def update_group(existing_lines, new_records, marker):
+    """
+    删除上一次更新的源（标记行后面的内容），然后将本次新抓取放在前面
+    """
+    # 删除旧标记及其后面的内容
+    if marker in existing_lines:
+        idx = existing_lines.index(marker)
+        end_idx = idx + 1
+        while end_idx < len(existing_lines) and existing_lines[end_idx].strip() != "" and not existing_lines[end_idx].endswith("#genre#"):
+            end_idx += 1
+        existing_lines = existing_lines[:idx] + existing_lines[end_idx:]
 
-# ===== 不去重更新函数 =====
-def update_group(existing_lines, tag, new_records):
-    if not new_records:
-        return existing_lines, [], []
+    # 添加新内容和标记
+    updated_lines = existing_lines + ["", marker] + new_records + [""]
+    return updated_lines
 
-    if tag not in existing_lines:
-        return existing_lines + ["", tag] + new_records + [""], new_records, []
-
-    idx = existing_lines.index(tag) + 1
-    end_idx = idx
-    while end_idx < len(existing_lines) and existing_lines[end_idx].strip() != "" and not existing_lines[end_idx].endswith(",#genre#"):
-        end_idx += 1
-
-    # 不去重，直接新记录放前面，旧内容保留
-    updated_group = new_records + existing_lines[idx:end_idx]
-    return existing_lines[:idx] + updated_group + existing_lines[end_idx:], new_records, []
-
-# ===== 更新分组 =====
-lines_after_yangshi, y_added, y_updated = update_group(old_lines, yangshi_tag, yangshi)
-lines_after_weishi, w_added, w_updated = update_group(lines_after_yangshi, weishi_tag, weishi)
+# ===== 更新央视频道和卫视频道 =====
+lines_after_yangshi = update_group(old_lines, yangshi, marker_yangshi)
+lines_after_weishi = update_group(lines_after_yangshi, weishi, marker_weishi)
 
 # ===== 备份 live.txt =====
 if not os.path.exists(backup_dir):
@@ -140,39 +138,33 @@ if os.path.exists(live_file):
     shutil.copy(live_file, os.path.join(backup_dir, f"live_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt"))
 
 # ===== 写回 live.txt =====
-new_content = "\n".join(lines_after_weishi)
-if not os.path.exists(live_file) or open(live_file, encoding="utf-8").read() != new_content:
-    with open(live_file, "w", encoding="utf-8") as f:
-        f.write(new_content)
-    live_updated = True
-else:
-    live_updated = False
+with open(live_file, "w", encoding="utf-8") as f:
+    f.write("\n".join(lines_after_weishi))
 
 # ===== 统计抓取数量 =====
 txt_count = len(lines_txt)
 m3u_count = len(lines_m3u)
 total_count = len(lines_after_weishi)
 
-# ===== 更新 README.md（彩色 Markdown 表格）=====
+# ===== 更新 README.md =====
 beijing_tz = timezone(timedelta(hours=8))
 timestamp = datetime.now(beijing_tz).strftime("%Y-%m-%d %H:%M:%S")
 header = f"## ✨于 {timestamp} 更新"
 subline = f"**🎉最新可用IPTV源，TXT: {txt_count} 条，M3U: {m3u_count} 条，总计: {total_count} 条**"
 
-def md_table(title, items):
+def md_table(title, items, limit=5):
+    """生成 Markdown 表格，每组只显示最新 limit 条"""
     if not items:
         return ""
-    rows = "\n".join([f"| {rec.split(',')[0]} | {rec.split(',')[1]} |" for rec in items])
-    table = f"### {title}\n\n| 频道名 | 链接 |\n| --- | --- |\n{rows}\n"
+    rows = "\n".join([f"| {rec.split(',')[0]} | {rec.split(',')[1]} |" for rec in items[:limit]])
+    table = f"### {title}（只显示前 {limit} 条）\n\n| 频道名 | 链接 |\n| --- | --- |\n{rows}\n"
     return table
 
 readme_update_lines = [
     header,
     subline,
-    md_table("央视频道新增", y_added),
-    md_table("央视频道更新", y_updated),
-    md_table("卫视频道新增", w_added),
-    md_table("卫视频道更新", w_updated),
+    md_table("央视频道", yangshi, limit=5),
+    md_table("卫视频道", weishi, limit=5),
     ""
 ]
 
@@ -200,17 +192,14 @@ if os.path.exists("README.md"):
         f.write("\n".join(readme_update_lines + new_readme))
 
 # ===== 控制台日志 =====
-def log_channels(name, added, updated, detail_list, color):
-    print(f"{color}{name}: 新增 {len(added)} 条 | 更新 {len(updated)} 条{RESET}")
+def log_channels(name, records, detail_list, color):
+    print(f"{color}{name}: 共 {len(records)} 条{RESET}")
     for i, rec in enumerate(detail_list, 1):
         print(f"{color}{i}. {rec}{RESET}")
 
-log_channels("央视频道", y_added, y_updated, yangshi_detail, GREEN)
-log_channels("卫视频道", w_added, w_updated, weishi_detail, YELLOW)
+log_channels("央视频道", yangshi, yangshi_detail, GREEN)
+log_channels("卫视频道", weishi, weishi_detail, YELLOW)
 
 end_time = time.time()
 print(f"{RED}更新完成 ✅ 耗时 {end_time - start_time:.2f} 秒{RESET}")
-if live_updated:
-    print(f"{RED}live.txt 已更新，备份已保存到 {backup_dir}{RESET}")
-else:
-    print(f"{YELLOW}live.txt 无变化，未更新{RESET}")
+print(f"{RED}live.txt 已更新，备份已保存到 {backup_dir}{RESET}")
