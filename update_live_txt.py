@@ -52,7 +52,21 @@ def fetch_source(name, url):
 yangshi, weishi = [], []
 yangshi_detail, weishi_detail = [], []  # 保存来源信息，用于日志
 
-# ===== 解析 M3U =====
+# ===== 先解析 TXT =====
+lines_txt = fetch_source("TXT", sources["TXT"])
+for line in lines_txt:
+    if "," in line:
+        name, url = line.split(",", 1)
+        name = simplify_name(name)
+        record = f"{name},{url.strip()}"
+        if "CCTV" in name:
+            yangshi.append(record)
+            yangshi_detail.append(f"{name} -> {url.strip()} (TXT)")
+        elif "卫视" in name:
+            weishi.append(record)
+            weishi_detail.append(f"{name} -> {url.strip()} (TXT)")
+
+# ===== 再解析 M3U =====
 lines_m3u = fetch_source("M3U", sources["M3U"])
 current_group, current_name = None, None
 for line in lines_m3u:
@@ -73,20 +87,6 @@ for line in lines_m3u:
         elif current_group == "weishi":
             weishi.append(record)
             weishi_detail.append(f"{current_name} -> {line.strip()} (M3U)")
-
-# ===== 解析 TXT =====
-lines_txt = fetch_source("TXT", sources["TXT"])
-for line in lines_txt:
-    if "," in line:
-        name, url = line.split(",", 1)
-        name = simplify_name(name)
-        record = f"{name},{url.strip()}"
-        if "CCTV" in name:
-            yangshi.append(record)
-            yangshi_detail.append(f"{name} -> {url.strip()} (TXT)")
-        elif "卫视" in name:
-            weishi.append(record)
-            weishi_detail.append(f"{name} -> {url.strip()} (TXT)")
 
 if not yangshi and not weishi:
     print(f"{RED}抓取到的直播源为空，保留旧的 live.txt 文件{RESET}")
