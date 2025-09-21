@@ -95,16 +95,28 @@ yangshi_tag = "央视频道,#genre#"
 weishi_tag = "卫视频道,#genre#"
 
 def update_group(existing_lines, tag, new_records):
+    """覆盖上一次抓取内容，保留组内其他旧直播源"""
     if not new_records:
         return existing_lines
+
     if tag not in existing_lines:
         return existing_lines + ["", tag] + new_records + [""]
+
     idx = existing_lines.index(tag) + 1
     end_idx = idx
     while end_idx < len(existing_lines) and existing_lines[end_idx].strip() != "" and not existing_lines[end_idx].endswith(",#genre#"):
         end_idx += 1
-    group_lines = existing_lines[idx:end_idx]
-    updated_group = new_records + group_lines
+
+    # 当前组旧行
+    old_group_lines = existing_lines[idx:end_idx]
+    # 新抓取的名称集合
+    new_names = {rec.split(",")[0] for rec in new_records}
+    # 保留旧行中不在新抓取列表的
+    filtered_old_lines = [line for line in old_group_lines if line.split(",")[0] not in new_names]
+
+    # 新抓取内容在前，旧未更新内容在后
+    updated_group = new_records + filtered_old_lines
+
     return existing_lines[:idx] + updated_group + existing_lines[end_idx:]
 
 # ===== 更新分组 =====
@@ -121,11 +133,11 @@ m3u_count = len(lines_m3u)
 total_count = len(lines_after_weishi)
 
 # ===== 颜色化仪表盘日志 =====
-print("\n" + "="*40)
+print("\n" + "="*50)
 print(f"{BLUE}>>> TXT 本次抓取: {txt_count} 条源 {'➤'*3}{RESET}")
 print(f"{YELLOW}>>> M3U 本次抓取: {m3u_count} 条源 {'➤'*3}{RESET}")
 print(f"{GREEN}>>> 总计直播源: {total_count} 条 {'➤'*5}{RESET}")
-print("="*40 + "\n")
+print("="*50 + "\n")
 
 # ===== 更新 README.md 时间戳和统计 =====
 beijing_tz = timezone(timedelta(hours=8))
@@ -161,4 +173,4 @@ def log_channels(name, records, detail_list, color):
 
 log_channels("央视频道", yangshi, yangshi_detail, GREEN)
 log_channels("卫视频道", weishi, weishi_detail, YELLOW)
-print(f"{RED}更新完成，已覆盖上一次抓取的源，保留组内其他直播源和其他分组。{RESET}")
+print(f"{RED}更新完成 ✅ 已覆盖上一次抓取内容，保留组内其他直播源和其他分组。{RESET}")
