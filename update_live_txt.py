@@ -3,9 +3,11 @@ import os
 import re
 from datetime import datetime, timedelta, timezone
 
+# ===== 颜色定义 =====
 RED = "\033[91m"
 GREEN = "\033[92m"
 YELLOW = "\033[93m"
+BLUE = "\033[94m"
 RESET = "\033[0m"
 
 live_file = "live.txt"
@@ -27,12 +29,12 @@ def simplify_name(name: str) -> str:
         return f"CCTV{cctv_match.group(1)}"
     return name
 
-def fetch_source(name, url):
+def fetch_source(name, url, color):
     try:
         resp = requests.get(url, timeout=15)
         resp.raise_for_status()
         lines = resp.text.splitlines()
-        print(f"{GREEN}[{name}] 抓取成功，共 {len(lines)} 行{RESET}")
+        print(f"{color}[{name}] 抓取成功，共 {len(lines)} 行{RESET}")
         return lines
     except Exception as e:
         print(f"{RED}[{name}] 抓取失败: {e}{RESET}")
@@ -40,10 +42,10 @@ def fetch_source(name, url):
 
 # ===== 初始化分组 =====
 yangshi, weishi = [], []
-yangshi_detail, weishi_detail = [], []  # 用于日志
+yangshi_detail, weishi_detail = [], []
 
 # ===== 解析 TXT =====
-lines_txt = fetch_source("TXT", sources["TXT"])
+lines_txt = fetch_source("TXT", sources["TXT"], BLUE)
 for line in lines_txt:
     if "," in line:
         name, url = line.split(",", 1)
@@ -57,7 +59,7 @@ for line in lines_txt:
             weishi_detail.append(f"{name} -> {url.strip()} (TXT)")
 
 # ===== 解析 M3U =====
-lines_m3u = fetch_source("M3U", sources["M3U"])
+lines_m3u = fetch_source("M3U", sources["M3U"], YELLOW)
 current_group, current_name = None, None
 for line in lines_m3u:
     if line.startswith("#EXTINF"):
@@ -118,10 +120,12 @@ txt_count = len(lines_txt)
 m3u_count = len(lines_m3u)
 total_count = len(lines_after_weishi)
 
-# ===== 打印抓取数量用于 workflow 日志 =====
-print(f">>> SOURCE_COUNT: TXT={txt_count} M3U={m3u_count} TOTAL={total_count}")
+# ===== 打印颜色化抓取数量日志 =====
+print(f"{BLUE}>>> TXT 本次抓取 {txt_count} 条源{RESET}")
+print(f"{YELLOW}>>> M3U 本次抓取 {m3u_count} 条源{RESET}")
+print(f"{GREEN}>>> 总计 {total_count} 条源{RESET}")
 
-# ===== 更新 README.md 时间戳和统计（北京时间 UTC+8） =====
+# ===== 更新 README.md 时间戳和统计 =====
 beijing_tz = timezone(timedelta(hours=8))
 timestamp = datetime.now(beijing_tz).strftime("%Y-%m-%d %H:%M:%S")
 
@@ -140,15 +144,14 @@ if os.path.exists("README.md"):
             skip -= 1
             continue
         if line.startswith("## ✨于 "):
-            skip = 2  # 删除三行
+            skip = 2
             continue
         new_readme.append(line)
-    # 插入最新三行
     readme_content = "\n".join([header, subline, statline] + new_readme)
     with open("README.md", "w", encoding="utf-8") as f:
         f.write(readme_content)
 
-# ===== 日志输出 =====
+# ===== 日志输出频道详细信息 =====
 def log_channels(name, records, detail_list, color):
     print(f"{color}{name}: 新增 {len(records)} 条{RESET}")
     for i, rec in enumerate(detail_list, 1):
