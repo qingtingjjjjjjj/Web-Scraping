@@ -2,11 +2,11 @@ name: M3U+TXT 直播源更新到 live.txt
 
 on:
   schedule:
-    - cron: "0 */2 * * *"  # 每两小时运行一次
-  workflow_dispatch:
+    - cron: "0 */2 * * *"  # 每两小时运行一次 (UTC)
+  workflow_dispatch:        # 支持手动触发
 
 permissions:
-  contents: write  # 确保推送权限
+  contents: write
 
 jobs:
   update-live:
@@ -23,38 +23,57 @@ jobs:
         with:
           python-version: "3.x"
 
-      # 3️⃣ 安装依赖
+      # 3️⃣ 缓存 pip，加快运行
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      # 4️⃣ 安装依赖
       - name: Install dependencies
         run: pip install requests
 
-      # 4️⃣ 抓取接口状态（可选，用于调试）
-      - name: Fetch M3U Source
-        run: |
-          echo ">>> 正在抓取 M3U 源"
-          curl -I -s https://raw.githubusercontent.com/develop202/migu_video/refs/heads/main/interface.txt | head -n 1
-
+      # 5️⃣ 抓取 TXT 源（调试）
       - name: Fetch TXT Source
         run: |
           echo ">>> 正在抓取 TXT 源"
           curl -I -s https://raw.githubusercontent.com/lucheng7996/TE/refs/heads/main/outfiles/beijing_cucc.txt | head -n 1
 
-      # 5️⃣ 执行抓取脚本
-      - name: Run update script
-        run: python update_live_txt.py
+      # 6️⃣ 抓取 M3U 源（调试）
+      - name: Fetch M3U Source
+        run: |
+          echo ">>> 正在抓取 M3U 源"
+          curl -I -s https://raw.githubusercontent.com/develop202/migu_video/refs/heads/main/interface.txt | head -n 1
 
-      # 6️⃣ 配置 Git 用户
+      # 7️⃣ 执行抓取脚本
+      - name: Run update script
+        run: |
+          if [ -f update_live_txt.py ]; then
+              python update_live_txt.py
+          else
+              echo "❌ update_live_txt.py 不存在，请检查路径！"
+              exit 1
+          fi
+
+      # 8️⃣ 更新时间戳（北京时间）
+      - name: Update README timestamp
+        run: |
+          BEIJING_TIME=$(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S')
+          echo ">>> 北京时间: $BEIJING_TIME"
+          sed -i "1i 更新时间（北京时间）：$BEIJING_TIME" README.md
+
+      # 9️⃣ 配置 Git 用户
       - name: Configure Git user
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      # 7️⃣ 提交并推送变化
+      # 🔟 提交并推送变化（每次必提交一次）
       - name: Commit and push changes
         run: |
           git add live.txt README.md
-          if ! git diff --cached --quiet; then
-              git commit -m "更新直播源、README时间戳和行数统计 [skip ci]"
-              git push
-          else
-              echo "文件无变化，不推送。"
-          fi
+          git commit -m "定时更新直播源 (北京时间) [skip ci]" || echo "✅ 没有文件变化，依然提交"
+          git push
