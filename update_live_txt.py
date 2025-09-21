@@ -12,47 +12,37 @@ live_file = "live.txt"
 
 # ===== 接口地址 =====
 sources = {
-    "M3U": "https://raw.githubusercontent.com/develop202/migu_video/refs/heads/main/interface.txt",
-    "TXT": "https://raw.githubusercontent.com/lucheng7996/TE/refs/heads/main/outfiles/beijing_cucc.txt"
+    "TXT": "https://raw.githubusercontent.com/lucheng7996/TE/refs/heads/main/outfiles/beijing_cucc.txt",
+    "M3U": "https://raw.githubusercontent.com/develop202/migu_video/refs/heads/main/interface.txt"
 }
 
 # ===== 工具函数 =====
 def simplify_name(name: str) -> str:
-    """
-    清理频道名：
-    1. 去掉常见后缀/前缀，如 HD / BRTV
-    2. CCTV 特殊处理：
-       - 去掉中间横杠，如 CCTV-1 -> CCTV1
-       - 保留数字
-    3. 去掉前后空格
-    """
-    # 去掉常见后缀/前缀
+    """清理频道名：去掉 HD/BRTV，CCTV 特殊处理"""
     name = re.sub(r'HD', '', name, flags=re.IGNORECASE)
     name = re.sub(r'BRTV', '', name, flags=re.IGNORECASE)
     name = name.strip()
-
-    # CCTV 特殊处理
     cctv_match = re.match(r"CCTV[-]?(\d+)", name, re.IGNORECASE)
     if cctv_match:
         return f"CCTV{cctv_match.group(1)}"
-
     return name
 
 def fetch_source(name, url):
     try:
         resp = requests.get(url, timeout=15)
         resp.raise_for_status()
-        print(f"{GREEN}[{name}] 抓取成功，共 {len(resp.text.splitlines())} 行{RESET}")
-        return resp.text.splitlines()
+        lines = resp.text.splitlines()
+        print(f"{GREEN}[{name}] 抓取成功，共 {len(lines)} 行{RESET}")
+        return lines
     except Exception as e:
         print(f"{RED}[{name}] 抓取失败: {e}{RESET}")
         return []
 
 # ===== 初始化分组 =====
 yangshi, weishi = [], []
-yangshi_detail, weishi_detail = [], []  # 保存来源信息，用于日志
+yangshi_detail, weishi_detail = [], []  # 用于日志
 
-# ===== 先解析 TXT =====
+# ===== 解析 TXT =====
 lines_txt = fetch_source("TXT", sources["TXT"])
 for line in lines_txt:
     if "," in line:
@@ -66,13 +56,12 @@ for line in lines_txt:
             weishi.append(record)
             weishi_detail.append(f"{name} -> {url.strip()} (TXT)")
 
-# ===== 再解析 M3U =====
+# ===== 解析 M3U =====
 lines_m3u = fetch_source("M3U", sources["M3U"])
 current_group, current_name = None, None
 for line in lines_m3u:
     if line.startswith("#EXTINF"):
-        current_name = line.split(",")[-1].strip()
-        current_name = simplify_name(current_name)
+        current_name = simplify_name(line.split(",")[-1].strip())
         if "央视" in line or current_name.startswith("CCTV"):
             current_group = "yangshi"
         elif "卫视" in line:
@@ -106,20 +95,14 @@ weishi_tag = "卫视频道,#genre#"
 def update_group(existing_lines, tag, new_records):
     if not new_records:
         return existing_lines
-
     if tag not in existing_lines:
         return existing_lines + ["", tag] + new_records + [""]
-
     idx = existing_lines.index(tag) + 1
     end_idx = idx
     while end_idx < len(existing_lines) and existing_lines[end_idx].strip() != "" and not existing_lines[end_idx].endswith(",#genre#"):
         end_idx += 1
-
     group_lines = existing_lines[idx:end_idx]
-    new_names = {rec.split(",")[0] for rec in new_records}
-    filtered_group = [line for line in group_lines if line.split(",")[0] not in new_names]
-
-    updated_group = new_records + filtered_group
+    updated_group = new_records + group_lines
     return existing_lines[:idx] + updated_group + existing_lines[end_idx:]
 
 # ===== 更新分组 =====
@@ -130,13 +113,21 @@ lines_after_weishi = update_group(lines_after_yangshi, weishi_tag, weishi)
 with open(live_file, "w", encoding="utf-8") as f:
     f.write("\n".join(lines_after_weishi))
 
+# ===== 统计抓取数量 =====
+txt_count = len(lines_txt)
+m3u_count = len(lines_m3u)
+total_count = len(lines_after_weishi)
+
+# ===== 打印抓取数量用于 workflow 日志 =====
+print(f">>> SOURCE_COUNT: TXT={txt_count} M3U={m3u_count} TOTAL={total_count}")
+
 # ===== 更新 README.md 时间戳和统计（北京时间 UTC+8） =====
 beijing_tz = timezone(timedelta(hours=8))
 timestamp = datetime.now(beijing_tz).strftime("%Y-%m-%d %H:%M:%S")
-line_count = len(lines_after_weishi)
+
 header = f"## ✨于 {timestamp} 更新"
-subline = "**🎉最新可用IPTV源，觉得好用请点个STAR吧！**"
-statline = f"📺 当前共收录 {line_count} 条直播源"
+subline = f"**🎉最新可用IPTV源，TXT: {txt_count} 条，M3U: {m3u_count} 条，总计: {total_count} 条**"
+statline = f"📺 当前共收录 {total_count} 条直播源"
 
 if os.path.exists("README.md"):
     with open("README.md", "r", encoding="utf-8") as f:
