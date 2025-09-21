@@ -150,18 +150,24 @@ statline = f"📺 当前共收录 {total_count} 条直播源"
 if os.path.exists("README.md"):
     with open("README.md", "r", encoding="utf-8") as f:
         readme_lines = f.read().splitlines()
-    # 删除旧时间戳行
+
+    # 删除旧时间戳块
     new_readme = []
-    skip = 0
+    skip_block = False
     for line in readme_lines:
-        if skip > 0:
-            skip -= 1
-            continue
         if line.startswith("## ✨于 "):
-            skip = 2
+            skip_block = True
             continue
+        if skip_block:
+            # 结束条件：遇到空行或下一段标题
+            if line.strip() == "" or line.startswith("## "):
+                skip_block = False
+            else:
+                continue
         new_readme.append(line)
-    readme_content = "\n".join([header, subline, statline] + new_readme)
+
+    # 插入新的时间戳和统计信息
+    readme_content = "\n".join([header, subline, statline, ""] + new_readme)
     with open("README.md", "w", encoding="utf-8") as f:
         f.write(readme_content)
 
