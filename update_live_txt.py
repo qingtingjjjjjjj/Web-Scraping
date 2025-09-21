@@ -120,10 +120,12 @@ txt_count = len(lines_txt)
 m3u_count = len(lines_m3u)
 total_count = len(lines_after_weishi)
 
-# ===== 打印颜色化抓取数量日志 =====
-print(f"{BLUE}>>> TXT 本次抓取 {txt_count} 条源{RESET}")
-print(f"{YELLOW}>>> M3U 本次抓取 {m3u_count} 条源{RESET}")
-print(f"{GREEN}>>> 总计 {total_count} 条源{RESET}")
+# ===== 颜色化仪表盘日志 =====
+print("\n" + "="*40)
+print(f"{BLUE}>>> TXT 本次抓取: {txt_count} 条源 {'➤'*3}{RESET}")
+print(f"{YELLOW}>>> M3U 本次抓取: {m3u_count} 条源 {'➤'*3}{RESET}")
+print(f"{GREEN}>>> 总计直播源: {total_count} 条 {'➤'*5}{RESET}")
+print("="*40 + "\n")
 
 # ===== 更新 README.md 时间戳和统计 =====
 beijing_tz = timezone(timedelta(hours=8))
