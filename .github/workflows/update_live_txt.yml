@@ -2,8 +2,8 @@ name: M3U+TXT 直播源更新到 live.txt
 
 on:
   schedule:
-    # 每两小时整点运行（北京时间）
-    - cron: "0 0-23/2 * * *"
+    # 北京时间每两小时整点运行（UTC = 北京时间 -8）
+    - cron: "0 16,18,20,22,0,2,4,6,8,10,12,14 * * *"
   workflow_dispatch:
 
 permissions:
