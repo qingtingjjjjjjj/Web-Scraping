@@ -14,7 +14,7 @@ live_file = "live.txt"
 
 # ===== 接口地址 =====
 sources = {
-    "TXT": "https://raw.githubusercontent.com/lucheng7996/TE/refs/heads/main/outfiles/beijing_cucc.txt",
+    "TXT": "https://raw.githubusercontent.com/qingtingjjjjjjj/Web-Scraping/refs/heads/main/IPTV_UDP.txt",
     "M3U": "https://raw.githubusercontent.com/develop202/migu_video/refs/heads/main/interface.txt"
 }
 
