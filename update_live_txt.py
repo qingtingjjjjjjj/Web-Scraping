@@ -112,9 +112,10 @@ else:
 yangshi_tag = "央视频道,#genre#"
 weishi_tag = "卫视频道,#genre#"
 
+# ===== 不去重更新函数 =====
 def update_group(existing_lines, tag, new_records):
     if not new_records:
-        return existing_lines, [], []  # 新增、更新列表
+        return existing_lines, [], []
 
     if tag not in existing_lines:
         return existing_lines + ["", tag] + new_records + [""], new_records, []
@@ -124,16 +125,9 @@ def update_group(existing_lines, tag, new_records):
     while end_idx < len(existing_lines) and existing_lines[end_idx].strip() != "" and not existing_lines[end_idx].endswith(",#genre#"):
         end_idx += 1
 
-    old_group_lines = existing_lines[idx:end_idx]
-    old_names = {line.split(",")[0]: line for line in old_group_lines}
-    new_names = {rec.split(",")[0]: rec for rec in new_records}
-
-    added = [rec for name, rec in new_names.items() if name not in old_names]
-    updated = [rec for name, rec in new_names.items() if name in old_names]
-
-    filtered_old_lines = [line for name, line in old_names.items() if name not in new_names]
-    updated_group = added + updated + filtered_old_lines
-    return existing_lines[:idx] + updated_group + existing_lines[end_idx:], added, updated
+    # 不去重，直接新记录放前面，旧内容保留
+    updated_group = new_records + existing_lines[idx:end_idx]
+    return existing_lines[:idx] + updated_group + existing_lines[end_idx:], new_records, []
 
 # ===== 更新分组 =====
 lines_after_yangshi, y_added, y_updated = update_group(old_lines, yangshi_tag, yangshi)
@@ -165,7 +159,7 @@ timestamp = datetime.now(beijing_tz).strftime("%Y-%m-%d %H:%M:%S")
 header = f"## ✨于 {timestamp} 更新"
 subline = f"**🎉最新可用IPTV源，TXT: {txt_count} 条，M3U: {m3u_count} 条，总计: {total_count} 条**"
 
-def md_table(title, items, color=""):
+def md_table(title, items):
     if not items:
         return ""
     rows = "\n".join([f"| {rec.split(',')[0]} | {rec.split(',')[1]} |" for rec in items])
@@ -175,10 +169,10 @@ def md_table(title, items, color=""):
 readme_update_lines = [
     header,
     subline,
-    md_table("央视频道新增", y_added, GREEN),
-    md_table("央视频道更新", y_updated, GREEN),
-    md_table("卫视频道新增", w_added, YELLOW),
-    md_table("卫视频道更新", w_updated, YELLOW),
+    md_table("央视频道新增", y_added),
+    md_table("央视频道更新", y_updated),
+    md_table("卫视频道新增", w_added),
+    md_table("卫视频道更新", w_updated),
     ""
 ]
 
