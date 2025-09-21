@@ -44,20 +44,6 @@ def fetch_source(name, url, color):
 yangshi, weishi = [], []
 yangshi_detail, weishi_detail = [], []
 
-# ===== 解析 TXT =====
-lines_txt = fetch_source("TXT", sources["TXT"], BLUE)
-for line in lines_txt:
-    if "," in line:
-        name, url = line.split(",", 1)
-        name = simplify_name(name)
-        record = f"{name},{url.strip()}"
-        if "CCTV" in name:
-            yangshi.append(record)
-            yangshi_detail.append(f"{name} -> {url.strip()} (TXT)")
-        elif "卫视" in name:
-            weishi.append(record)
-            weishi_detail.append(f"{name} -> {url.strip()} (TXT)")
-
 # ===== 解析 M3U =====
 lines_m3u = fetch_source("M3U", sources["M3U"], YELLOW)
 current_group, current_name = None, None
@@ -78,6 +64,20 @@ for line in lines_m3u:
         elif current_group == "weishi":
             weishi.append(record)
             weishi_detail.append(f"{current_name} -> {line.strip()} (M3U)")
+
+# ===== 解析 TXT =====
+lines_txt = fetch_source("TXT", sources["TXT"], BLUE)
+for line in lines_txt:
+    if "," in line:
+        name, url = line.split(",", 1)
+        name = simplify_name(name)
+        record = f"{name},{url.strip()}"
+        if "CCTV" in name:
+            yangshi.append(record)
+            yangshi_detail.append(f"{name} -> {url.strip()} (TXT)")
+        elif "卫视" in name:
+            weishi.append(record)
+            weishi_detail.append(f"{name} -> {url.strip()} (TXT)")
 
 if not yangshi and not weishi:
     print(f"{RED}抓取到的直播源为空，保留旧的 live.txt 文件{RESET}")
@@ -134,8 +134,8 @@ total_count = len(lines_after_weishi)
 
 # ===== 颜色化仪表盘日志 =====
 print("\n" + "="*50)
+print(f"{BLUE}>>> M3U 本次抓取: {m3u_count} 条源 {'➤'*3}{RESET}")
 print(f"{BLUE}>>> TXT 本次抓取: {txt_count} 条源 {'➤'*3}{RESET}")
-print(f"{YELLOW}>>> M3U 本次抓取: {m3u_count} 条源 {'➤'*3}{RESET}")
 print(f"{GREEN}>>> 总计直播源: {total_count} 条 {'➤'*5}{RESET}")
 print("="*50 + "\n")
 
