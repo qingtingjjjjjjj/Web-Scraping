@@ -1,19 +1,25 @@
-name: Scrape CCTV live streams
+name: Scrape CCTV Live Streams
 
 on:
   schedule:
-    # every 2 hours (UTC). 你可以根据需要调整 cron 表达式
+    # 每 2 小时一次（UTC 时间），注意 GitHub Actions 使用 UTC
     - cron: '0 */2 * * *'
   workflow_dispatch: {}
+
+concurrency:
+  group: scrape-cctv
+  cancel-in-progress: true
+
+permissions:
+  contents: write   # 允许 workflow 推送文件回仓库
 
 jobs:
   scrape:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          # 保持凭证以便后面 git push 可用
           persist-credentials: true
 
       - name: Set up Python
@@ -27,27 +33,25 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run scraper
-        env:
-          TZ: "Asia/Shanghai"
         run: |
-          python scripts/scrape_cctv.py
+          python scripts/scrape_cctv.py --output-dir . --timeout 10
 
       - name: Show generated files
         run: |
-          ls -l outputs || true
-          echo "---- top of JSON ----"
-          head -n 40 outputs/cctv_streams.json || true
+          echo "=== live.txt ==="
+          sed -n '1,200p' live.txt || true
+          echo "=== live.m3u ==="
+          sed -n '1,200p' live.m3u || true
 
-      - name: Commit & push results
-        # 使用 GITHUB_TOKEN 自动提交回仓库
+      - name: Commit and push generated files
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add outputs || true
-          # 只有在有变化时提交
-          if ! git diff --staged --quiet; then
-            git commit -m "Update CCTV live streams: $(date -u +"%Y-%m-%dT%H:%M:%SZ")"
-            git push
+          git add live.txt live.m3u || true
+          git status --porcelain
+          if [ -n "$(git status --porcelain)" ]; then
+            git commit -m "自动更新 CCTV 直播源: $(date -u +"%Y-%m-%d %H:%M:%S UTC")" || true
+            git push origin HEAD:${{ github.ref_name }} || true
           else
             echo "No changes to commit."
           fi
