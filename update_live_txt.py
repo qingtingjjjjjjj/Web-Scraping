@@ -14,8 +14,8 @@ live_file = "live.txt"
 
 # ===== 接口地址 =====
 sources = {
-    "TXT": "https://raw.githubusercontent.com/qingtingjjjjjjj/Web-Scraping/refs/heads/main/IPTV_UDP.m3u",
-    "M3U": "https://raw.githubusercontent.com/develop202/migu_video/refs/heads/main/interface.txt"
+    "M3U": "https://raw.githubusercontent.com/develop202/migu_video/refs/heads/main/interface.txt",
+    "TXT": "https://raw.githubusercontent.com/cnliux/cnliux.github.io/refs/heads/main/tv.txt"
 }
 
 # ===== 工具函数 =====
@@ -128,13 +128,13 @@ with open(live_file, "w", encoding="utf-8") as f:
     f.write("\n".join(lines_after_weishi))
 
 # ===== 统计抓取数量 =====
-txt_count = len(lines_txt)
 m3u_count = len(lines_m3u)
+txt_count = len(lines_txt)
 total_count = len(lines_after_weishi)
 
 # ===== 颜色化仪表盘日志 =====
 print("\n" + "="*50)
-print(f"{BLUE}>>> M3U 本次抓取: {m3u_count} 条源 {'➤'*3}{RESET}")
+print(f"{YELLOW}>>> M3U 本次抓取: {m3u_count} 条源 {'➤'*3}{RESET}")
 print(f"{BLUE}>>> TXT 本次抓取: {txt_count} 条源 {'➤'*3}{RESET}")
 print(f"{GREEN}>>> 总计直播源: {total_count} 条 {'➤'*5}{RESET}")
 print("="*50 + "\n")
@@ -144,7 +144,7 @@ beijing_tz = timezone(timedelta(hours=8))
 timestamp = datetime.now(beijing_tz).strftime("%Y-%m-%d %H:%M:%S")
 
 header = f"## ✨于 {timestamp} 更新"
-subline = f"**🎉最新可用IPTV源，TXT: {txt_count} 条，M3U: {m3u_count} 条，总计: {total_count} 条**"
+subline = f"**🎉最新可用IPTV源，M3U: {m3u_count} 条，TXT: {txt_count} 条，总计: {total_count} 条**"
 statline = f"📺 当前共收录 {total_count} 条直播源"
 
 if os.path.exists("README.md"):
@@ -159,7 +159,6 @@ if os.path.exists("README.md"):
             skip_block = True
             continue
         if skip_block:
-            # 结束条件：遇到空行或下一段标题
             if line.strip() == "" or line.startswith("## "):
                 skip_block = False
             else:
