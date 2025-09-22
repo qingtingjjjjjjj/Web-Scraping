@@ -2,9 +2,9 @@ name: Update CCTV M3U
 
 on:
   schedule:
-    # 每天北京时间早上 6 点自动运行
+    # 每天北京时间早上 6 点运行（GitHub 用 UTC，要减去 8 小时）
     - cron: "0 22 * * *"
-  workflow_dispatch:  # 允许手动运行
+  workflow_dispatch:
 
 jobs:
   build:
@@ -20,9 +20,7 @@ jobs:
           python-version: '3.10'
 
       - name: Install dependencies
-        run: |
-          pip install playwright
-          playwright install --with-deps chromium
+        run: pip install requests
 
       - name: Run scraper
         run: python cctv_scraper.py
