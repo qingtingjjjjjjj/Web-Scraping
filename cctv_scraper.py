@@ -1,5 +1,4 @@
-import asyncio
-from playwright.async_api import async_playwright
+import requests
 
 channels = {
     "CCTV-1 综合": "cctv1",
@@ -22,42 +21,31 @@ channels = {
     "CCTV-17 农业农村": "cctv17"
 }
 
-async def fetch_m3u8(channel_code, channel_name, page):
-    url = f"https://tv.cctv.com/live/{channel_code}"
-    m3u8_url = None
+def get_m3u8(channel_code):
+    api_url = f"https://vdn.apps.cntv.cn/api2/live.do?channel={channel_code}&client=html5"
+    try:
+        resp = requests.get(api_url, timeout=10)
+        data = resp.json()
+        if "hls_url" in data:
+            return data["hls_url"]
+    except Exception as e:
+        print(f"❌ {channel_code} 获取失败: {e}")
+    return None
 
-    def handle_request(request):
-        nonlocal m3u8_url
-        if ".m3u8" in request.url:
-            m3u8_url = request.url
-
-    page.on("request", handle_request)
-    await page.goto(url, timeout=60000)
-    await page.wait_for_timeout(8000)  # 等待页面加载
-    return channel_name, m3u8_url
-
-async def main():
+def main():
     playlist = ["#EXTM3U\n"]
-
-    async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=True)
-        page = await browser.new_page()
-
-        for name, code in channels.items():
-            print(f"正在抓取 {name} ...")
-            ch_name, m3u8 = await fetch_m3u8(code, name, page)
-            if m3u8:
-                playlist.append(f'#EXTINF:-1 tvg-name="{ch_name}",{ch_name}\n{m3u8}\n')
-                print(f"✅ {ch_name}: {m3u8}")
-            else:
-                print(f"❌ {ch_name} 抓取失败")
-
-        await browser.close()
-
+    for name, code in channels.items():
+        print(f"正在获取 {name} ...")
+        m3u8 = get_m3u8(code)
+        if m3u8:
+            playlist.append(f'#EXTINF:-1 tvg-name="{name}",{name}\n{m3u8}\n')
+            print(f"✅ {name}: {m3u8}")
+        else:
+            print(f"❌ {name} 获取失败")
+    
     with open("cctv.m3u", "w", encoding="utf-8") as f:
         f.writelines(playlist)
-
     print("\n🎉 已生成 cctv.m3u")
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()
