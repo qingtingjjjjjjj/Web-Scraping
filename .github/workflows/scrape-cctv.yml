@@ -1,40 +1,41 @@
-name: Scrape CCTV
+name: Update CCTV Live
 
 on:
   schedule:
-    - cron: "0 */2 * * *"   # 每 2 小时运行一次
-  workflow_dispatch:        # 允许手动触发
+    # 每两小时运行一次
+    - cron: '0 */2 * * *'
+  workflow_dispatch:  # 手动触发
 
 jobs:
-  build:
+  update-cctv:
     runs-on: ubuntu-latest
 
     steps:
+      # 1. 拉取代码
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      # 2. 设置 Python
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.11"
 
+      # 3. 安装依赖
       - name: Install dependencies
         run: |
-          pip install requests beautifulsoup4 lxml tqdm
+          python -m pip install --upgrade pip
+          pip install requests tqdm
 
-      - name: Run scraper
-        run: |
-          python scripts/scrape_cctv.py --timeout 10
+      # 4. 运行爬取脚本
+      - name: Run scrape_cctv.py
+        run: python scripts/scrape_cctv.py --output cctv.txt
 
-      - name: Commit and push generated files
+      # 5. 提交并推送更新
+      - name: Commit and push changes
         run: |
           git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add cctv.txt || true
-          git status --porcelain
-          if [ -n "$(git status --porcelain)" ]; then
-            git commit -m "自动更新 CCTV 直播源: $(date -u +"%Y-%m-%d %H:%M:%S UTC")" || true
-            git push origin HEAD:${{ github.ref_name }} || true
-          else
-            echo "No changes to commit."
-          fi
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add cctv.txt
+          git diff-index --quiet HEAD || git commit -m "Update CCTV live sources"
+          git push
