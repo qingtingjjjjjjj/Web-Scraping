@@ -2,7 +2,6 @@ name: Scrape CCTV Live Streams
 
 on:
   schedule:
-    # 每 2 小时一次（UTC 时间），注意 GitHub Actions 使用 UTC
     - cron: '0 */2 * * *'
   workflow_dispatch: {}
 
@@ -11,7 +10,7 @@ concurrency:
   cancel-in-progress: true
 
 permissions:
-  contents: write   # 允许 workflow 推送文件回仓库
+  contents: write
 
 jobs:
   scrape:
@@ -34,20 +33,18 @@ jobs:
 
       - name: Run scraper
         run: |
-          python scripts/scrape_cctv.py --output-dir . --timeout 10
+          python scripts/scrape_cctv.py --output-dir output --timeout 10
 
-      - name: Show generated files
+      - name: Show generated file
         run: |
-          echo "=== live.txt ==="
-          sed -n '1,200p' live.txt || true
-          echo "=== live.m3u ==="
-          sed -n '1,200p' live.m3u || true
+          echo "=== output/cctv.txt ==="
+          sed -n '1,200p' output/cctv.txt || true
 
-      - name: Commit and push generated files
+      - name: Commit and push generated file
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add live.txt live.m3u || true
+          git add output/cctv.txt || true
           git status --porcelain
           if [ -n "$(git status --porcelain)" ]; then
             git commit -m "自动更新 CCTV 直播源: $(date -u +"%Y-%m-%d %H:%M:%S UTC")" || true
