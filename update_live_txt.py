@@ -14,8 +14,8 @@ live_file = "live.txt"
 
 # ===== 接口地址 =====
 sources = {
-    "M3U": "https://raw.githubusercontent.com/develop202/migu_video/refs/heads/main/interface.txt",
-    "TXT": "https://raw.githubusercontent.com/cnliux/cnliux.github.io/refs/heads/main/tv.txt"
+    "TXT": "https://raw.githubusercontent.com/cnliux/cnliux.github.io/refs/heads/main/tv.txt",
+    "M3U": "https://raw.githubusercontent.com/develop202/migu_video/refs/heads/main/interface.txt"
 }
 
 # ===== 工具函数 =====
@@ -49,24 +49,21 @@ lines_m3u = fetch_source("M3U", sources["M3U"], YELLOW)
 current_group, current_name = None, None
 for line in lines_m3u:
     if line.startswith("#EXTINF"):
-        # EXTINF 行通常形如: #EXTINF:-1,频道名（或包含“央视/卫视”等关键字）
         current_name = simplify_name(line.split(",")[-1].strip())
-        if "央视" in line or current_name.upper().startswith("CCTV"):
+        if "央视" in line or current_name.startswith("CCTV"):
             current_group = "yangshi"
         elif "卫视" in line:
             current_group = "weishi"
         else:
             current_group = None
-    else:
-        # 支持多种流地址协议：http, https, udp, rtmp, rtsp
-        if re.match(r'^(https?://|udp://|rtmp://|rtsp://)', line.strip(), re.IGNORECASE) and current_group and current_name:
-            record = f"{current_name},{line.strip()}"
-            if current_group == "yangshi":
-                yangshi.append(record)
-                yangshi_detail.append(f"{current_name} -> {line.strip()} (M3U)")
-            elif current_group == "weishi":
-                weishi.append(record)
-                weishi_detail.append(f"{current_name} -> {line.strip()} (M3U)")
+    elif line.startswith("http") and current_group and current_name:
+        record = f"{current_name},{line.strip()}"
+        if current_group == "yangshi":
+            yangshi.append(record)
+            yangshi_detail.append(f"{current_name} -> {line.strip()} (M3U)")
+        elif current_group == "weishi":
+            weishi.append(record)
+            weishi_detail.append(f"{current_name} -> {line.strip()} (M3U)")
 
 # ===== 解析 TXT =====
 lines_txt = fetch_source("TXT", sources["TXT"], BLUE)
@@ -122,22 +119,37 @@ def update_group(existing_lines, tag, new_records):
 
     return existing_lines[:idx] + updated_group + existing_lines[end_idx:]
 
+# ===== 去重处理分组标签 =====
+def dedup_tags(lines):
+    seen = set()
+    result = []
+    for line in lines:
+        if line.endswith(",#genre#"):
+            if line in seen:
+                continue  # 跳过重复的标签
+            seen.add(line)
+        result.append(line)
+    return result
+
 # ===== 更新分组 =====
 lines_after_yangshi = update_group(old_lines, yangshi_tag, yangshi)
 lines_after_weishi = update_group(lines_after_yangshi, weishi_tag, weishi)
 
+# 去掉重复分组标签
+lines_final = dedup_tags(lines_after_weishi)
+
 # ===== 写回 live.txt =====
 with open(live_file, "w", encoding="utf-8") as f:
-    f.write("\n".join(lines_after_weishi))
+    f.write("\n".join(lines_final))
 
 # ===== 统计抓取数量 =====
-m3u_count = len(lines_m3u)
 txt_count = len(lines_txt)
-total_count = len(lines_after_weishi)
+m3u_count = len(lines_m3u)
+total_count = len(lines_final)
 
 # ===== 颜色化仪表盘日志 =====
 print("\n" + "="*50)
-print(f"{YELLOW}>>> M3U 本次抓取: {m3u_count} 条源 {'➤'*3}{RESET}")
+print(f"{BLUE}>>> M3U 本次抓取: {m3u_count} 条源 {'➤'*3}{RESET}")
 print(f"{BLUE}>>> TXT 本次抓取: {txt_count} 条源 {'➤'*3}{RESET}")
 print(f"{GREEN}>>> 总计直播源: {total_count} 条 {'➤'*5}{RESET}")
 print("="*50 + "\n")
@@ -147,7 +159,7 @@ beijing_tz = timezone(timedelta(hours=8))
 timestamp = datetime.now(beijing_tz).strftime("%Y-%m-%d %H:%M:%S")
 
 header = f"## ✨于 {timestamp} 更新"
-subline = f"**🎉最新可用IPTV源，M3U: {m3u_count} 条，TXT: {txt_count} 条，总计: {total_count} 条**"
+subline = f"**🎉最新可用IPTV源，TXT: {txt_count} 条，M3U: {m3u_count} 条，总计: {total_count} 条**"
 statline = f"📺 当前共收录 {total_count} 条直播源"
 
 if os.path.exists("README.md"):
@@ -162,7 +174,6 @@ if os.path.exists("README.md"):
             skip_block = True
             continue
         if skip_block:
-            # 结束条件：遇到空行或下一段标题
             if line.strip() == "" or line.startswith("## "):
                 skip_block = False
             else:
