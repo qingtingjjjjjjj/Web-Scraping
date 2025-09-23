@@ -21,7 +21,9 @@ sources = {
 # ===== 工具函数 =====
 def simplify_name(name: str) -> str:
     """清理频道名：去掉 HD/BRTV，CCTV 特殊处理"""
-    name = re.sub(r'(HD|BRTV)', '', name, flags=re.IGNORECASE).strip()
+    name = re.sub(r'HD', '', name, flags=re.IGNORECASE)
+    name = re.sub(r'BRTV', '', name, flags=re.IGNORECASE)
+    name = name.strip()
     cctv_match = re.match(r"CCTV[-]?(\d+)", name, re.IGNORECASE)
     if cctv_match:
         return f"CCTV{cctv_match.group(1)}"
@@ -31,7 +33,6 @@ def fetch_source(name, url, color):
     try:
         resp = requests.get(url, timeout=15)
         resp.raise_for_status()
-        resp.encoding = resp.apparent_encoding
         lines = resp.text.splitlines()
         print(f"{color}[{name}] 抓取成功，共 {len(lines)} 行{RESET}")
         return lines
@@ -48,15 +49,13 @@ lines_m3u = fetch_source("M3U", sources["M3U"], YELLOW)
 current_group, current_name = None, None
 for line in lines_m3u:
     if line.startswith("#EXTINF"):
-        parts = line.split(",", 1)
-        if len(parts) > 1:
-            current_name = simplify_name(parts[1].strip())
-            if "央视" in line or current_name.startswith("CCTV"):
-                current_group = "yangshi"
-            elif "卫视" in line:
-                current_group = "weishi"
-            else:
-                current_group = None
+        current_name = simplify_name(line.split(",")[-1].strip())
+        if "央视" in line or current_name.startswith("CCTV"):
+            current_group = "yangshi"
+        elif "卫视" in line:
+            current_group = "weishi"
+        else:
+            current_group = None
     elif line.startswith("http") and current_group and current_name:
         record = f"{current_name},{line.strip()}"
         if current_group == "yangshi":
@@ -111,9 +110,9 @@ def update_group(existing_lines, tag, new_records):
     # 当前组旧行
     old_group_lines = existing_lines[idx:end_idx]
     # 新抓取的名称集合
-    new_names = {rec.split(",", 1)[0] for rec in new_records}
+    new_names = {rec.split(",")[0] for rec in new_records}
     # 保留旧行中不在新抓取列表的
-    filtered_old_lines = [line for line in old_group_lines if line.split(",", 1)[0] not in new_names]
+    filtered_old_lines = [line for line in old_group_lines if line.split(",")[0] not in new_names]
 
     # 新抓取内容在前，旧未更新内容在后
     updated_group = new_records + filtered_old_lines
@@ -122,24 +121,13 @@ def update_group(existing_lines, tag, new_records):
 
 # ===== 去重处理分组标签 =====
 def dedup_tags(lines):
-    valid_tags = {yangshi_tag, weishi_tag}
     seen = set()
     result = []
     for line in lines:
-        if line in valid_tags:
+        if line.endswith(",#genre#"):
             if line in seen:
                 continue  # 跳过重复的标签
             seen.add(line)
-        result.append(line)
-    return result
-
-# ===== 去掉无效分组（如 河北卫视,#genre#） =====
-def clean_invalid_groups(lines):
-    valid_tags = {yangshi_tag, weishi_tag}
-    result = []
-    for line in lines:
-        if line.endswith(",#genre#") and line not in valid_tags:
-            continue
         result.append(line)
     return result
 
@@ -149,9 +137,6 @@ lines_after_weishi = update_group(lines_after_yangshi, weishi_tag, weishi)
 
 # 去掉重复分组标签
 lines_final = dedup_tags(lines_after_weishi)
-
-# 去掉无效分组标签
-lines_final = clean_invalid_groups(lines_final)
 
 # ===== 写回 live.txt =====
 with open(live_file, "w", encoding="utf-8") as f:
