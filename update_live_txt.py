@@ -14,7 +14,6 @@ live_file = "live.txt"
 
 # ===== 接口地址 =====
 sources = {
-    "TXT": "https://raw.githubusercontent.com/cnliux/cnliux.github.io/refs/heads/main/tv.txt",
     "M3U": "https://raw.githubusercontent.com/develop202/migu_video/refs/heads/main/interface.txt"
 }
 
@@ -33,6 +32,7 @@ def fetch_source(name, url, color):
     try:
         resp = requests.get(url, timeout=15)
         resp.raise_for_status()
+        resp.encoding = "utf-8"  # 确保解码正确
         lines = resp.text.splitlines()
         print(f"{color}[{name}] 抓取成功，共 {len(lines)} 行{RESET}")
         return lines
@@ -64,20 +64,6 @@ for line in lines_m3u:
         elif current_group == "weishi":
             weishi.append(record)
             weishi_detail.append(f"{current_name} -> {line.strip()} (M3U)")
-
-# ===== 解析 TXT =====
-lines_txt = fetch_source("TXT", sources["TXT"], BLUE)
-for line in lines_txt:
-    if "," in line:
-        name, url = line.split(",", 1)
-        name = simplify_name(name)
-        record = f"{name},{url.strip()}"
-        if "CCTV" in name:
-            yangshi.append(record)
-            yangshi_detail.append(f"{name} -> {url.strip()} (TXT)")
-        elif "卫视" in name:
-            weishi.append(record)
-            weishi_detail.append(f"{name} -> {url.strip()} (TXT)")
 
 if not yangshi and not weishi:
     print(f"{RED}抓取到的直播源为空，保留旧的 live.txt 文件{RESET}")
@@ -143,14 +129,12 @@ with open(live_file, "w", encoding="utf-8") as f:
     f.write("\n".join(lines_final))
 
 # ===== 统计抓取数量 =====
-txt_count = len(lines_txt)
 m3u_count = len(lines_m3u)
 total_count = len(lines_final)
 
 # ===== 颜色化仪表盘日志 =====
 print("\n" + "="*50)
 print(f"{BLUE}>>> M3U 本次抓取: {m3u_count} 条源 {'➤'*3}{RESET}")
-print(f"{BLUE}>>> TXT 本次抓取: {txt_count} 条源 {'➤'*3}{RESET}")
 print(f"{GREEN}>>> 总计直播源: {total_count} 条 {'➤'*5}{RESET}")
 print("="*50 + "\n")
 
@@ -159,7 +143,7 @@ beijing_tz = timezone(timedelta(hours=8))
 timestamp = datetime.now(beijing_tz).strftime("%Y-%m-%d %H:%M:%S")
 
 header = f"## ✨于 {timestamp} 更新"
-subline = f"**🎉最新可用IPTV源，TXT: {txt_count} 条，M3U: {m3u_count} 条，总计: {total_count} 条**"
+subline = f"**🎉最新可用IPTV源，M3U: {m3u_count} 条，总计: {total_count} 条**"
 statline = f"📺 当前共收录 {total_count} 条直播源"
 
 if os.path.exists("README.md"):
