@@ -1,8 +1,8 @@
-name: IPTV 直播源抓取与分组合并
+name: Hotel IPTV 更新
 
 on:
   schedule:
-    # 北京时间每天三次：00:00、08:00、16:00（UTC = 北京时间 -8）
+    # 每天 8:00, 16:00, 0:00 北京时间
     - cron: "0 0,8,16 * * *"
   workflow_dispatch:
 
@@ -10,83 +10,37 @@ permissions:
   contents: write
 
 jobs:
-  update-live:
+  update-hotel:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout 仓库
-      - name: Checkout repository
+      - name: Checkout 仓库
         uses: actions/checkout@v4
 
-      # 2️⃣ 显示北京时间
-      - name: Show Beijing Time
-        run: |
-          echo -e "\033[94m>>> 当前北京时间：$(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S')\033[0m"
-
-      # 3️⃣ 设置 Python
-      - name: Set up Python
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.x"
 
-      # 4️⃣ 安装依赖
       - name: Install dependencies
         run: pip install requests
 
-      # 5️⃣ 抓取直播源
-      - name: Fetch hotel.txt
+      - name: Run update_hotel_live.py
         run: |
-          echo -e "\033[94m>>> 开始抓取 hotel.txt ...\033[0m"
-          curl -sSL "https://ghfast.top/https://raw.githubusercontent.com/lalifeier/IPTV/main/txt/hotel/全国.txt" -o hotel.txt
-          echo -e "\033[92m>>> hotel.txt 抓取完成 ✅\033[0m"
+          if [ -f update_hotel_live.py ]; then
+              python update_hotel_live.py
+          else
+              echo "❌ update_hotel_live.py 不存在"
+              exit 1
+          fi
 
-      # 6️⃣ 分组合并处理
-      - name: Split and merge into one file
-        run: |
-          echo -e "\033[94m>>> 开始生成合并分组文件...\033[0m"
-          python - <<'EOF'
-import re
-
-with open("hotel.txt", "r", encoding="utf-8") as f:
-    lines = f.readlines()
-
-cctv_list = []
-satellite_list = []
-other_list = []
-
-for line in lines:
-    line = line.strip()
-    if not line or line.endswith("#genre#"):
-        continue
-    name, url = line.split(",", 1)
-    name = name.strip()
-    url = url.strip()
-    if name.upper().startswith("CCTV"):
-        cctv_list.append(f"{name},{url}")
-    elif re.search(r"卫视", name):
-        satellite_list.append(f"{name},{url}")
-    else:
-        other_list.append(f"{name},{url}")
-
-with open("iptv_grouped.txt", "w", encoding="utf-8") as f:
-    f.write("=== 央视频道 ===\n")
-    f.write("\n".join(cctv_list) + "\n\n")
-    f.write("=== 卫视频道 ===\n")
-    f.write("\n".join(satellite_list) + "\n\n")
-    f.write("=== 其他频道 ===\n")
-    f.write("\n".join(other_list) + "\n")
-EOF
-          echo -e "\033[92m>>> 合并分组文件 iptv_grouped.txt 生成完成 ✅\033[0m"
-
-      # 7️⃣ 配置 Git 用户
-      - name: Configure Git user
+      - name: Configure Git
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      # 8️⃣ 提交并推送变化
-      - name: Commit and push changes
+      - name: Commit and Push
         run: |
-          git add hotel.txt iptv_grouped.txt || echo "文件不存在，跳过 git add"
-          git commit -m "定时更新 IPTV 直播源及合并分组 [skip ci]" || echo "文件无变化，跳过 commit"
-          git push || echo "推送失败，可能远程没有更新"
+          git add hotel.txt hotel_grouped.txt || echo "文件不存在，跳过"
+          git commit -m "定时更新 Hotel IPTV [skip ci]" || echo "无变化，跳过 commit"
+          git push || echo "推送失败"
