@@ -3,7 +3,6 @@ name: Auto Update Hotel IPTV
 on:
   workflow_dispatch:
   schedule:
-    # 每天 6:15、12:15、18:15、22:15 自动运行
     - cron: "15 6,12,18,22 * * *"
 
 jobs:
@@ -11,36 +10,30 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ 检出仓库
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2️⃣ 设置 Python
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.11"
 
-      # 3️⃣ 安装依赖
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
           playwright install
           playwright install-deps
 
-      # 4️⃣ 运行抓 IP
       - name: Run Hotel IPTV IP
         run: python hotel_iptv.py --type hotel --ip
 
-      # 5️⃣ 运行生成播放列表
       - name: Run Hotel IPTV Playlist
         run: python hotel_iptv.py --type hotel --playlist
 
-      # 6️⃣ 提交并推送输出文件（只提交输出文件）
       - name: Commit and Push changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Auto Update Hotel IPTV"
           branch: main
-          file_pattern: "outputs/**, txt/**, *.txt, *.m3u"
+          file_pattern: "outputs/**"
           push_options: "--force"
