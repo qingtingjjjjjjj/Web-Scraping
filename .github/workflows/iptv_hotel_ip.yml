@@ -3,7 +3,7 @@ name: Auto Update Hotel IPTV IP
 on:
   workflow_dispatch:
   schedule:
-    - cron: "5 2 * * *"
+    - cron: "5 2 * * *"   # 每天 2:05
 
 jobs:
   iptv:
@@ -25,7 +25,7 @@ jobs:
           playwright install-deps
 
       - name: Run Update Hotel IPTV IP
-        run: python main.py --type hotel --ip
+        run: python main.py --type hotel --ip   # 根目录 main.py
 
       - name: Commit and Push changes
         uses: stefanzweifel/git-auto-commit-action@v5
