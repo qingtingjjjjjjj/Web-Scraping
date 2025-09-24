@@ -1,39 +1,59 @@
-# main.py
-import argparse
+# hotel_iptv.py
+import os
 import asyncio
-import logging
-from iptv import Hotel, UDPxy
 
-logger = logging.getLogger(__name__)
+# 自动安装 opencc-python-reimplemented
+try:
+    import opencc
+except ModuleNotFoundError:
+    import subprocess, sys
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "opencc-python-reimplemented"])
+    import opencc
 
-async def main():
-    parser = argparse.ArgumentParser(description="IP fetching and playlist generation script")
-    parser.add_argument("--ip", action="store_true", help="Fetch valid IPs")
-    parser.add_argument("--playlist", action="store_true", help="Generate playlists from valid IPs")
-    parser.add_argument("--rtp", action="store_true", help="Init rtp")
-    parser.add_argument("--type", choices=["hotel", "udpxy"], required=True, help="Type of IP to process")
-    args = parser.parse_args()
+class Hotel:
+    def __init__(self):
+        # 自动获取 opencc 配置文件路径
+        config_path = os.path.join(os.path.dirname(opencc.__file__), 'config', 't2s.json')
+        self.converter = opencc.OpenCC(config_path)  # 繁体转简体
 
-    if args.rtp:
-        await UDPxy().init_rtp()
-        return
+    async def sniff_ip(self):
+        # 你的抓 IP 逻辑
+        print("开始抓取酒店 IPTV IP ...")
+        # 示例
+        await asyncio.sleep(1)
+        print("抓取完成")
 
-    if args.ip:
-        if args.type == "hotel":
-            await Hotel().sniff_ip()
-        elif args.type == "udpxy":
-            await UDPxy().sniff_ip()
-    elif args.playlist:
-        if args.type == "hotel":
-            await Hotel().generate_playlist()
-        elif args.type == "udpxy":
-            await UDPxy().generate_playlist()
+    async def generate_playlist(self):
+        # 你的生成播放列表逻辑
+        print("生成播放列表 ...")
+        # 示例
+        await asyncio.sleep(1)
+        print("播放列表生成完成")
+
+async def main(type_: str = "hotel", mode: str = None):
+    hotel = Hotel()
+    if mode == "ip":
+        await hotel.sniff_ip()
+    elif mode == "playlist":
+        await hotel.generate_playlist()
     else:
-        logging.error("You must specify an action: --ip or --playlist.")
+        await hotel.sniff_ip()
+        await hotel.generate_playlist()
 
 if __name__ == "__main__":
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-    )
-    asyncio.run(main())
+    import sys
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--type", default="hotel")
+    parser.add_argument("--ip", action="store_true")
+    parser.add_argument("--playlist", action="store_true")
+    args = parser.parse_args()
+
+    mode = None
+    if args.ip:
+        mode = "ip"
+    elif args.playlist:
+        mode = "playlist"
+
+    asyncio.run(main(args.type, mode))
