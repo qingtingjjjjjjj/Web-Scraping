@@ -1,0 +1,39 @@
+name: Auto Update Hotel IPTV
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "15 6,12,18,22 * * *"
+
+jobs:
+  hotel_iptv:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          playwright install
+          playwright install-deps
+
+      - name: Run Hotel IPTV IP
+        run: python hotel_iptv.py --type hotel --ip
+
+      - name: Run Hotel IPTV Playlist
+        run: python hotel_iptv.py --type hotel --playlist
+
+      - name: Commit and Push changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Auto Update Hotel IPTV"
+          branch: main
+          file_pattern: "outputs/**, txt/**, *.txt, *.m3u"
+          push_options: ""
