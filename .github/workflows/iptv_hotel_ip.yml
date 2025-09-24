@@ -38,6 +38,7 @@ jobs:
         with:
           commit_message: Auto Update IPTV IP
           branch: main
+          file_pattern: "outputs/**, txt/**, *.txt, *.m3u"
           push_options: '--force'
 
       - name: Delete workflow runs
