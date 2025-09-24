@@ -1,4 +1,4 @@
-name: Auto Update Hotel IPTV
+name: Auto Update Hotel IPTV Playlist
 
 on:
   workflow_dispatch:
@@ -24,19 +24,19 @@ jobs:
 
       - name: Install dependencies
         run: |
-            pip install -r requirements.txt && playwright install && playwright install-deps
+          pip install -r requirements.txt && playwright install && playwright install-deps
 
-      - name: Get Currrent Date
+      - name: Get Current Date
         run: echo "DATE=$(date +'%Y-%m-%d %H:%M:%S %Z')" >> $GITHUB_ENV
 
-      - name: Run Update Hotel IPTV
+      - name: Run Update Hotel IPTV Playlist
         run: |
-             python main.py --type hotel --playlist
+          python main.py --type hotel --playlist
 
       - name: Git Auto Commit
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: Auto Update IPTV
+          commit_message: Auto Update IPTV Playlist
           branch: main
           push_options: '--force'
 
