@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ 检出代码
+      # 1️⃣ 检出仓库
       - name: Checkout repository
         uses: actions/checkout@v4
 
@@ -29,14 +29,14 @@ jobs:
           playwright install-deps
 
       # 4️⃣ 运行抓 IP
-      - name: Run Update Hotel IPTV IP
-        run: python main.py --type hotel --ip
+      - name: Run Hotel IPTV IP
+        run: python hotel_iptv.py --type hotel --ip
 
       # 5️⃣ 运行生成播放列表
-      - name: Run Update Hotel IPTV Playlist
-        run: python main.py --type hotel --playlist
+      - name: Run Hotel IPTV Playlist
+        run: python hotel_iptv.py --type hotel --playlist
 
-      # 6️⃣ 提交并推送输出文件
+      # 6️⃣ 提交并推送输出文件（只提交输出文件）
       - name: Commit and Push changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
