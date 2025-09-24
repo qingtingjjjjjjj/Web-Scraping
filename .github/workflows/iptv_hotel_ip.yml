@@ -1,9 +1,9 @@
-name: Auto Update Hotel IPTV IP
+name: Auto Update Hotel IPTV Playlist
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: "5 2 * * *"
+    - cron: "15 6,12,18,22 * * *"
 
 jobs:
   iptv:
@@ -29,14 +29,14 @@ jobs:
       - name: Get Current Date
         run: echo "DATE=$(date +'%Y-%m-%d %H:%M:%S %Z')" >> $GITHUB_ENV
 
-      - name: Run Update Hotel IPTV IP
+      - name: Run Update Hotel IPTV Playlist
         run: |
-          python main.py --type hotel --ip
+          python main.py --type hotel --playlist
 
       - name: Git Auto Commit
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: Auto Update IPTV IP
+          commit_message: Auto Update IPTV Playlist
           branch: main
           file_pattern: "outputs/**, txt/**, *.txt, *.m3u"
           push_options: '--force'
@@ -45,7 +45,7 @@ jobs:
         uses: MajorScruffy/delete-old-workflow-runs@v0.3.0
         with:
           repository: ${{ github.repository }}
-          workflow: ".github/workflows/iptv_hotel_ip.yml"
+          workflow: ".github/workflows/iptv_hotel_playlist.yml"
           older-than-seconds: 3600
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
