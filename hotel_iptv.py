@@ -1,8 +1,6 @@
 # hotel_iptv.py
-import os
 import asyncio
 
-# 自动安装 opencc-python-reimplemented
 try:
     import opencc
 except ModuleNotFoundError:
@@ -12,21 +10,16 @@ except ModuleNotFoundError:
 
 class Hotel:
     def __init__(self):
-        # 自动获取 opencc 配置文件路径
-        config_path = os.path.join(os.path.dirname(opencc.__file__), 'config', 't2s.json')
-        self.converter = opencc.OpenCC(config_path)  # 繁体转简体
+        # 使用 opencc 内置转换配置，不再依赖外部文件
+        self.converter = opencc.OpenCC('t2s')  # 繁体转简体
 
     async def sniff_ip(self):
-        # 你的抓 IP 逻辑
         print("开始抓取酒店 IPTV IP ...")
-        # 示例
         await asyncio.sleep(1)
         print("抓取完成")
 
     async def generate_playlist(self):
-        # 你的生成播放列表逻辑
         print("生成播放列表 ...")
-        # 示例
         await asyncio.sleep(1)
         print("播放列表生成完成")
 
@@ -41,7 +34,6 @@ async def main(type_: str = "hotel", mode: str = None):
         await hotel.generate_playlist()
 
 if __name__ == "__main__":
-    import sys
     import argparse
 
     parser = argparse.ArgumentParser()
