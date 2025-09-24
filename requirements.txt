@@ -1,5 +1,2 @@
-requests
-playwright
 opencc-python-reimplemented
-aiohttp
-asyncio
+playwright
