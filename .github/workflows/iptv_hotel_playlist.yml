@@ -9,43 +9,28 @@ jobs:
   iptv:
     runs-on: ubuntu-latest
 
-    permissions: write-all
-
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
 
-      - name: Set up Python 3.11
+      - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.11
+          python-version: "3.11"
 
       - name: Install dependencies
         run: |
-          pip install -r requirements.txt && playwright install && playwright install-deps
-
-      - name: Get Current Date
-        run: echo "DATE=$(date +'%Y-%m-%d %H:%M:%S %Z')" >> $GITHUB_ENV
+          pip install -r requirements.txt
+          playwright install
+          playwright install-deps
 
       - name: Run Update Hotel IPTV Playlist
-        run: |
-          python main.py --type hotel --playlist
+        run: python main.py --type hotel --playlist
 
-      - name: Git Auto Commit
+      - name: Commit and Push changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: Auto Update IPTV Playlist
+          commit_message: "Auto Update IPTV Playlist"
           branch: main
           file_pattern: "outputs/**, txt/**, *.txt, *.m3u"
-          push_options: '--force'
-
-      - name: Delete workflow runs
-        uses: MajorScruffy/delete-old-workflow-runs@v0.3.0
-        with:
-          repository: ${{ github.repository }}
-          workflow: ".github/workflows/iptv_hotel_playlist.yml"
-          older-than-seconds: 3600
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          push_options: "--force"
