@@ -1,57 +1,46 @@
-import requests
-import os
+name: Hotel IPTV 更新
 
-# 直播源 URL
-SOURCE_URL = "https://raw.githubusercontent.com/lalifeier/IPTV/main/txt/hotel/全国.txt"
+on:
+  schedule:
+    # 每天三次，北京时间 0:00、8:00、16:00
+    - cron: "0 0,8,16 * * *"
+  workflow_dispatch:
 
-# 输出文件路径
-CCTV_FILE = "专区/央视频道.txt"
-SAT_FILE = "专区/卫视频道.txt"
-# 可选其他频道
-OTHER_FILE = "专区/其他频道.txt"
+permissions:
+  contents: write
 
-# 创建目录
-os.makedirs("专区", exist_ok=True)
+jobs:
+  update-hotel:
+    runs-on: ubuntu-latest
 
-CCTV_KEYS = ["CCTV"]
-SAT_KEYS = ["卫视"]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-def fetch_source():
-    resp = requests.get(SOURCE_URL)
-    resp.encoding = 'utf-8'
-    return resp.text
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
 
-def split_channels(content):
-    lines = content.splitlines()
-    cctv_list = []
-    sat_list = []
-    other_list = []
-    for line in lines:
-        if not line.strip():
-            continue
-        if line.startswith("中国电信") or line.startswith("中国移动") or line.startswith("中国联通"):
-            continue
-        name = line.split(",")[0]
-        if any(k in name for k in CCTV_KEYS):
-            cctv_list.append(line)
-        elif any(k in name for k in SAT_KEYS):
-            sat_list.append(line)
-        else:
-            other_list.append(line)
-    return cctv_list, sat_list, other_list
+      - name: Install dependencies
+        run: pip install requests
 
-def save_file(path, lines):
-    with open(path, "w", encoding="utf-8") as f:
-        for line in lines:
-            f.write(line + "\n")
+      - name: Run update_hotel_live.py
+        run: |
+          if [ -f update_hotel_live.py ]; then
+              python update_hotel_live.py
+          else
+              echo "❌ update_hotel_live.py 不存在"
+              exit 1
+          fi
 
-def main():
-    content = fetch_source()
-    cctv_list, sat_list, other_list = split_channels(content)
-    save_file(CCTV_FILE, cctv_list)
-    save_file(SAT_FILE, sat_list)
-    save_file(OTHER_FILE, other_list)
-    print(f"✅ 文件生成完成：{CCTV_FILE}, {SAT_FILE}, {OTHER_FILE}")
+      - name: Configure Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-if __name__ == "__main__":
-    main()
+      - name: Commit and Push
+        run: |
+          git add "专区/央视频道.txt" "专区/卫视频道.txt" || echo "文件不存在，跳过"
+          git commit -m "定时更新 Hotel IPTV [skip ci]" || echo "无变化，跳过 commit"
+          git push || echo "推送失败"
