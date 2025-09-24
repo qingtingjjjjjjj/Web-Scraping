@@ -14,10 +14,8 @@ jobs:
       # 1️⃣ 检出仓库
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
 
-      # 2️⃣ 设置 Python
+      # 2️⃣ 设置 Python 3.11
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
@@ -32,13 +30,11 @@ jobs:
 
       # 4️⃣ 运行抓 IP
       - name: Run Hotel IPTV IP
-        run: |
-          python hotel_iptv.py --type hotel --ip
+        run: python hotel_iptv.py --type hotel --ip
 
       # 5️⃣ 运行生成播放列表
       - name: Run Hotel IPTV Playlist
-        run: |
-          python hotel_iptv.py --type hotel --playlist
+        run: python hotel_iptv.py --type hotel --playlist
 
       # 6️⃣ 提交并推送变化文件
       - name: Commit and Push changes
