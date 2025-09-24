@@ -14,22 +14,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout 仓库
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2️⃣ 显示北京时间
       - name: Show Beijing Time
         run: |
           echo -e "\033[94m>>> 当前北京时间：$(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S')\033[0m"
 
-      # 3️⃣ 设置 Python
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.x"
 
-      # 4️⃣ 缓存 pip
       - name: Cache pip
         uses: actions/cache@v4
         with:
@@ -38,11 +34,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-
 
-      # 5️⃣ 安装依赖
       - name: Install dependencies
         run: pip install requests
 
-      # 6️⃣ 执行 Python 脚本（彩色仪表盘日志）
       - name: Run update_live_txt.py
         run: |
           if [ -f update_live_txt.py ]; then
@@ -54,13 +48,22 @@ jobs:
               exit 1
           fi
 
-      # 7️⃣ 配置 Git 用户
+      - name: Process Hotel IPTV TXT
+        run: |
+          if [ -f process_hotel_txt.py ]; then
+              echo -e "\033[94m>>> 开始处理酒店 IPTV TXT...\033[0m"
+              python process_hotel_txt.py
+              echo -e "\033[92m>>> 酒店 IPTV TXT 处理完成 ✅\033[0m"
+          else
+              echo -e "\033[91m❌ process_hotel_txt.py 不存在！\033[0m"
+              exit 1
+          fi
+
       - name: Configure Git user
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      # 8️⃣ 提交并推送变化（防止报错）
       - name: Commit and push changes
         run: |
           cd $GITHUB_WORKSPACE
