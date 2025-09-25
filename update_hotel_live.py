@@ -2,7 +2,7 @@ import requests
 import os
 
 # 直播源 URL
-SOURCE_URL = "https://raw.githubusercontent.com/lalifeier/IPTV/main/txt/hotel/全国.txt"
+SOURCE_URL = "https://hk.gh-proxy.com/https://raw.githubusercontent.com/AnonymousOrz/Mytv/refs/heads/master/output/Mytv.txt"
 
 # 输出文件路径
 CCTV_FILE = "专区/央视频道.txt"
