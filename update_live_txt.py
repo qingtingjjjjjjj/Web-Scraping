@@ -20,6 +20,7 @@ sources = {
 
 # ===== 工具函数 =====
 def simplify_name(name: str) -> str:
+    """清理频道名尾巴并修正 CCTV 编号"""
     tail_patterns = [r'HD', r'高清', r'HD高清', r'cs推流', r'推流cs', r'推流', r'cs', r'高码', r'BRTV']
     name = name.strip()
     changed = True
@@ -101,6 +102,7 @@ else:
 yangshi_tag = "央视频道,#genre#"
 weishi_tag = "卫视频道,#genre#"
 
+# ===== 插入分组函数：覆盖上一次抓取源 =====
 def insert_group_front(existing_lines, tag, new_records):
     """
     插入新抓取源到分组最前面，
