@@ -9,11 +9,12 @@ jobs:
   run_job:
     runs-on: ubuntu-latest
     steps:
-      # 1️⃣ Checkout 仓库
+      # 1️⃣ Checkout 仓库（包含子模块，如果有）
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          submodules: true
 
       # 2️⃣ 设置 Python
       - name: Set up Python
@@ -38,13 +39,23 @@ jobs:
           git config --global user.email "actions@github.com"
 
       # 6️⃣ 提交更改（仅在有改动时）
-      - name: Commit changes
+      - name: Commit changes if any
         run: |
-          git add ./assets/whitelist-blacklist/*
-          git diff --cached --quiet || git commit -m "黑白名单 AutoUpdate $(date +'%Y%m%d')"
+          git add ./assets/whitelist-blacklist/
+          if ! git diff --cached --quiet; then
+            git commit -m "黑白名单 AutoUpdate $(date +'%Y%m%d')"
+          else
+            echo "No changes to commit."
+          fi
 
-      # 7️⃣ 推送到远程仓库
-      - name: Push changes
-        run: git push origin main
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # 7️⃣ 安全推送：保证远程修改也不会导致失败
+      - name: Pull remote latest & push
+        run: |
+          echo "Fetching latest changes from remote..."
+          git fetch origin main
+          echo "Resetting HEAD to remote main, keeping local changes..."
+          git reset --soft origin/main
+          echo "Current last commit:"
+          git log -1 --oneline
+          echo "Pushing to remote..."
+          git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git main
