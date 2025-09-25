@@ -102,17 +102,18 @@ else:
 yangshi_tag = "央视频道,#genre#"
 weishi_tag = "卫视频道,#genre#"
 
-# ===== 插入分组函数：只更新已有分组，不新增 =====
+# ===== 插入分组函数：只更新已有分组 =====
 def insert_group_front(existing_lines, tag, new_records):
     """
     只更新已有分组，不新增分组
     删除上一次抓取源，并插入本次抓取的新源到组最前面
     """
-    if tag not in existing_lines:
+    try:
+        idx = existing_lines.index(tag) + 1
+    except ValueError:
         # 分组不存在，直接返回原内容
         return existing_lines
 
-    idx = existing_lines.index(tag) + 1
     end_idx = idx
     while end_idx < len(existing_lines) and existing_lines[end_idx].strip() != "" and not existing_lines[end_idx].endswith(",#genre#"):
         end_idx += 1
@@ -189,4 +190,4 @@ def log_channels(name, records, detail_list, color):
 
 log_channels("央视频道", yangshi, yangshi_detail, GREEN)
 log_channels("卫视频道", weishi, weishi_detail, YELLOW)
-print(f"{RED}更新完成 ✅ 本次抓取的直播源已覆盖上一次抓取源，保留组内其他源和分组不变。未新增新的央视频道或卫视频道分组。{RESET}")
+print(f"{RED}更新完成 ✅ 本次抓取的直播源已覆盖上一次抓取源，保留组内其他源和其他分组不变。{RESET}")
