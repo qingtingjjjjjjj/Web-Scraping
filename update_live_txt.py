@@ -58,6 +58,7 @@ for line in lines_txt:
     elif "卫视" in name:
         weishi.append(f"{name},{url}")
         weishi_detail.append(f"{name} -> {url} (TXT)")
+    # 其他地方台不保留
 
 # ===== 解析 M3U =====
 lines_m3u = fetch_source("M3U", sources["M3U"], YELLOW)
@@ -70,7 +71,7 @@ for line in lines_m3u:
         elif "卫视" in line:
             current_group = "weishi"
         else:
-            current_group = None
+            current_group = None  # 其他地方台不保留
     elif line.startswith("http") and current_group and current_name:
         record = f"{current_name},{line.strip()}"
         if current_group == "yangshi":
@@ -79,6 +80,7 @@ for line in lines_m3u:
         elif current_group == "weishi":
             weishi.append(record)
             weishi_detail.append(f"{current_name} -> {line.strip()} (M3U)")
+        # 其他地方台不保留
 
 if not yangshi and not weishi:
     print(f"{RED}抓取到的直播源为空，保留旧的 live.txt 文件{RESET}")
@@ -96,10 +98,10 @@ yangshi_tag = "央视频道,#genre#"
 weishi_tag = "卫视频道,#genre#"
 
 def update_group(existing_lines, tag, new_records):
-    """覆盖上一次抓取内容，保留组内其他旧直播源"""
-    if not new_records:
-        return existing_lines
-
+    """
+    插入新抓取源到分组前面，
+    保留组内旧源，组内不重复写入
+    """
     if tag not in existing_lines:
         return existing_lines + ["", tag] + new_records + [""]
 
@@ -109,16 +111,16 @@ def update_group(existing_lines, tag, new_records):
         end_idx += 1
 
     old_group_lines = existing_lines[idx:end_idx]
-    new_names = {rec.split(",")[0] for rec in new_records}
-    filtered_old_lines = [line for line in old_group_lines if line.split(",")[0] not in new_names]
+    old_names = {line.split(",")[0] for line in old_group_lines}
+    filtered_new_records = [rec for rec in new_records if rec.split(",")[0] not in old_names]
 
-    updated_group = new_records + filtered_old_lines
+    updated_group = filtered_new_records + old_group_lines
     return existing_lines[:idx] + updated_group + existing_lines[end_idx:]
 
-# ===== 更新分组（不去重） =====
+# ===== 更新分组 =====
 lines_after_yangshi = update_group(old_lines, yangshi_tag, yangshi)
 lines_after_weishi = update_group(lines_after_yangshi, weishi_tag, weishi)
-lines_final = lines_after_weishi  # 保留重复行
+lines_final = lines_after_weishi  # 只保留央视频道和卫视频道
 
 # ===== 写回 live.txt =====
 with open(live_file, "w", encoding="utf-8") as f:
@@ -129,17 +131,16 @@ txt_count = len(lines_txt)
 m3u_count = len(lines_m3u)
 total_count = len(lines_final)
 
-# ===== 颜色化仪表盘日志 =====
+# ===== 日志输出 =====
 print("\n" + "="*50)
 print(f"{GREEN}>>> TXT 本次抓取: {txt_count} 条源 {'➤'*3}{RESET}")
 print(f"{BLUE}>>> M3U 本次抓取: {m3u_count} 条源 {'➤'*3}{RESET}")
 print(f"{YELLOW}>>> 总计直播源: {total_count} 条 {'➤'*5}{RESET}")
 print("="*50 + "\n")
 
-# ===== 更新 README.md 时间戳和统计 =====
+# ===== 更新 README.md 时间戳 =====
 beijing_tz = timezone(timedelta(hours=8))
 timestamp = datetime.now(beijing_tz).strftime("%Y-%m-%d %H:%M:%S")
-
 header = f"## ✨于 {timestamp} 更新"
 subline = f"**🎉最新可用IPTV源，TXT: {txt_count} 条，M3U: {m3u_count} 条，总计: {total_count} 条**"
 statline = f"📺 当前共收录 {total_count} 条直播源"
@@ -147,7 +148,6 @@ statline = f"📺 当前共收录 {total_count} 条直播源"
 if os.path.exists("README.md"):
     with open("README.md", "r", encoding="utf-8") as f:
         readme_lines = f.read().splitlines()
-
     new_readme = []
     skip_block = False
     for line in readme_lines:
@@ -160,7 +160,6 @@ if os.path.exists("README.md"):
             else:
                 continue
         new_readme.append(line)
-
     readme_content = "\n".join([header, subline, statline, ""] + new_readme)
     with open("README.md", "w", encoding="utf-8") as f:
         f.write(readme_content)
