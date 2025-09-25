@@ -21,10 +21,16 @@ sources = {
 # ===== 工具函数 =====
 def simplify_name(name: str) -> str:
     """清理频道名：去掉尾巴多余标记，CCTV 特殊处理"""
-    # 去掉尾部及尾部前空格的多余标记
-    name = re.sub(r'\s*(HD|高清|cs推流|cs|推流|高码|BRTV)\s*$', '', name, flags=re.IGNORECASE)
+    tail_patterns = [r'HD', r'高清', r'HD高清', r'cs推流', r'推流cs', r'推流', r'cs', r'高码', r'BRTV']
     name = name.strip()
-    # CCTV编号修正
+    changed = True
+    while changed:
+        changed = False
+        for pattern in tail_patterns:
+            if re.search(rf'{pattern}$', name, flags=re.IGNORECASE):
+                name = re.sub(rf'{pattern}$', '', name, flags=re.IGNORECASE).strip()
+                changed = True
+    # CCTV 编号修正
     cctv_match = re.match(r"CCTV[-]?0*(\d+)", name, re.IGNORECASE)
     if cctv_match:
         return f"CCTV{cctv_match.group(1)}"
@@ -60,7 +66,6 @@ for line in lines_txt:
     elif "卫视" in name:
         weishi.append(f"{name},{url}")
         weishi_detail.append(f"{name} -> {url} (TXT)")
-    # 其他地方台不保留
 
 # ===== 解析 M3U =====
 lines_m3u = fetch_source("M3U", sources["M3U"], YELLOW)
@@ -73,7 +78,7 @@ for line in lines_m3u:
         elif "卫视" in line:
             current_group = "weishi"
         else:
-            current_group = None  # 其他地方台不保留
+            current_group = None
     elif line.startswith("http") and current_group and current_name:
         record = f"{current_name},{line.strip()}"
         if current_group == "yangshi":
@@ -99,10 +104,7 @@ yangshi_tag = "央视频道,#genre#"
 weishi_tag = "卫视频道,#genre#"
 
 def update_group(existing_lines, tag, new_records):
-    """
-    插入新抓取源到分组前面，
-    保留组内旧源，组内不重复写入
-    """
+    """插入新抓取源到分组前面，保留组内旧源，不重复写入"""
     if tag not in existing_lines:
         return existing_lines + ["", tag] + new_records + [""]
 
@@ -121,7 +123,7 @@ def update_group(existing_lines, tag, new_records):
 # ===== 更新分组 =====
 lines_after_yangshi = update_group(old_lines, yangshi_tag, yangshi)
 lines_after_weishi = update_group(lines_after_yangshi, weishi_tag, weishi)
-lines_final = lines_after_weishi  # 只保留央视频道和卫视频道
+lines_final = lines_after_weishi
 
 # ===== 写回 live.txt =====
 with open(live_file, "w", encoding="utf-8") as f:
