@@ -20,7 +20,7 @@ sources = {
 
 # ===== 工具函数 =====
 def simplify_name(name: str) -> str:
-    """清理频道名：去掉尾巴多余标记，CCTV 特殊处理"""
+    """清理频道名尾巴并修正 CCTV 编号"""
     tail_patterns = [r'HD', r'高清', r'HD高清', r'cs推流', r'推流cs', r'推流', r'cs', r'高码', r'BRTV']
     name = name.strip()
     changed = True
@@ -103,8 +103,8 @@ else:
 yangshi_tag = "央视频道,#genre#"
 weishi_tag = "卫视频道,#genre#"
 
-def update_group(existing_lines, tag, new_records):
-    """插入新抓取源到分组前面，保留组内旧源，不重复写入"""
+def insert_group_front(existing_lines, tag, new_records):
+    """插入新抓取源到分组前面，保留旧源和其他分组不变"""
     if tag not in existing_lines:
         return existing_lines + ["", tag] + new_records + [""]
 
@@ -114,15 +114,12 @@ def update_group(existing_lines, tag, new_records):
         end_idx += 1
 
     old_group_lines = existing_lines[idx:end_idx]
-    old_names = {line.split(",")[0] for line in old_group_lines}
-    filtered_new_records = [rec for rec in new_records if rec.split(",")[0] not in old_names]
-
-    updated_group = filtered_new_records + old_group_lines
+    updated_group = new_records + old_group_lines
     return existing_lines[:idx] + updated_group + existing_lines[end_idx:]
 
 # ===== 更新分组 =====
-lines_after_yangshi = update_group(old_lines, yangshi_tag, yangshi)
-lines_after_weishi = update_group(lines_after_yangshi, weishi_tag, weishi)
+lines_after_yangshi = insert_group_front(old_lines, yangshi_tag, yangshi)
+lines_after_weishi = insert_group_front(lines_after_yangshi, weishi_tag, weishi)
 lines_final = lines_after_weishi
 
 # ===== 写回 live.txt =====
@@ -175,4 +172,4 @@ def log_channels(name, records, detail_list, color):
 
 log_channels("央视频道", yangshi, yangshi_detail, GREEN)
 log_channels("卫视频道", weishi, weishi_detail, YELLOW)
-print(f"{RED}更新完成 ✅ 已覆盖上一次抓取内容，保留组内其他直播源和其他分组。{RESET}")
+print(f"{RED}更新完成 ✅ 新抓取直播源已插入到分组最前面，保留组内旧源和其他分组不变。{RESET}")
