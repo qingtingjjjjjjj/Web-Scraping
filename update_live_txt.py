@@ -20,7 +20,6 @@ sources = {
 
 # ===== 工具函数 =====
 def simplify_name(name: str) -> str:
-    """清理频道名尾巴并修正 CCTV 编号"""
     tail_patterns = [r'HD', r'高清', r'HD高清', r'cs推流', r'推流cs', r'推流', r'cs', r'高码', r'BRTV']
     name = name.strip()
     changed = True
@@ -30,7 +29,6 @@ def simplify_name(name: str) -> str:
             if re.search(rf'{pattern}$', name, flags=re.IGNORECASE):
                 name = re.sub(rf'{pattern}$', '', name, flags=re.IGNORECASE).strip()
                 changed = True
-    # CCTV 编号修正
     cctv_match = re.match(r"CCTV[-]?0*(\d+)", name, re.IGNORECASE)
     if cctv_match:
         return f"CCTV{cctv_match.group(1)}"
@@ -104,17 +102,33 @@ yangshi_tag = "央视频道,#genre#"
 weishi_tag = "卫视频道,#genre#"
 
 def insert_group_front(existing_lines, tag, new_records):
-    """插入新抓取源到分组前面，只保留最新抓取源，其他分组不变"""
+    """
+    插入新抓取源到分组最前面，
+    删除上一次抓取源，保留组内其他源，其他分组不变
+    """
     if tag not in existing_lines:
-        return existing_lines + ["", tag] + new_records + [""]
+        return existing_lines + ["", tag, "# BEGIN_AUTO_UPDATE"] + new_records + ["# END_AUTO_UPDATE", ""]
 
     idx = existing_lines.index(tag) + 1
     end_idx = idx
     while end_idx < len(existing_lines) and existing_lines[end_idx].strip() != "" and not existing_lines[end_idx].endswith(",#genre#"):
         end_idx += 1
 
-    # 删除旧源，只保留最新抓取的
-    updated_group = new_records
+    group_lines = existing_lines[idx:end_idx]
+    new_group = []
+    skip = False
+    for line in group_lines:
+        if line.strip() == "# BEGIN_AUTO_UPDATE":
+            skip = True
+            continue
+        if line.strip() == "# END_AUTO_UPDATE":
+            skip = False
+            continue
+        if not skip:
+            new_group.append(line)
+
+    # 插入本次抓取的新源到组最前面，并加标记
+    updated_group = ["# BEGIN_AUTO_UPDATE"] + new_records + ["# END_AUTO_UPDATE"] + new_group
     return existing_lines[:idx] + updated_group + existing_lines[end_idx:]
 
 # ===== 更新分组 =====
@@ -172,4 +186,4 @@ def log_channels(name, records, detail_list, color):
 
 log_channels("央视频道", yangshi, yangshi_detail, GREEN)
 log_channels("卫视频道", weishi, weishi_detail, YELLOW)
-print(f"{RED}更新完成 ✅ 本次抓取的直播源已替换上一次，保留组内其他分组不变。{RESET}")
+print(f"{RED}更新完成 ✅ 本次抓取的直播源已覆盖上一次抓取源，保留组内其他源和分组不变。{RESET}")
