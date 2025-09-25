@@ -104,7 +104,7 @@ yangshi_tag = "央视频道,#genre#"
 weishi_tag = "卫视频道,#genre#"
 
 def insert_group_front(existing_lines, tag, new_records):
-    """插入新抓取源到分组前面，保留旧源和其他分组不变"""
+    """插入新抓取源到分组前面，只保留最新抓取源，其他分组不变"""
     if tag not in existing_lines:
         return existing_lines + ["", tag] + new_records + [""]
 
@@ -113,8 +113,8 @@ def insert_group_front(existing_lines, tag, new_records):
     while end_idx < len(existing_lines) and existing_lines[end_idx].strip() != "" and not existing_lines[end_idx].endswith(",#genre#"):
         end_idx += 1
 
-    old_group_lines = existing_lines[idx:end_idx]
-    updated_group = new_records + old_group_lines
+    # 删除旧源，只保留最新抓取的
+    updated_group = new_records
     return existing_lines[:idx] + updated_group + existing_lines[end_idx:]
 
 # ===== 更新分组 =====
@@ -172,4 +172,4 @@ def log_channels(name, records, detail_list, color):
 
 log_channels("央视频道", yangshi, yangshi_detail, GREEN)
 log_channels("卫视频道", weishi, weishi_detail, YELLOW)
-print(f"{RED}更新完成 ✅ 新抓取直播源已插入到分组最前面，保留组内旧源和其他分组不变。{RESET}")
+print(f"{RED}更新完成 ✅ 本次抓取的直播源已替换上一次，保留组内其他分组不变。{RESET}")
