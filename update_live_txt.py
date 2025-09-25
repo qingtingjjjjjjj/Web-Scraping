@@ -21,7 +21,7 @@ sources = {
 # ===== 工具函数 =====
 def simplify_name(name: str) -> str:
     """清理频道名：去掉多余标记，CCTV 特殊处理"""
-    name = re.sub(r'(HD|高清|cs推流|推流|高码|BRTV)', '', name, flags=re.IGNORECASE)
+    name = re.sub(r'(HD|高清|cs推流|cs|推流|高码|BRTV)', '', name, flags=re.IGNORECASE)
     name = name.strip()
     cctv_match = re.match(r"CCTV[-]?0*(\d+)", name, re.IGNORECASE)
     if cctv_match:
@@ -80,7 +80,6 @@ for line in lines_m3u:
         elif current_group == "weishi":
             weishi.append(record)
             weishi_detail.append(f"{current_name} -> {line.strip()} (M3U)")
-        # 其他地方台不保留
 
 if not yangshi and not weishi:
     print(f"{RED}抓取到的直播源为空，保留旧的 live.txt 文件{RESET}")
