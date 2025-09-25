@@ -1,4 +1,4 @@
-mport requests
+import requests
 import os
 import re
 from datetime import datetime, timedelta, timezone
@@ -20,24 +20,20 @@ sources = {
 
 # ===== 工具函数 =====
 def simplify_name(name: str) -> str:
-    """清理频道名：去掉 HD/高清/cs推流，BRTV，CCTV 特殊处理"""
-    # 去掉常见无用标记
-    name = re.sub(r'(HD|高清|cs推流)', '', name, flags=re.IGNORECASE)
+    """清理频道名：去掉 HD/BRTV，CCTV 特殊处理"""
+    name = re.sub(r'\bHD\b', '', name, flags=re.IGNORECASE)
     name = re.sub(r'BRTV', '', name, flags=re.IGNORECASE)
     name = name.strip()
-
-    # CCTV 频道特殊处理（CCTV01 -> CCTV1）
-    cctv_match = re.match(r"CCTV[-_]?0*(\d+)", name, re.IGNORECASE)
+    cctv_match = re.match(r"CCTV[-]?(\d+)", name, re.IGNORECASE)
     if cctv_match:
-        return f"CCTV{int(cctv_match.group(1))}"
-
+        return f"CCTV{cctv_match.group(1)}"
     return name
 
 def fetch_source(name, url, color):
     try:
         resp = requests.get(url, timeout=15)
         resp.raise_for_status()
-        resp.encoding = "utf-8"
+        resp.encoding = "utf-8"  # 确保解码正确
         lines = resp.text.splitlines()
         print(f"{color}[{name}] 抓取成功，共 {len(lines)} 行{RESET}")
         return lines
