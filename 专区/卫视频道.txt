@@ -1,4 +1,3 @@
-📡卫视频道,#genre#
 广东卫视,http://satellitepull.cnr.cn/live/wxgdws/playlist.m3u8
 广东卫视,http://61.136.81.39:5957/rtp/225.1.4.166:1207
 广东卫视,http://j.x.bkpcp.top/jx/GUANGDHD
