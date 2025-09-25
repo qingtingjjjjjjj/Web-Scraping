@@ -14,13 +14,14 @@ live_file = "live.txt"
 
 # ===== 接口地址 =====
 sources = {
-    "M3U": "https://raw.githubusercontent.com/develop202/migu_video/refs/heads/main/interface.txt"
+    "M3U": "https://raw.githubusercontent.com/develop202/migu_video/refs/heads/main/interface.txt",
+    "TXT": "https://hk.gh-proxy.com/https://raw.githubusercontent.com/AnonymousOrz/IPTV/main/Live/collect/央卫内地主流频道cs推流250824(4).txt"
 }
 
 # ===== 工具函数 =====
 def simplify_name(name: str) -> str:
     """清理频道名：去掉 HD/BRTV，CCTV 特殊处理"""
-    name = re.sub(r'HD', '', name, flags=re.IGNORECASE)
+    name = re.sub(r'\bHD\b', '', name, flags=re.IGNORECASE)
     name = re.sub(r'BRTV', '', name, flags=re.IGNORECASE)
     name = name.strip()
     cctv_match = re.match(r"CCTV[-]?(\d+)", name, re.IGNORECASE)
@@ -65,6 +66,21 @@ for line in lines_m3u:
             weishi.append(record)
             weishi_detail.append(f"{current_name} -> {line.strip()} (M3U)")
 
+# ===== 解析 TXT =====
+lines_txt = fetch_source("TXT", sources["TXT"], GREEN)
+for line in lines_txt:
+    if not line.strip() or "," not in line:
+        continue
+    name, url = line.split(",", 1)
+    name = simplify_name(name.strip())
+    url = url.strip()
+    if name.startswith("CCTV") or "央视" in name:
+        yangshi.append(f"{name},{url}")
+        yangshi_detail.append(f"{name} -> {url} (TXT)")
+    elif "卫视" in name:
+        weishi.append(f"{name},{url}")
+        weishi_detail.append(f"{name} -> {url} (TXT)")
+
 if not yangshi and not weishi:
     print(f"{RED}抓取到的直播源为空，保留旧的 live.txt 文件{RESET}")
     exit(0)
@@ -93,16 +109,11 @@ def update_group(existing_lines, tag, new_records):
     while end_idx < len(existing_lines) and existing_lines[end_idx].strip() != "" and not existing_lines[end_idx].endswith(",#genre#"):
         end_idx += 1
 
-    # 当前组旧行
     old_group_lines = existing_lines[idx:end_idx]
-    # 新抓取的名称集合
     new_names = {rec.split(",")[0] for rec in new_records}
-    # 保留旧行中不在新抓取列表的
     filtered_old_lines = [line for line in old_group_lines if line.split(",")[0] not in new_names]
 
-    # 新抓取内容在前，旧未更新内容在后
     updated_group = new_records + filtered_old_lines
-
     return existing_lines[:idx] + updated_group + existing_lines[end_idx:]
 
 # ===== 去重处理分组标签 =====
@@ -112,7 +123,7 @@ def dedup_tags(lines):
     for line in lines:
         if line.endswith(",#genre#"):
             if line in seen:
-                continue  # 跳过重复的标签
+                continue
             seen.add(line)
         result.append(line)
     return result
@@ -121,7 +132,6 @@ def dedup_tags(lines):
 lines_after_yangshi = update_group(old_lines, yangshi_tag, yangshi)
 lines_after_weishi = update_group(lines_after_yangshi, weishi_tag, weishi)
 
-# 去掉重复分组标签
 lines_final = dedup_tags(lines_after_weishi)
 
 # ===== 写回 live.txt =====
@@ -130,12 +140,14 @@ with open(live_file, "w", encoding="utf-8") as f:
 
 # ===== 统计抓取数量 =====
 m3u_count = len(lines_m3u)
+txt_count = len(lines_txt)
 total_count = len(lines_final)
 
 # ===== 颜色化仪表盘日志 =====
 print("\n" + "="*50)
-print(f"{BLUE}>>> M3U 本次抓取: {m3u_count} 条源 {'➤'*3}{RESET}")
-print(f"{GREEN}>>> 总计直播源: {total_count} 条 {'➤'*5}{RESET}")
+print(f"{BLUE}>>> M3U 本次抓取: {m3u_count} 条源{' ➤'*3}{RESET}")
+print(f"{BLUE}>>> TXT 本次抓取: {txt_count} 条源{' ➤'*3}{RESET}")
+print(f"{GREEN}>>> 总计直播源: {total_count} 条{' ➤'*5}{RESET}")
 print("="*50 + "\n")
 
 # ===== 更新 README.md 时间戳和统计 =====
@@ -143,14 +155,13 @@ beijing_tz = timezone(timedelta(hours=8))
 timestamp = datetime.now(beijing_tz).strftime("%Y-%m-%d %H:%M:%S")
 
 header = f"## ✨于 {timestamp} 更新"
-subline = f"**🎉最新可用IPTV源，M3U: {m3u_count} 条，总计: {total_count} 条**"
+subline = f"**🎉最新可用IPTV源，M3U: {m3u_count} 条，TXT: {txt_count} 条，总计: {total_count} 条**"
 statline = f"📺 当前共收录 {total_count} 条直播源"
 
 if os.path.exists("README.md"):
     with open("README.md", "r", encoding="utf-8") as f:
         readme_lines = f.read().splitlines()
 
-    # 删除旧时间戳块
     new_readme = []
     skip_block = False
     for line in readme_lines:
@@ -164,7 +175,6 @@ if os.path.exists("README.md"):
                 continue
         new_readme.append(line)
 
-    # 插入新的时间戳和统计信息
     readme_content = "\n".join([header, subline, statline, ""] + new_readme)
     with open("README.md", "w", encoding="utf-8") as f:
         f.write(readme_content)
