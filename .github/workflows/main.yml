@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout 仓库（使用内置 GITHUB_TOKEN）
+      # 1️⃣ 拉取仓库
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
@@ -32,16 +32,18 @@ jobs:
       - name: Run Python script
         run: python main.py
 
-      # 5️⃣ 提交更改（无改动不会报错）
+      # 5️⃣ 提交更改
       - name: Commit changes
         run: |
           git config --local user.email "actions@github.com"
           git config --local user.name "github_actions[bot]"
-          git add live.txt live.m3u live_lite.txt live_lite.m3u others.txt
-          git commit -m ":tada: Daily AutoUpdate $(date +'%Y%m%d')" || echo "No changes to commit"
+          git add -A
+          TZ='Asia/Shanghai' git commit -m ":tada: Daily AutoUpdate $(date +'%Y-%m-%d %H:%M:%S')" || echo "No changes to commit"
 
-      # 6️⃣ 推送到远程仓库
+      # 6️⃣ 推送（先 rebase，失败就强制推送）
       - name: Push changes
+        run: |
+          git pull --rebase origin main || echo "Rebase failed, will try force push"
+          git push origin main || git push origin main --force
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: git push origin main
