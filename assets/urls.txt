@@ -6,6 +6,7 @@ https://raw.githubusercontent.com/frxz751113/IPTVzb1/refs/heads/main/%E7%BD%91%E
 https://raw.githubusercontent.com/qingtingjjjjjjj/config-tv/refs/heads/main/live.txt
 https://raw.githubusercontent.com/zzmaze/iptv/main/itvlist.txt
 https://raw.githubusercontent.com/junge3333/juds6/main/yszb1.txt
+https://gh-proxy.com/raw.githubusercontent.com/suxuang/myIPTV/main/ipv4.m3u
 https://raw.githubusercontent.com/XO-TV/iptv/refs/heads/master/output/hz.txt
 https://raw.githubusercontent.com/XO-TV/iptv/refs/heads/master/output/iptv.txt
 https://ghfast.top/https://raw.githubusercontent.com/qinvision/hpydy/refs/heads/main/hpydy.txt
