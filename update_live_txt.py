@@ -15,7 +15,8 @@ live_file = "live.txt"
 # ===== 接口地址 =====
 sources = {
     "TXT": "https://hk.gh-proxy.com/https://raw.githubusercontent.com/AnonymousOrz/IPTV/main/Live/collect/央卫内地主流频道cs推流250824(4).txt",
-    "M3U": "https://raw.githubusercontent.com/develop202/migu_video/refs/heads/main/interface.txt"
+    "M3U": "https://raw.githubusercontent.com/develop202/migu_video/refs/heads/main/interface.txt",
+    "M3U_NEW": "https://ghfast.top/https://raw.githubusercontent.com/kakaxi-1/IPTV/refs/heads/main/ipv6.m3u"  # 新增M3U源
 }
 
 # ===== 工具函数 =====
@@ -50,6 +51,26 @@ def fetch_source(name, url, color):
 # ===== 初始化分组 =====
 yangshi, weishi = [], []
 yangshi_detail, weishi_detail = [], []
+
+# ===== 解析 新 M3U =====
+lines_m3u_new = fetch_source("M3U_NEW", sources["M3U_NEW"], BLUE)
+for line in lines_m3u_new:
+    if line.startswith("#EXTINF"):
+        current_name = simplify_name(line.split(",")[-1].strip())
+        if "央视" in line or current_name.startswith("CCTV"):
+            current_group = "yangshi"
+        elif "卫视" in line:
+            current_group = "weishi"
+        else:
+            current_group = None
+    elif line.startswith("http") and current_group and current_name:
+        record = f"{current_name},{line.strip()}"
+        if current_group == "yangshi":
+            yangshi.insert(0, record)  # 保证放在最前面
+            yangshi_detail.insert(0, f"{current_name} -> {line.strip()} (M3U_NEW)")
+        elif current_group == "weishi":
+            weishi.insert(0, record)  # 保证放在最前面
+            weishi_detail.insert(0, f"{current_name} -> {line.strip()} (M3U_NEW)")
 
 # ===== 解析 TXT =====
 lines_txt = fetch_source("TXT", sources["TXT"], GREEN)
@@ -146,12 +167,14 @@ with open(live_file, "w", encoding="utf-8") as f:
 # ===== 统计抓取数量 =====
 txt_count = len(lines_txt)
 m3u_count = len(lines_m3u)
+m3u_new_count = len(lines_m3u_new)
 total_count = len(lines_final)
 
 # ===== 日志输出 =====
 print("\n" + "="*50)
 print(f"{GREEN}>>> TXT 本次抓取: {txt_count} 条源 {'➤'*3}{RESET}")
 print(f"{BLUE}>>> M3U 本次抓取: {m3u_count} 条源 {'➤'*3}{RESET}")
+print(f"{BLUE}>>> 新M3U 本次抓取: {m3u_new_count} 条源 {'➤'*3}{RESET}")
 print(f"{YELLOW}>>> 总计直播源: {total_count} 条 {'➤'*5}{RESET}")
 print("="*50 + "\n")
 
@@ -159,7 +182,7 @@ print("="*50 + "\n")
 beijing_tz = timezone(timedelta(hours=8))
 timestamp = datetime.now(beijing_tz).strftime("%Y-%m-%d %H:%M:%S")
 header = f"## ✨于 {timestamp} 更新"
-subline = f"**🎉最新可用IPTV源，TXT: {txt_count} 条，M3U: {m3u_count} 条，总计: {total_count} 条**"
+subline = f"**🎉最新可用IPTV源，TXT: {txt_count} 条，M3U: {m3u_count} 条，新M3U: {m3u_new_count} 条，总计: {total_count} 条**"
 statline = f"📺 当前共收录 {total_count} 条直播源"
 
 if os.path.exists("README.md"):
