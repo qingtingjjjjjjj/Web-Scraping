@@ -54,6 +54,10 @@ yangshi_detail, weishi_detail = [], []
 
 # ===== 解析 新 M3U =====
 lines_m3u_new = fetch_source("M3U_NEW", sources["M3U_NEW"], BLUE)
+temp_yangshi, temp_yangshi_detail = [], []
+temp_weishi, temp_weishi_detail = [], []
+
+current_group, current_name = None, None
 for line in lines_m3u_new:
     if line.startswith("#EXTINF"):
         current_name = simplify_name(line.split(",")[-1].strip())
@@ -66,11 +70,26 @@ for line in lines_m3u_new:
     elif line.startswith("http") and current_group and current_name:
         record = f"{current_name},{line.strip()}"
         if current_group == "yangshi":
-            yangshi.insert(0, record)  # 保证放在最前面
-            yangshi_detail.insert(0, f"{current_name} -> {line.strip()} (M3U_NEW)")
+            temp_yangshi.append(record)
+            temp_yangshi_detail.append(f"{current_name} -> {line.strip()} (M3U_NEW)")
         elif current_group == "weishi":
-            weishi.insert(0, record)  # 保证放在最前面
-            weishi_detail.insert(0, f"{current_name} -> {line.strip()} (M3U_NEW)")
+            temp_weishi.append(record)
+            temp_weishi_detail.append(f"{current_name} -> {line.strip()} (M3U_NEW)")
+
+# ===== CCTV编号排序：小到大 =====
+def cctv_sort_key(record):
+    name = record.split(",")[0]
+    match = re.match(r"CCTV(\d+)", name)
+    return int(match.group(1)) if match else 999
+
+temp_yangshi_sorted = sorted(temp_yangshi, key=cctv_sort_key)
+temp_yangshi_detail_sorted = [x for _, x in sorted(zip(temp_yangshi, temp_yangshi_detail), key=lambda pair: cctv_sort_key(pair[0]))]
+
+# ===== 插入到主列表最前面 =====
+yangshi = temp_yangshi_sorted + yangshi
+yangshi_detail = temp_yangshi_detail_sorted + yangshi_detail
+weishi = temp_weishi + weishi
+weishi_detail = temp_weishi_detail + weishi_detail
 
 # ===== 解析 TXT =====
 lines_txt = fetch_source("TXT", sources["TXT"], GREEN)
@@ -87,7 +106,7 @@ for line in lines_txt:
         weishi.append(f"{name},{url}")
         weishi_detail.append(f"{name} -> {url} (TXT)")
 
-# ===== 解析 M3U =====
+# ===== 解析 原 M3U =====
 lines_m3u = fetch_source("M3U", sources["M3U"], YELLOW)
 current_group, current_name = None, None
 for line in lines_m3u:
@@ -125,19 +144,12 @@ weishi_tag = "卫视频道,#genre#"
 
 # ===== 插入分组函数：只更新已有分组，不新增 =====
 def insert_group_front(existing_lines, tag, new_records):
-    """
-    只更新已有分组，不新增分组
-    删除上一次抓取源，并插入本次抓取的新源到组最前面
-    """
     if tag not in existing_lines:
-        # 分组不存在，直接返回原内容
         return existing_lines
-
     idx = existing_lines.index(tag) + 1
     end_idx = idx
     while end_idx < len(existing_lines) and existing_lines[end_idx].strip() != "" and not existing_lines[end_idx].endswith(",#genre#"):
         end_idx += 1
-
     group_lines = existing_lines[idx:end_idx]
     new_group = []
     skip = False
@@ -150,8 +162,6 @@ def insert_group_front(existing_lines, tag, new_records):
             continue
         if not skip:
             new_group.append(line)
-
-    # 插入本次抓取的新源到组最前面，并加标记
     updated_group = ["# BEGIN_AUTO_UPDATE"] + new_records + ["# END_AUTO_UPDATE"] + new_group
     return existing_lines[:idx] + updated_group + existing_lines[end_idx:]
 
