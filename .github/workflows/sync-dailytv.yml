@@ -13,13 +13,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1️⃣ 拉取仓库
       - name: Checkout the repository
         uses: actions/checkout@v2
 
+      # 2️⃣ 安装 rclone
       - name: Install rclone
         run: |
           curl https://rclone.org/install.sh | sudo bash
 
+      # 3️⃣ 配置 rclone remote
       - name: Configure rclone with Cloudflare R2
         env:
           R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
@@ -35,7 +38,26 @@ jobs:
             location "auto" \
             acl "private"
 
+      # 4️⃣ 检查本地文件
+      - name: Check local live.txt
+        run: |
+          if [ -f ./live.txt ]; then
+            echo "Found live.txt:"
+            ls -lh ./live.txt
+          else
+            echo "Error: live.txt not found!" 
+            exit 1
+          fi
+
+      # 5️⃣ 检查远程 R2 桶
+      - name: Check R2 bucket
+        run: |
+          echo "Listing R2 bucket root:"
+          rclone lsd cloudflare_r2:
+
+      # 6️⃣ 上传文件
       - name: Upload live.txt to Cloudflare R2
         run: |
-          # 直接上传 live.txt，固定对象名为 DailyTV.txt，日志简洁
+          echo "Uploading live.txt as DailyTV.txt to Cloudflare R2..."
           rclone copyto ./live.txt cloudflare_r2:optimization/DailyTV.txt
+          echo "Upload complete."
