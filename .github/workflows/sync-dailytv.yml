@@ -1,20 +1,20 @@
 name: Sync live.txt to Cloudflare R2
 
-# 触发器：每天定时、手动触发、push 到 main 分支
+# 触发器：push 到 main、手动触发、每天定时
 on:
-  schedule:
-    - cron: '10 0 * * *'  # UTC 每天 00:10
-  workflow_dispatch:
   push:
     branches:
       - main
+  workflow_dispatch:
+  schedule:
+    - cron: '10 0 * * *'  # UTC 每天 00:10
 
 jobs:
   sync:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ 拉取仓库代码
+      # 1️⃣ 拉取仓库
       - name: Checkout repository
         uses: actions/checkout@v3
 
@@ -23,8 +23,8 @@ jobs:
         run: |
           curl https://rclone.org/install.sh | sudo bash
 
-      # 3️⃣ 创建 rclone 配置文件，避免换行报错
-      - name: Create rclone config file
+      # 3️⃣ 创建 rclone 配置文件
+      - name: Create rclone config
         env:
           R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
           R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
@@ -43,8 +43,8 @@ location = auto
 acl = private
 EOF
 
-      # 4️⃣ 检查本地文件是否存在
-      - name: Check local live.txt
+      # 4️⃣ 检查文件是否存在
+      - name: Check live.txt
         run: |
           if [ -f ./live.txt ]; then
             echo "Found live.txt:" && ls -lh ./live.txt
@@ -52,8 +52,8 @@ EOF
             echo "Error: live.txt not found!" && exit 1
           fi
 
-      # 5️⃣ 上传文件到 Cloudflare R2
-      - name: Upload live.txt to Cloudflare R2
+      # 5️⃣ 上传文件
+      - name: Upload to Cloudflare R2
         run: |
           echo "Uploading live.txt as DailyTV.txt to Cloudflare R2..."
           rclone copyto ./live.txt cloudflare_r2:optimization/DailyTV.txt
