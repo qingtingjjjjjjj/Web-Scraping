@@ -22,23 +22,27 @@ jobs:
         run: |
           curl https://rclone.org/install.sh | sudo bash
 
-      # 3️⃣ 配置 rclone remote
-      - name: Configure rclone with Cloudflare R2
+      # 3️⃣ 创建 rclone 配置文件，避免换行报错
+      - name: Create rclone config file
         env:
           R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
           R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
           R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
         run: |
-          rclone config create cloudflare_r2 s3 \
-            provider "Other" \
-            env_auth "false" \
-            access_key_id "${R2_ACCESS_KEY_ID}" \
-            secret_access_key "${R2_SECRET_ACCESS_KEY}" \
-            endpoint "https://${R2_ACCOUNT_ID}.r2.cloudflarestorage.com" \
-            location "auto" \
-            acl "private"
+          mkdir -p ~/.config/rclone
+          cat > ~/.config/rclone/rclone.conf <<EOF
+[cloudflare_r2]
+type = s3
+provider = Other
+env_auth = false
+access_key_id = $R2_ACCESS_KEY_ID
+secret_access_key = $R2_SECRET_ACCESS_KEY
+endpoint = https://$R2_ACCOUNT_ID.r2.cloudflarestorage.com
+location = auto
+acl = private
+EOF
 
-      # 4️⃣ 检查本地文件
+      # 4️⃣ 检查本地文件是否存在
       - name: Check local live.txt
         run: |
           if [ -f ./live.txt ]; then
@@ -47,7 +51,7 @@ jobs:
             echo "Error: live.txt not found!" && exit 1
           fi
 
-      # 5️⃣ 上传文件
+      # 5️⃣ 上传文件到 Cloudflare R2
       - name: Upload live.txt to Cloudflare R2
         run: |
           echo "Uploading live.txt as DailyTV.txt to Cloudflare R2..."
