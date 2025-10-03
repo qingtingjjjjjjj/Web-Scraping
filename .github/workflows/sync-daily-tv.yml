@@ -1,10 +1,10 @@
 name: Sync live.txt to Cloudflare R2
 
-# 触发器：push 到 main、手动触发、每天定时
 on:
   push:
     branches:
       - main
+      - master
   workflow_dispatch:
   schedule:
     - cron: '10 0 * * *'  # UTC 每天 00:10
@@ -52,8 +52,8 @@ EOF
             echo "Error: live.txt not found!" && exit 1
           fi
 
-      # 5️⃣ 上传文件
-      - name: Upload to Cloudflare R2
+      # 5️⃣ 上传文件到 Cloudflare R2
+      - name: Upload live.txt to Cloudflare R2
         run: |
           echo "Uploading live.txt as DailyTV.txt to Cloudflare R2..."
           rclone copyto ./live.txt cloudflare_r2:optimization/DailyTV.txt
