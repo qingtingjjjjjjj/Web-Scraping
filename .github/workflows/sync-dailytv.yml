@@ -35,25 +35,7 @@ jobs:
             location "auto" \
             acl "private"
 
-      - name: Check if live.txt changed
-        id: check
+      - name: Upload live.txt to Cloudflare R2
         run: |
-          if [ -f ./live.txt ]; then
-            # 使用 rclone md5sum 检查远程文件是否存在以及内容是否相同
-            REMOTE_HASH=$(rclone md5sum cloudflare_r2:optimization/DailyTV.txt 2>/dev/null | awk '{print $1}')
-            LOCAL_HASH=$(md5sum ./live.txt | awk '{print $1}')
-            echo "remote=$REMOTE_HASH"
-            echo "local=$LOCAL_HASH"
-            if [ "$REMOTE_HASH" = "$LOCAL_HASH" ]; then
-              echo "changed=false" >> $GITHUB_OUTPUT
-            else
-              echo "changed=true" >> $GITHUB_OUTPUT
-            fi
-          else
-            echo "changed=false" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Upload live.txt to Cloudflare R2 if changed
-        if: steps.check.outputs.changed == 'true'
-        run: |
+          # 每次直接上传 live.txt，固定对象名为 DailyTV.txt
           rclone copyto ./live.txt cloudflare_r2:optimization/DailyTV.txt --progress
