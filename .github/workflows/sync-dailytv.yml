@@ -2,7 +2,7 @@ name: Sync Files to Cloudflare R2
 
 on:
   schedule:
-    - cron: '10 0 * * *'  # 这是 UTC 时间 00:10
+    - cron: '10 0 * * *'  # UTC 时间每天 00:10
   workflow_dispatch:
   push:
     branches:
@@ -37,5 +37,5 @@ jobs:
 
     - name: Sync live.txt to Cloudflare R2
       run: |
-        # 使用 rclone 上传文件到目标存储桶（不创建目录）
-        rclone copy ./live.txt cloudflare_r2:optimization/ --progress
+        # 上传 live.txt 到 R2，并命名为 DailyTV.txt
+        rclone copy ./live.txt cloudflare_r2:optimization/DailyTV.txt --progress --update
