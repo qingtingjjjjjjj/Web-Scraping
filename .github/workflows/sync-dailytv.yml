@@ -13,29 +13,47 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout the repository
-      uses: actions/checkout@v2
+      - name: Checkout the repository
+        uses: actions/checkout@v2
 
-    - name: Install rclone
-      run: |
-        curl https://rclone.org/install.sh | sudo bash
+      - name: Install rclone
+        run: |
+          curl https://rclone.org/install.sh | sudo bash
 
-    - name: Configure rclone with Cloudflare R2
-      env:
-        R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
-        R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
-        R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
-      run: |
-        rclone config create cloudflare_r2 s3 \
-          provider "Other" \
-          env_auth "false" \
-          access_key_id "${R2_ACCESS_KEY_ID}" \
-          secret_access_key "${R2_SECRET_ACCESS_KEY}" \
-          endpoint "https://${R2_ACCOUNT_ID}.r2.cloudflarestorage.com" \
-          location "auto" \
-          acl "private"
+      - name: Configure rclone with Cloudflare R2
+        env:
+          R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+        run: |
+          rclone config create cloudflare_r2 s3 \
+            provider "Other" \
+            env_auth "false" \
+            access_key_id "${R2_ACCESS_KEY_ID}" \
+            secret_access_key "${R2_SECRET_ACCESS_KEY}" \
+            endpoint "https://${R2_ACCOUNT_ID}.r2.cloudflarestorage.com" \
+            location "auto" \
+            acl "private"
 
-    - name: Sync live.txt to Cloudflare R2
-      run: |
-        # 上传 live.txt 并固定对象名为 DailyTV.txt
-        rclone copy ./live.txt cloudflare_r2:optimization/DailyTV.txt --progress --update
+      - name: Check if live.txt changed
+        id: check
+        run: |
+          if [ -f ./live.txt ]; then
+            # 使用 rclone md5sum 检查远程文件是否存在以及内容是否相同
+            REMOTE_HASH=$(rclone md5sum cloudflare_r2:optimization/DailyTV.txt 2>/dev/null | awk '{print $1}')
+            LOCAL_HASH=$(md5sum ./live.txt | awk '{print $1}')
+            echo "remote=$REMOTE_HASH"
+            echo "local=$LOCAL_HASH"
+            if [ "$REMOTE_HASH" = "$LOCAL_HASH" ]; then
+              echo "changed=false" >> $GITHUB_OUTPUT
+            else
+              echo "changed=true" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Upload live.txt to Cloudflare R2 if changed
+        if: steps.check.outputs.changed == 'true'
+        run: |
+          rclone copyto ./live.txt cloudflare_r2:optimization/DailyTV.txt --progress
