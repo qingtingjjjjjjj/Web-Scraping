@@ -37,5 +37,5 @@ jobs:
 
       - name: Upload live.txt to Cloudflare R2
         run: |
-          # 每次直接上传 live.txt，固定对象名为 DailyTV.txt
-          rclone copyto ./live.txt cloudflare_r2:optimization/DailyTV.txt --progress
+          # 直接上传 live.txt，固定对象名为 DailyTV.txt，日志简洁
+          rclone copyto ./live.txt cloudflare_r2:optimization/DailyTV.txt
