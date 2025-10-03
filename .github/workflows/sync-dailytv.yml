@@ -1,33 +1,24 @@
-name: Auto Sync Live Sources to Cloudflare R2
+name: Sync Files to Cloudflare R2
 
 on:
+  schedule:
+    - cron: '10 0 * * *'  # 这是 UTC 时间 00:10
+  workflow_dispatch:
   push:
     branches:
-      - main  # 仓库 main 分支有更新就触发
-  workflow_dispatch:  # 可手动触发
+      - main
 
 jobs:
   sync:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+    - name: Checkout the repository
+      uses: actions/checkout@v2
 
     - name: Install rclone
       run: |
         curl https://rclone.org/install.sh | sudo bash
-
-    - name: Merge all live source files into DailyTV.txt
-      run: |
-        # 清空旧文件
-        > DailyTV.txt
-        # 找出所有 m3u/m3u8/txt 文件并按文件名排序合并
-        find . -type f \( -name "*.m3u" -o -name "*.m3u8" -o -name "*.txt" \) | sort | while read file; do
-          cat "$file" >> DailyTV.txt
-          echo "" >> DailyTV.txt
-        done
-        echo "Merged all live sources into DailyTV.txt"
 
     - name: Configure rclone with Cloudflare R2
       env:
@@ -44,6 +35,7 @@ jobs:
           location "auto" \
           acl "private"
 
-    - name: Upload DailyTV.txt to R2
+    - name: Sync live.txt to Cloudflare R2
       run: |
-        rclone copy ./DailyTV.txt cloudflare_r2:optimization/DailyTV.txt --progress
+        # 使用 rclone 上传文件到目标存储桶（不创建目录）
+        rclone copy ./live.txt cloudflare_r2:optimization/ --progress
