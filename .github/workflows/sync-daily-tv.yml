@@ -43,7 +43,7 @@ location = auto
 acl = private
 EOF
 
-      # 4️⃣ 检查文件是否存在
+      # 4️⃣ 检查本地文件是否存在
       - name: Check live.txt
         run: |
           if [ -f ./live.txt ]; then
@@ -52,7 +52,7 @@ EOF
             echo "Error: live.txt not found!" && exit 1
           fi
 
-      # 5️⃣ 上传文件到 Cloudflare R2
+      # 5️⃣ 上传文件到 Cloudflare R2，固定对象名 DailyTV.txt
       - name: Upload live.txt to Cloudflare R2
         run: |
           echo "Uploading live.txt as DailyTV.txt to Cloudflare R2..."
