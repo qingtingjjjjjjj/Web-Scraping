@@ -3,7 +3,7 @@ name: Sync DailyTV.txt to Cloudflare R2
 on:
   schedule:
     - cron: '10 0 * * *'  # 每天 UTC 00:10 自动同步
-  workflow_dispatch:
+  workflow_dispatch:       # 可手动触发
   push:
     branches:
       - main
@@ -37,5 +37,5 @@ jobs:
 
     - name: Upload DailyTV.txt to R2
       run: |
-        # 假设仓库里源文件是 live.txt，上传为 DailyTV.txt
+        # 上传仓库里的 live.txt，命名为 DailyTV.txt
         rclone copy ./live.txt cloudflare_r2:optimization/DailyTV.txt --progress
