@@ -37,5 +37,5 @@ jobs:
 
     - name: Sync live.txt to Cloudflare R2
       run: |
-        # 上传 live.txt 到 R2，并命名为 DailyTV.txt
+        # 上传 live.txt 并固定对象名为 DailyTV.txt
         rclone copy ./live.txt cloudflare_r2:optimization/DailyTV.txt --progress --update
