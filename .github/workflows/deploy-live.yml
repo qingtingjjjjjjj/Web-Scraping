@@ -1,0 +1,32 @@
+name: Auto Deploy live.txt to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main       # 每次 main 分支更新
+  workflow_dispatch: # 可手动触发
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1️⃣ 检出代码
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    # 2️⃣ 安装必要工具（可选）
+    - name: Setup Git
+      run: |
+        git config --global user.name "github-actions"
+        git config --global user.email "github-actions@users.noreply.github.com"
+
+    # 3️⃣ 使用 actions-gh-pages 部署
+    - name: Deploy live.txt to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v6
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_branch: gh-pages     # Pages 分支
+        publish_dir: ./              # 根目录
+        keep_files: true             # 保留其他文件
+        allow_empty_commit: true     # 即使没有变化也提交
