@@ -3,44 +3,37 @@ name: Sync live.txt to Cloudflare R2
 on:
   push:
     branches:
-      - main        # 每次 push main 分支触发
+      - main
   schedule:
-    - cron: '10 0 * * *'  # 每天 UTC 00:10 自动触发
-  workflow_dispatch:       # 支持手动触发
+    - cron: '10 0 * * *'
+  workflow_dispatch:
 
 jobs:
   sync:
     runs-on: ubuntu-latest
-
     steps:
-      # 1️⃣ 拉取仓库代码
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-      # 2️⃣ 安装 rclone
       - name: Install rclone
         run: |
           curl https://rclone.org/install.sh | sudo bash
 
-      # 3️⃣ 上传 live.txt 到 Cloudflare R2
       - name: Upload live.txt to R2
         shell: bash
         run: |
-          # 检查本地文件是否存在
-          if [ -f ./live.txt ]; then
-            echo "开始上传 live.txt 到 R2 桶 bxtv..."
-
-            rclone copy ./live.txt \
-              "s3://bxtv/DailyTV.txt" \
-              --s3-access-key-id "${{ secrets.R2_ACCESS_KEY }}" \
-              --s3-secret-access-key "${{ secrets.R2_SECRET_KEY }}" \
-              --s3-endpoint "https://f0f6bddeda81f13cec09327818e9348b.r2.cloudflarestorage.com" \
-              --s3-region "auto" \
-              --s3-provider "Cloudflare" \
-              --progress
-
-            echo "上传完成 ✅"
-          else
+          if [ ! -f ./live.txt ]; then
             echo "错误：本地文件 live.txt 不存在，上传失败！"
             exit 1
           fi
+
+          echo "开始上传 live.txt 到 R2 桶 bxtv..."
+
+          rclone copy ./live.txt s3:bxtv/DailyTV.txt \
+            --s3-provider Minio \
+            --s3-endpoint https://f0f6bddeda81f13cec09327818e9348b.r2.cloudflarestorage.com \
+            --s3-access-key-id ${{ secrets.R2_ACCESS_KEY }} \
+            --s3-secret-access-key ${{ secrets.R2_SECRET_KEY }} \
+            --s3-region auto \
+            --progress
+
+          echo "上传完成 ✅"
