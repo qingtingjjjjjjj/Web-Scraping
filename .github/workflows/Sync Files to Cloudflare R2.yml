@@ -31,7 +31,14 @@ jobs:
           secret_access_key "${R2_SECRET_ACCESS_KEY}" \
           endpoint "https://${R2_ACCOUNT_ID}.r2.cloudflarestorage.com"
 
+    - name: Check live.txt content
+      run: |
+        echo "=== 文件信息 ==="
+        ls -lh ./live.txt
+        echo "=== 文件前10行内容预览 ==="
+        head -n 10 ./live.txt || echo "live.txt 是空的"
+
     - name: Upload live.txt as DailyTV.txt
       run: |
-        # 上传到 bxtv 存储桶，固定命名为 DailyTV.txt
-        rclone copyto ./live.txt cloudflare_r2:bxtv/DailyTV.txt --progress
+        echo "=== 上传到 bxtv/DailyTV.txt ==="
+        rclone copyto ./live.txt cloudflare_r2:bxtv/DailyTV.txt --progress --ignore-times -vv
