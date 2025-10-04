@@ -1,4 +1,4 @@
-name: Upload Live.txt to Cloudflare R2
+name: Upload live.txt to Cloudflare R2
 
 on:
   push:
@@ -43,10 +43,22 @@ jobs:
           --non-interactive
 
         echo "开始上传 $FILE 到 R2 桶 $R2_BUCKET/DailyTV.txt ..."
-        if rclone copy "$FILE" tmp_cloudflare:"$R2_BUCKET"/DailyTV.txt --progress; then
-          echo "上传成功 ✅"
-        else
-          echo "上传失败 ❌，请检查 endpoint、桶名、Access Key 和 Secret Key 是否正确"
+        RETRY=0
+        MAX_RETRY=3
+        until [ $RETRY -ge $MAX_RETRY ]
+        do
+          if rclone copy "$FILE" tmp_cloudflare:"$R2_BUCKET"/DailyTV.txt --progress; then
+            echo "上传成功 ✅"
+            break
+          else
+            RETRY=$((RETRY+1))
+            echo "上传失败 ❌，第 $RETRY 次重试..."
+            sleep 5
+          fi
+        done
+
+        if [ $RETRY -eq $MAX_RETRY ]; then
+          echo "上传失败，超过最大重试次数 ❌"
           exit 1
         fi
 
