@@ -34,7 +34,7 @@ jobs:
 
           echo "开始配置临时 rclone remote 并上传 live.txt 到 R2 桶 bxtv..."
 
-          # 创建临时 remote (非交互式)
+          # ⚠️ endpoint 格式必须正确，确保只有一个 https://
           rclone config create tmp_cloudflare s3 \
             provider Minio \
             access_key_id "${{ secrets.R2_ACCESS_KEY }}" \
