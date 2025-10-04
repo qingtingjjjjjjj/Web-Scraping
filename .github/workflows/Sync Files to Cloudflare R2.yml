@@ -20,16 +20,15 @@ jobs:
         run: |
           curl https://rclone.org/install.sh | sudo bash
 
-      - name: Configure rclone for Cloudflare R2
-        run: |
-          rclone config create cloudflare_r2 s3 \
-            env_auth=false \
-            access_key_id ${{ secrets.R2_ACCESS_KEY }} \
-            secret_access_key ${{ secrets.R2_SECRET_KEY }} \
-            region=auto \
-            endpoint=https://f0f6bddeda81f13cec09327818e9348b.r2.cloudflarestorage.com \
-            acl=private
-
       - name: Upload live.txt to R2
         run: |
-          rclone copy ./live.txt cloudflare_r2:bxtv/DailyTV.txt --progress
+          # 设置 R2 密钥
+          export R2_ACCESS_KEY="${{ secrets.R2_ACCESS_KEY }}"
+          export R2_SECRET_KEY="${{ secrets.R2_SECRET_KEY }}"
+
+          # 上传文件到 R2 桶 bxtv，命名为 DailyTV.txt
+          rclone copy ./live.txt s3:bxtv/DailyTV.txt \
+            --s3-access-key-id $R2_ACCESS_KEY \
+            --s3-secret-access-key $R2_SECRET_KEY \
+            --s3-endpoint https://f0f6bddeda81f13cec09327818e9348b.r2.cloudflarestorage.com \
+            --progress
