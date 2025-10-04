@@ -21,12 +21,20 @@ jobs:
           curl https://rclone.org/install.sh | sudo bash
 
       - name: Upload live.txt to R2
+        shell: bash
         run: |
-          # 设置 R2 密钥
+          # 导出 R2 密钥
           export R2_ACCESS_KEY="${{ secrets.R2_ACCESS_KEY }}"
           export R2_SECRET_KEY="${{ secrets.R2_SECRET_KEY }}"
 
-          # 使用 S3 backend URL 直接上传文件到 R2 桶 bxtv，命名为 DailyTV.txt
-          rclone copy ./live.txt \
-            "s3://${R2_ACCESS_KEY}:${R2_SECRET_KEY}@bxtv/DailyTV.txt?endpoint=https://f0f6bddeda81f13cec09327818e9348b.r2.cloudflarestorage.com&region=auto" \
-            --progress
+          # 检查本地文件是否存在
+          if [ -f ./live.txt ]; then
+            echo "开始上传 live.txt 到 R2 桶 bxtv..."
+            rclone copy ./live.txt \
+              "s3://${R2_ACCESS_KEY}:${R2_SECRET_KEY}@bxtv/DailyTV.txt?endpoint=https://f0f6bddeda81f13cec09327818e9348b.r2.cloudflarestorage.com&region=auto" \
+              --progress
+            echo "上传完成 ✅"
+          else
+            echo "错误：本地文件 live.txt 不存在，上传失败！"
+            exit 1
+          fi
