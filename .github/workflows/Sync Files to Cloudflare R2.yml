@@ -1,50 +1,50 @@
-name: Sync live.txt to Cloudflare R2
+name: Upload live.txt to Cloudflare R2
 
 on:
   push:
     branches:
-      - main        # 每次 push main 分支触发
-  schedule:
-    - cron: '10 0 * * *'  # 每天 UTC 00:10 自动触发
-  workflow_dispatch:       # 支持手动触发
+      - main
+  workflow_dispatch:
 
 jobs:
-  sync:
+  upload:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ 拉取仓库代码
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      # 2️⃣ 安装 rclone
       - name: Install rclone
         run: |
           curl https://rclone.org/install.sh | sudo bash
 
-      # 3️⃣ 配置临时 remote 并上传 live.txt
       - name: Upload live.txt to R2
-        shell: bash
+        env:
+          R2_ACCESS_KEY: ${{ secrets.R2_ACCESS_KEY }}
+          R2_SECRET_KEY: ${{ secrets.R2_SECRET_KEY }}
         run: |
-          # 检查本地文件是否存在
-          if [ ! -f ./live.txt ]; then
-            echo "错误：本地文件 live.txt 不存在，上传失败！"
+          FILE=./live.txt
+          BUCKET=bxtv
+          OBJECT=DailyTV.txt
+          ENDPOINT="https://f0f6bddeda81f13cec09327818e9348b.r2.cloudflarestorage.com"
+
+          if [ ! -f "$FILE" ]; then
+            echo "$FILE 不存在，上传终止"
             exit 1
           fi
 
-          echo "开始配置临时 rclone remote 并上传 live.txt 到 R2 桶 bxtv..."
+          echo "开始上传 $FILE 到 R2 桶 $BUCKET/$OBJECT ..."
 
-          # ⚠️ endpoint 格式必须正确，确保只有一个 https://
+          # 创建临时 rclone remote
           rclone config create tmp_cloudflare s3 \
             provider Minio \
-            access_key_id "${{ secrets.R2_ACCESS_KEY }}" \
-            secret_access_key "${{ secrets.R2_SECRET_KEY }}" \
-            endpoint "https://f0f6bddeda81f13cec09327818e9348b.r2.cloudflarestorage.com" \
+            access_key_id "$R2_ACCESS_KEY" \
+            secret_access_key "$R2_SECRET_KEY" \
+            endpoint "$ENDPOINT" \
             region auto \
             acl private \
             --non-interactive
 
           # 上传文件
-          rclone copy ./live.txt tmp_cloudflare:bxtv/DailyTV.txt --progress
-
+          rclone copy "$FILE" tmp_cloudflare:"$BUCKET/$OBJECT" --progress
           echo "上传完成 ✅"
