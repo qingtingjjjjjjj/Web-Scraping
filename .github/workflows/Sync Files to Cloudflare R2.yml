@@ -3,8 +3,8 @@ name: Upload live.txt to Cloudflare R2
 on:
   push:
     paths:
-      - live.txt  # 只有 live.txt 变动才触发
-  workflow_dispatch: # 可手动触发
+      - live.txt   # 只在 live.txt 变动时触发
+  workflow_dispatch: # 手动触发
 
 jobs:
   upload:
@@ -14,7 +14,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up rclone
+      - name: Install rclone
         run: |
           curl https://rclone.org/install.sh | sudo bash
 
@@ -46,6 +46,8 @@ jobs:
           for i in 1 2 3; do
             if rclone copy "$FILE" tmp_cloudflare:"$BUCKET/$OBJECT" --progress; then
               echo "上传成功 ✅"
+              # 删除临时 remote
+              rclone config delete tmp_cloudflare
               exit 0
             else
               echo "上传失败，第 $i 次重试..."
@@ -54,4 +56,5 @@ jobs:
           done
 
           echo "上传失败 ❌，请检查 endpoint、桶名、Access Key 和 Secret Key 是否正确"
+          rclone config delete tmp_cloudflare
           exit 1
