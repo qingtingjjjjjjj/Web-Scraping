@@ -2,9 +2,9 @@ name: Upload live.txt to Cloudflare R2
 
 on:
   push:
-    branches:
-      - main
-  workflow_dispatch:
+    paths:
+      - live.txt  # 只有 live.txt 变动才触发
+  workflow_dispatch: # 可手动触发
 
 jobs:
   upload:
@@ -14,7 +14,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Install rclone
+      - name: Set up rclone
         run: |
           curl https://rclone.org/install.sh | sudo bash
 
@@ -22,29 +22,36 @@ jobs:
         env:
           R2_ACCESS_KEY: ${{ secrets.R2_ACCESS_KEY }}
           R2_SECRET_KEY: ${{ secrets.R2_SECRET_KEY }}
+          R2_ENDPOINT: https://f0f6bddeda81f13cec09327818e9348b.r2.cloudflarestorage.com
+          BUCKET: bxtv
+          OBJECT: DailyTV.txt
         run: |
-          FILE=./live.txt
-          BUCKET=bxtv
-          OBJECT=DailyTV.txt
-          ENDPOINT="https://f0f6bddeda81f13cec09327818e9348b.r2.cloudflarestorage.com"
-
+          FILE="./live.txt"
           if [ ! -f "$FILE" ]; then
             echo "$FILE 不存在，上传终止"
             exit 1
           fi
 
-          echo "开始上传 $FILE 到 R2 桶 $BUCKET/$OBJECT ..."
-
-          # 创建临时 rclone remote
+          echo "配置临时 rclone remote..."
           rclone config create tmp_cloudflare s3 \
             provider Minio \
             access_key_id "$R2_ACCESS_KEY" \
             secret_access_key "$R2_SECRET_KEY" \
-            endpoint "$ENDPOINT" \
+            endpoint "$R2_ENDPOINT" \
             region auto \
             acl private \
             --non-interactive
 
-          # 上传文件
-          rclone copy "$FILE" tmp_cloudflare:"$BUCKET/$OBJECT" --progress
-          echo "上传完成 ✅"
+          echo "开始上传 $FILE 到 R2 桶 $BUCKET/$OBJECT ..."
+          for i in 1 2 3; do
+            if rclone copy "$FILE" tmp_cloudflare:"$BUCKET/$OBJECT" --progress; then
+              echo "上传成功 ✅"
+              exit 0
+            else
+              echo "上传失败，第 $i 次重试..."
+              sleep 3
+            fi
+          done
+
+          echo "上传失败 ❌，请检查 endpoint、桶名、Access Key 和 Secret Key 是否正确"
+          exit 1
