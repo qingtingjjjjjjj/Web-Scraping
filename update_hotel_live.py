@@ -1,5 +1,6 @@
 import requests
 import os
+import sys
 
 ROOT_DIR = os.getcwd()
 SOURCE_URL = "https://raw.githubusercontent.com/wangchongzhq/wangchongzhq/2dbe3356a5a073fa4981f54c6b6e53e9117ca10e/109.txt"
@@ -32,6 +33,8 @@ def extract_4k_streams(content):
 
         if GROUP_KEYWORD in line and ",#genre#" in line:
             include_line = True
+            # 保留分组行
+            result.append(line)
             continue
 
         if include_line:
@@ -41,20 +44,26 @@ def extract_4k_streams(content):
             if len(parts) == 2:
                 result.append(f"{parts[0]}: {parts[1]}")
 
-    print(f"抓取到 {len(result)} 个 4K 直播源")
+    print(f"抓取到 {len(result)-1} 个 4K 直播源")  # 减去分组行
     return result
 
 def save_file(path, lines):
-    # 无论是否抓到源，都生成文件
+    if not lines:
+        print("⚠️ 未抓到任何 4K 直播源，文件不会提交")
+        print("STREAM_COUNT=0")
+        return 0
     with open(path, "w", encoding="utf-8-sig") as f:
         for line in lines:
             f.write(line + "\n")
     print(f"✅ 文件已生成: {os.path.abspath(path)}")
+    print(f"STREAM_COUNT={len(lines)-1}")  # 减去分组行
+    return len(lines)-1
 
 def main():
     content = fetch_source()
     streams = extract_4k_streams(content) if content else []
-    save_file(OUTPUT_FILE, streams)
+    count = save_file(OUTPUT_FILE, streams)
+    sys.exit(0 if count > 0 else 1)
 
 if __name__ == "__main__":
     main()
