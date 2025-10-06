@@ -2,8 +2,8 @@ name: Hotel IPTV 更新
 
 on:
   schedule:
-    # 每天三次，北京时间 0:00、8:00、16:00
-    - cron: "0 0,8,16 * * *"
+    # 北京时间 0:00, 8:00, 16:00 对应 UTC 16:00, 0:00, 8:00
+    - cron: "0 16,0,8 * * *"
   workflow_dispatch:
 
 permissions:
@@ -28,19 +28,17 @@ jobs:
       - name: Run update_hotel_live.py
         run: |
           if [ -f update_hotel_live.py ]; then
-              python update_hotel_live.py
+              python3 update_hotel_live.py
           else
               echo "❌ update_hotel_live.py 不存在"
               exit 1
           fi
 
-      - name: Configure Git
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-      - name: Commit and Push
-        run: |
-          git add "专区/央视频道.txt" "专区/卫视频道.txt" || echo "文件不存在，跳过"
-          git commit -m "定时更新 Hotel IPTV [skip ci]" || echo "无变化，跳过 commit"
-          git push || echo "推送失败"
+      - name: Commit & Push changes
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: main
+          commit_message: "定时更新 4K 直播源 [skip ci]"
+          force: true
+          file_pattern: "专区/4K.txt"
