@@ -1,6 +1,5 @@
 import requests
 import os
-import re
 
 # 直播源 URL
 SOURCE_URL = "https://ghfast.top/https://raw.githubusercontent.com/wangchongzhq/wangchongzhq/2dbe3356a5a073fa4981f54c6b6e53e9117ca10e/109.txt"
@@ -11,7 +10,7 @@ OUTPUT_FILE = "专区/央视频道.txt"
 # 创建目录
 os.makedirs("专区", exist_ok=True)
 
-# 4K 分组关键字
+# 4K 关键字
 GROUP_4K = ["4K", "Ultra HD", "UHD"]
 
 def fetch_source():
@@ -19,55 +18,46 @@ def fetch_source():
     resp.encoding = 'utf-8'
     return resp.text
 
-def extract_4k_channels(content):
+def extract_4k_lines(content):
     """
-    提取所有包含4K关键字的频道及其分组和直播源
+    从 TXT 文件中提取包含 4K 的分组行和对应直播源
     """
     lines = content.splitlines()
     result = []
-    include_line = False  # 是否写入当前行
+    include_line = False
 
     for line in lines:
         line = line.strip()
         if not line:
             continue
 
-        # 跳过运营商行
-        if line.startswith("中国电信") or line.startswith("中国移动") or line.startswith("中国联通"):
-            continue
-
-        # 处理分组行
+        # 检查分组行
         if line.startswith("📡") and "#genre#" in line:
-            include_line = False  # 默认不写
-            if any(k.lower() in line.lower() for k in GROUP_4K):
-                include_line = True
+            include_line = any(k.lower() in line.lower() for k in GROUP_4K)
             if include_line:
                 result.append(line)
             continue
 
-        # 判断EXTINF行是否包含4K
-        if line.startswith("#EXTINF"):
-            if any(k.lower() in line.lower() for k in GROUP_4K):
-                include_line = True
-                result.append(line)
-            continue
-
-        # URL 行，如果前一行是4K频道则写入
-        if include_line and line.startswith("http"):
+        # 直播源行
+        if include_line:
             result.append(line)
 
     return result
 
 def save_file(path, lines):
-    with open(path, "a", encoding="utf-8-sig") as f:  # 使用追加模式
+    with open(path, "w", encoding="utf-8-sig") as f:
         for line in lines:
             f.write(line + "\n")
+    print(f"✅ 文件已生成: {path}")
 
 def main():
     content = fetch_source()
-    channels_4k = extract_4k_channels(content)
-    save_file(OUTPUT_FILE, channels_4k)
-    print(f"✅ 已追加 {len([l for l in channels_4k if l.startswith('http')])} 个4K频道到 {OUTPUT_FILE}")
+    lines_4k = extract_4k_lines(content)
+
+    if not lines_4k:
+        print("⚠️ 没有抓取到任何 4K 频道")
+    save_file(OUTPUT_FILE, lines_4k)
+    print(f"总计 {len([l for l in lines_4k if l.startswith('http')])} 个 4K 直播源写入文件。")
 
 if __name__ == "__main__":
     main()
