@@ -10,17 +10,17 @@ OUTPUT_FILE = "专区/央视频道.txt"
 # 创建目录
 os.makedirs("专区", exist_ok=True)
 
-# 4K 关键字
-GROUP_4K = ["4K", "Ultra HD", "UHD"]
+# 4K 分组标识
+GROUP_4K = "🇨🇳 4K,#genre#"
 
 def fetch_source():
     resp = requests.get(SOURCE_URL, timeout=10)
     resp.encoding = 'utf-8'
     return resp.text
 
-def extract_4k_lines(content):
+def extract_4k_group(content):
     """
-    从 TXT 文件中提取包含 4K 的分组行和对应直播源
+    提取 🇨🇳 4K 分组及其下所有直播源
     """
     lines = content.splitlines()
     result = []
@@ -31,15 +31,18 @@ def extract_4k_lines(content):
         if not line:
             continue
 
-        # 检查分组行
-        if line.startswith("📡") and "#genre#" in line:
-            include_line = any(k.lower() in line.lower() for k in GROUP_4K)
-            if include_line:
-                result.append(line)
+        # 判断分组
+        if line == GROUP_4K:
+            include_line = True
+            result.append(line)
             continue
 
-        # 直播源行
+        # 如果在4K分组内，追加直播源
         if include_line:
+            # 遇到下一个分组就停止
+            if line.startswith("📡") or (line != GROUP_4K and ",#genre#" in line):
+                include_line = False
+                continue
             result.append(line)
 
     return result
@@ -52,12 +55,12 @@ def save_file(path, lines):
 
 def main():
     content = fetch_source()
-    lines_4k = extract_4k_lines(content)
+    group_4k_lines = extract_4k_group(content)
 
-    if not lines_4k:
-        print("⚠️ 没有抓取到任何 4K 频道")
-    save_file(OUTPUT_FILE, lines_4k)
-    print(f"总计 {len([l for l in lines_4k if l.startswith('http')])} 个 4K 直播源写入文件。")
+    if not group_4k_lines:
+        print("⚠️ 没有抓取到 🇨🇳 4K 分组内容")
+    save_file(OUTPUT_FILE, group_4k_lines)
+    print(f"总计 {len([l for l in group_4k_lines if l.startswith('http')])} 个直播源写入文件。")
 
 if __name__ == "__main__":
     main()
