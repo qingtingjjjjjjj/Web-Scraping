@@ -544,7 +544,7 @@ version=formatted_time+","+about_video1
 about="关于本源(塔利班维护),"+about_video2
 
 # 瘦身版
-all_lines_simple =  ["更新时间,#genre#"] + [version] +[about]+['\n'] +\
+all_lines_simple =  ["更新时间,#genre#"] + [version] +[about]+['\n'] + read_txt_to_array('专区/4K.txt')
                     ["央视频道,#genre#"] + read_txt_to_array('专区/央视频道.txt') + sort_data(ys_dictionary,ys_lines) + ['\n'] + \
                     ["卫视频道,#genre#"] + read_txt_to_array('专区/卫视频道.txt') + sort_data(ws_dictionary,ws_lines) + ['\n'] + \
                     ["港澳台,#genre#"] + read_txt_to_array('专区/港澳台.txt') + sort_data(gat_dictionary,gat_lines) + ['\n'] + \
@@ -685,6 +685,7 @@ print(f"others.txt行数: {other_lines_hj} ")
 #备用1：http://tonkiang.us
 #备用2：https://www.zoomeye.hk,https://www.shodan.io,https://tv.cctv.com/live/
 #备用3：(BlackList检测对象)http,rtmp,p3p,rtp（rtsp，p2p）
+
 
 
 
