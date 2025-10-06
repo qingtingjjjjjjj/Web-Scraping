@@ -38,10 +38,15 @@ jobs:
         run: ls -la "专区"
 
       - name: Commit & Push changes
-        uses: ad-m/github-push-action@v0.6.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: main
-          commit_message: "定时更新 4K 直播源 [skip ci]"
-          force: true
-          file_pattern: "专区/4K.txt"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "专区/4K.txt"
+          if git diff --cached --quiet; then
+              echo "无变化，跳过提交"
+          else
+              git commit -m "定时更新 4K 直播源 [skip ci]"
+              git push origin main
+          fi
