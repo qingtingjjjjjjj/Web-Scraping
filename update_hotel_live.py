@@ -33,16 +33,14 @@ def extract_4k_streams(content):
 
         if GROUP_KEYWORD in line and ",#genre#" in line:
             include_line = True
-            # 保留分组行
-            result.append(line)
+            result.append(line)  # 保留分组行
             continue
 
         if include_line:
             if ",#genre#" in line:  # 遇到下一个分组停止
                 break
-            parts = line.split(",", 1)
-            if len(parts) == 2:
-                result.append(f"{parts[0]}: {parts[1]}")
+            if "," in line:  # 保留原始逗号分隔，不改成冒号
+                result.append(line)
 
     print(f"抓取到 {len(result)-1} 个 4K 直播源")  # 减去分组行
     return result
