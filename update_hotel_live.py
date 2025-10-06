@@ -1,8 +1,8 @@
 import requests
 import os
 
-# 根目录路径（即脚本所在目录）
-ROOT_DIR = os.path.abspath(os.path.dirname(__file__))
+# 当前目录作为根目录
+ROOT_DIR = os.getcwd()
 
 # 直播源 URL
 SOURCE_URL = "https://raw.githubusercontent.com/wangchongzhq/wangchongzhq/2dbe3356a5a073fa4981f54c6b6e53e9117ca10e/109.txt"
@@ -21,6 +21,7 @@ def fetch_source():
     try:
         resp = requests.get(SOURCE_URL, timeout=15)
         resp.encoding = 'utf-8'
+        print("✅ 源文件抓取成功, 长度:", len(resp.text))
         return resp.text
     except Exception as e:
         print(f"❌ 获取源失败: {e}")
@@ -37,19 +38,18 @@ def extract_4k_streams(content):
         if not line:
             continue
 
-        # 找到 4K 分组行
         if GROUP_KEYWORD in line and ",#genre#" in line:
             include_line = True
             continue
 
-        # 分组内抓取直播源
         if include_line:
             if ",#genre#" in line:  # 遇到下一个分组停止
                 break
             parts = line.split(",", 1)
             if len(parts) == 2:
-                result.append(f"{parts[0]}: {parts[1]}")  # 只保留直播源，不输出分组
+                result.append(f"{parts[0]}: {parts[1]}")
 
+    print(f"抓取到 {len(result)} 个 4K 直播源")
     return result
 
 # 保存到文件
@@ -66,12 +66,9 @@ def save_file(path, lines):
 def main():
     content = fetch_source()
     if not content:
-        print("❌ 源文件为空")
         return
 
     streams = extract_4k_streams(content)
-    print(f"抓取到 {len(streams)} 个 4K 直播源")
-
     save_file(OUTPUT_FILE, streams)
 
 if __name__ == "__main__":
