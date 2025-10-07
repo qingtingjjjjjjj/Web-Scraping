@@ -6,7 +6,7 @@ import csv
 import os
 
 # ===== 配置 =====
-LIVE_FILE = "港澳台.txt"               # 原始直播源列表
+LIVE_FILE = "live.txt"               # 根目录的总直播源文件
 WHITELIST_FILE = "港澳台_whitelist.txt"
 RESULTS_FILE = "港澳台_test_results.csv"
 RETRIES = 2
@@ -57,7 +57,6 @@ def test_source(line):
     if status == 200:
         playable = test_playable(url)
     
-    # 返回 CSV 数据
     return {
         "name": name,
         "url": url,
@@ -66,14 +65,31 @@ def test_source(line):
         "playable": playable
     }
 
-# ===== 读取直播源 =====
+# ===== 从 live.txt 中提取港澳台分组 =====
+def extract_guangantai(lines):
+    group = []
+    in_group = False
+    for line in lines:
+        line = line.strip()
+        if line.startswith("港澳台,#genre#"):
+            in_group = True
+            continue
+        if in_group:
+            if line.startswith("🇨🇳") or line.endswith("#genre#") or line == "":
+                break
+            group.append(line)
+    return group
+
+# ===== 读取 live.txt =====
 with open(LIVE_FILE, "r", encoding="utf-8") as f:
     lines = f.readlines()
+
+guangantai_lines = extract_guangantai(lines)
 
 # ===== 并发测速 =====
 results = []
 with concurrent.futures.ThreadPoolExecutor(max_workers=CONCURRENT_WORKERS) as executor:
-    for res in executor.map(test_source, lines):
+    for res in executor.map(test_source, guangantai_lines):
         if res:
             results.append(res)
 
@@ -89,4 +105,4 @@ with open(RESULTS_FILE, "w", newline="", encoding="utf-8") as f:
     writer.writeheader()
     writer.writerows(results)
 
-print(f"✅ 测试完成，可用源写入 {WHITELIST_FILE}，详细结果写入 {RESULTS_FILE}")
+print(f"✅ 港澳台测速完成，可用源写入 {WHITELIST_FILE}，详细结果写入 {RESULTS_FILE}")
