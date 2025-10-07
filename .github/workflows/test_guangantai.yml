@@ -2,7 +2,7 @@ name: 港澳台 深度测速
 
 on:
   schedule:
-    - cron: '0 3 * * *'  # 每天北京时间 11:00
+    - cron: '0 3 * * *'  # 每天北京时间 11:00 自动运行
   push:
     branches:
       - main
@@ -23,12 +23,11 @@ jobs:
 
     - name: ⚡ Run Guangantai Deep Check (with retry)
       run: |
-        FILE="./Web-Scraping/check_guangantai_deep.py"
+        FILE="./check_guangantai_deep.py"
         echo "🔍 Checking for script at $FILE"
         
         if [ -f "$FILE" ]; then
           echo "✅ File found, running deep test..."
-          cd Web-Scraping
           python3 check_guangantai_deep.py
         else
           echo "⚠️ File not found, skipping."
@@ -38,7 +37,6 @@ jobs:
     - name: 📤 Commit & push test results
       if: success()
       run: |
-        cd Web-Scraping
         if [ -d "测速结果" ]; then
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -59,5 +57,5 @@ jobs:
       with:
         name: 港澳台测速结果
         path: |
-          Web-Scraping/测速结果/
-          !Web-Scraping/__pycache__/
+          测速结果/
+          !__pycache__/
