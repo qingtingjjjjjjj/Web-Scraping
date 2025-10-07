@@ -1,126 +1,79 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-对 live.txt 中“港澳台,#genre#”分组的直播源做深度测速（更准确）
-逻辑：
-  - 尝试连接
-  - 读取少量数据流（判断能否播放）
-  - 统计首包响应时间
-输出：
-  - 测速结果/港澳台_test_results.csv
-  - 测速结果/港澳台_whitelist.txt
-"""
-
-import os
-import re
-import csv
-import time
 import requests
-from concurrent.futures import ThreadPoolExecutor, as_completed
+import subprocess
+import concurrent.futures
+import time
+import os
 
-LIVE_FILE = "live.txt"
-OUTPUT_DIR = "测速结果"
-WHITELIST_FILE = os.path.join(OUTPUT_DIR, "港澳台_whitelist.txt")
-RESULT_FILE = os.path.join(OUTPUT_DIR, "港澳台_test_results.csv")
+# 配置
+LIVE_FILE = "live.txt"  # 原始直播源列表
+OUTPUT_FILE = "live_checked.txt"  # 测试通过后的输出文件
+RETRIES = 3              # 请求重试次数
+TIMEOUT = 5              # 请求超时时间（秒）
+MAX_LATENCY = 10         # 最大允许延迟（秒）
+CONCURRENT_WORKERS = 10  # 并发线程数
 
-TARGET_GROUP = "港澳台,#genre#"
-TIMEOUT = 10
-MAX_WORKERS = 8
+# ===== 测试单个 URL 是否可访问 =====
+def test_http(url):
+    for i in range(RETRIES):
+        try:
+            r = requests.head(url, timeout=TIMEOUT)
+            if r.status_code == 200:
+                return True
+        except requests.RequestException:
+            time.sleep(1)
+    return False
 
-os.makedirs(OUTPUT_DIR, exist_ok=True)
-
-
-def parse_live_file(filepath):
-    """提取港澳台分组"""
-    entries = []
-    current_group = None
-    with open(filepath, encoding="utf-8", errors="ignore") as f:
-        for line in f:
-            line = line.strip()
-            if not line:
-                continue
-            if line.endswith("#genre#"):
-                current_group = line
-                continue
-            if current_group == TARGET_GROUP:
-                if "," in line:
-                    name, url = line.split(",", 1)
-                    if url.startswith("http"):
-                        entries.append((name.strip(), url.strip()))
-    return entries
-
-
-def deep_test(name, url):
-    """深度测速：连接+读取前几KB数据"""
-    start = time.time()
+# ===== 测试 m3u8 是否可播放 =====
+def test_playable(url):
     try:
-        with requests.get(url, stream=True, timeout=TIMEOUT, headers={
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
-        }) as r:
-            first_chunk_time = None
-            for chunk in r.iter_content(chunk_size=2048):
-                if chunk:
-                    first_chunk_time = round(time.time() - start, 3)
-                    break
-            if r.status_code == 200 and first_chunk_time:
-                return {
-                    "name": name,
-                    "url": url,
-                    "status": "OK",
-                    "time": first_chunk_time
-                }
-            else:
-                return {
-                    "name": name,
-                    "url": url,
-                    "status": f"HTTP {r.status_code}",
-                    "time": None
-                }
-    except Exception as e:
-        return {
-            "name": name,
-            "url": url,
-            "status": f"Fail: {e.__class__.__name__}",
-            "time": None
-        }
+        result = subprocess.run(
+            ["ffprobe", "-v", "error", "-timeout", str(TIMEOUT*1000000), "-i", url],
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE
+        )
+        return result.returncode == 0
+    except Exception:
+        return False
 
+# ===== 测试延迟 =====
+def measure_latency(url):
+    try:
+        start = time.time()
+        requests.head(url, timeout=TIMEOUT)
+        return time.time() - start
+    except:
+        return float('inf')
 
-def main():
-    if not os.path.exists(LIVE_FILE):
-        print(f"❌ 未找到 {LIVE_FILE}")
-        return
+# ===== 测试单个直播源 =====
+def test_source(line):
+    line = line.strip()
+    if not line or "," not in line:
+        return None
+    name, url = line.split(",", 1)
+    
+    if not test_http(url):
+        return None
+    latency = measure_latency(url)
+    if latency > MAX_LATENCY:
+        return None
+    if not test_playable(url):
+        return None
+    return f"{name},{url}"
 
-    entries = parse_live_file(LIVE_FILE)
-    if not entries:
-        print("⚠️ 未找到 '港澳台,#genre#' 分组内容。")
-        return
+# ===== 读取直播源 =====
+with open(LIVE_FILE, "r", encoding="utf-8") as f:
+    lines = f.readlines()
 
-    print(f"发现 {len(entries)} 条港澳台直播源，开始深度测速...\n")
+# ===== 并发测速 =====
+checked_sources = []
+with concurrent.futures.ThreadPoolExecutor(max_workers=CONCURRENT_WORKERS) as executor:
+    results = executor.map(test_source, lines)
+    for r in results:
+        if r:
+            checked_sources.append(r)
 
-    results = []
-    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
-        futures = [executor.submit(deep_test, name, url) for name, url in entries]
-        for fut in as_completed(futures):
-            res = fut.result()
-            results.append(res)
-            status = "✅" if res["status"] == "OK" else "❌"
-            print(f"{status} {res['name']} - {res['url']}  [{res['status']}]  {res['time']}s")
+# ===== 写入输出文件 =====
+os.makedirs(os.path.dirname(OUTPUT_FILE), exist_ok=True)
+with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+    f.write("\n".join(checked_sources))
 
-    # 写入CSV
-    with open(RESULT_FILE, "w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=["name", "url", "status", "time"])
-        writer.writeheader()
-        writer.writerows(results)
-
-    # 白名单
-    ok_list = [r for r in results if r["status"] == "OK"]
-    with open(WHITELIST_FILE, "w", encoding="utf-8") as f:
-        for r in ok_list:
-            f.write(f"{r['name']},{r['url']}\n")
-
-    print(f"\n✅ 测速完成，共 {len(ok_list)} 条可用源。")
-    print(f"📁 结果保存在：{OUTPUT_DIR}/")
-
-
-if __name__ == "__main__":
-    main()
+print(f"✅ 测试完成，共 {len(checked_sources)} 个直播源可用，已写入 {OUTPUT_FILE}")
