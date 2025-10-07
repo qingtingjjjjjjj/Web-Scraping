@@ -13,9 +13,14 @@ RESULTS_FILE = "港澳台_test_results.csv"
 RETRIES = 2
 TIMEOUT = 3
 CONCURRENT_WORKERS = 50
-FFPROBE_STAGE = [("3s", "3000000"), ("5s", "5000000"), ("10s", "10000000")]  # (阶段名, 微秒)
+FFPROBE_STAGE = [
+    ("3s", "3000000"),
+    ("5s", "5000000"),
+    ("10s", "10000000"),
+    ("15s", "15000000")  # 动态延迟重试，仅对失败源
+]
 FFPROBE_SHORT_RETRY = "500000"  # 0.5 秒短重试
-MAX_LATENCY = 20             # 最大允许延迟（秒）
+MAX_LATENCY = 20  # 秒
 
 USER_AGENTS = [
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
@@ -25,7 +30,11 @@ USER_AGENTS = [
 
 # ===== HTTP + 延迟测试 =====
 def test_http_latency(url):
-    headers = {"User-Agent": random.choice(USER_AGENTS)}
+    headers = {
+        "User-Agent": random.choice(USER_AGENTS),
+        "Accept-Language": "en-US,en;q=0.9",
+        "Referer": url
+    }
     for _ in range(RETRIES):
         try:
             start = time.time()
@@ -37,7 +46,7 @@ def test_http_latency(url):
             try:
                 start = time.time()
                 r = requests.get(url, stream=True, timeout=TIMEOUT, headers=headers)
-                for _ in range(2):  # 读取前 5 KB ×2 次
+                for _ in range(2):  # 前 10 KB ×2 次
                     r.iter_content(5120)
                 latency = time.time() - start
                 if r.status_code == 200:
@@ -53,7 +62,7 @@ def test_playable(url, analyzeduration):
             [
                 "ffprobe",
                 "-v", "error",
-                "-probesize", "5000000",
+                "-probesize", "10000000",
                 "-analyzeduration", analyzeduration,
                 "-timeout", str(TIMEOUT*1000000),
                 "-i", url
@@ -79,14 +88,13 @@ def test_source(line):
     retry_count = 0
 
     if status == 200 and latency <= MAX_LATENCY:
-        # 三阶段检测
         for stage_name, duration in FFPROBE_STAGE:
             retry_count += 1
             playable = test_playable(url, duration)
             if playable:
                 stage_passed = stage_name
                 break
-        # 对仍失败源增加短重试 0.5 秒
+        # 对仍失败源增加短重试
         if not playable:
             retry_count += 1
             playable = test_playable(url, FFPROBE_SHORT_RETRY)
@@ -97,7 +105,6 @@ def test_source(line):
     else:
         fail_reason = "HTTP failed or latency too high"
 
-    # 运行日志
     print(f"[{name}] HTTP: {status}, Latency: {round(latency,2) if latency else 'N/A'}s, "
           f"Playable: {playable}, Stage: {stage_passed}, Retries: {retry_count}, Fail: {fail_reason}")
 
@@ -112,7 +119,7 @@ def test_source(line):
         "fail_reason": fail_reason
     }
 
-# ===== 从 live.txt 中提取港澳台分组 =====
+# ===== 提取港澳台分组 =====
 def extract_guangantai(lines):
     group = []
     in_group = False
