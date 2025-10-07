@@ -6,17 +6,17 @@ import csv
 import os
 import random
 
-# ===== 配置 =====
 LIVE_FILE = "live.txt"
 WHITELIST_FILE = "港澳台_whitelist.txt"
 RESULTS_FILE = "港澳台_test_results.csv"
 RETRIES = 2
 TIMEOUT = 3
 CONCURRENT_WORKERS = 50
+
 FFPROBE_STAGE = [
     ("5s", "5000000"),    # 初测 5 秒
     ("10s", "10000000"),  # 重测 10 秒
-    ("15s", "15000000")   # 最终重测 15 秒
+    ("15s", "15000000")   # 最终测 15 秒
 ]
 FFPROBE_SHORT_RETRY = "500000"  # 0.5 秒短重试
 MAX_LATENCY = 20  # 秒
@@ -27,7 +27,6 @@ USER_AGENTS = [
     "Mozilla/5.0 (X11; Linux x86_64)"
 ]
 
-# ===== HTTP + 延迟测试 =====
 def test_http_latency(url):
     headers = {
         "User-Agent": random.choice(USER_AGENTS),
@@ -45,7 +44,7 @@ def test_http_latency(url):
             try:
                 start = time.time()
                 r = requests.get(url, stream=True, timeout=TIMEOUT, headers=headers)
-                for _ in range(2):  # 前 10 KB ×2 次
+                for _ in range(2):
                     r.iter_content(5120)
                 latency = time.time() - start
                 if r.status_code == 200:
@@ -54,7 +53,6 @@ def test_http_latency(url):
                 time.sleep(0.2)
     return None, None
 
-# ===== ffprobe 播放检测 =====
 def test_playable(url, analyzeduration):
     try:
         result = subprocess.run(
@@ -73,7 +71,6 @@ def test_playable(url, analyzeduration):
     except:
         return False
 
-# ===== 测试单条源 =====
 def test_source(line):
     line = line.strip()
     if not line or "," not in line:
@@ -93,7 +90,6 @@ def test_source(line):
             if playable:
                 stage_passed = stage_name
                 break
-        # 对仍失败源增加短重试
         if not playable:
             retry_count += 1
             playable = test_playable(url, FFPROBE_SHORT_RETRY)
@@ -118,7 +114,6 @@ def test_source(line):
         "fail_reason": fail_reason
     }
 
-# ===== 提取港澳台分组 =====
 def extract_guangantai(lines):
     group = []
     in_group = False
@@ -133,26 +128,22 @@ def extract_guangantai(lines):
             group.append(line)
     return group
 
-# ===== 读取 live.txt =====
 with open(LIVE_FILE, "r", encoding="utf-8") as f:
     lines = f.readlines()
 
 guangantai_lines = extract_guangantai(lines)
 
-# ===== 并发测速 =====
 results = []
 with concurrent.futures.ThreadPoolExecutor(max_workers=CONCURRENT_WORKERS) as executor:
     for res in executor.map(test_source, guangantai_lines):
         if res:
             results.append(res)
 
-# ===== 写入 whitelist.txt =====
 with open(WHITELIST_FILE, "w", encoding="utf-8") as f:
     for r in results:
         if r["http_status"] == 200 and r["playable"]:
             f.write(f"{r['name']},{r['url']}\n")
 
-# ===== 写入 test_results.csv =====
 with open(RESULTS_FILE, "w", newline="", encoding="utf-8") as f:
     writer = csv.DictWriter(f, fieldnames=[
         "name","url","http_status","latency","playable",
