@@ -22,7 +22,7 @@ jobs:
         with:
           python-version: 3.11
 
-      # 3️⃣ 安装依赖
+      # 3️⃣ 安装 Python 依赖
       - name: Install dependencies
         run: pip install requests
 
