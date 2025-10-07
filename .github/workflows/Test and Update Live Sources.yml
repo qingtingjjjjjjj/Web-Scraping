@@ -32,7 +32,7 @@ jobs:
 
       # 5️⃣ 运行优化后的测速脚本
       - name: Run live source test
-        run: python3 test_live.py
+        run: python3 check_guangantai_deep.py
 
       # 6️⃣ 强制推送更新后的文件
       - name: Force push checked live sources
