@@ -6,13 +6,14 @@ import csv
 import os
 
 # ===== 配置 =====
-LIVE_FILE = "live.txt"               # 根目录总直播源文件
+LIVE_FILE = "live.txt"
 WHITELIST_FILE = "港澳台_whitelist.txt"
 RESULTS_FILE = "港澳台_test_results.csv"
 RETRIES = 2
 TIMEOUT = 3
 CONCURRENT_WORKERS = 50
-FFPROBE_ANALYZE = "3000000"  # 微秒级分析，3 秒
+FFPROBE_INITIAL = "3000000"  # 初测 3 秒
+FFPROBE_RETRY = "5000000"    # 重测 5 秒
 MAX_LATENCY = 20             # 最大允许延迟（秒）
 
 # ===== HTTP + 延迟测试 =====
@@ -20,13 +21,11 @@ def test_http_latency(url):
     for _ in range(RETRIES):
         try:
             start = time.time()
-            # 尝试 HEAD 请求
             r = requests.head(url, timeout=TIMEOUT)
             latency = time.time() - start
             if r.status_code == 200:
                 return r.status_code, latency
         except:
-            # HEAD 请求失败，尝试 GET 前 1 KB
             try:
                 start = time.time()
                 r = requests.get(url, stream=True, timeout=TIMEOUT)
@@ -38,26 +37,23 @@ def test_http_latency(url):
                 time.sleep(0.2)
     return None, None
 
-# ===== ffprobe 播放检测（失败重试一次） =====
-def test_playable(url):
-    for attempt in range(2):
-        try:
-            result = subprocess.run(
-                [
-                    "ffprobe",
-                    "-v", "error",
-                    "-analyzeduration", FFPROBE_ANALYZE,
-                    "-timeout", str(TIMEOUT*1000000),
-                    "-i", url
-                ],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE
-            )
-            if result.returncode == 0:
-                return True
-        except:
-            time.sleep(0.2)
-    return False
+# ===== ffprobe 播放检测（初测/重测） =====
+def test_playable(url, analyzeduration):
+    try:
+        result = subprocess.run(
+            [
+                "ffprobe",
+                "-v", "error",
+                "-analyzeduration", analyzeduration,
+                "-timeout", str(TIMEOUT*1000000),
+                "-i", url
+            ],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE
+        )
+        return result.returncode == 0
+    except:
+        return False
 
 # ===== 测试单条源 =====
 def test_source(line):
@@ -68,15 +64,25 @@ def test_source(line):
     
     status, latency = test_http_latency(url)
     playable = False
+    fail_reason = ""
     if status == 200 and latency <= MAX_LATENCY:
-        playable = test_playable(url)
-    
+        # 初测 3 秒
+        playable = test_playable(url, FFPROBE_INITIAL)
+        if not playable:
+            # 初测失败，重测 5 秒
+            playable = test_playable(url, FFPROBE_RETRY)
+            if not playable:
+                fail_reason = "ffprobe failed"
+    else:
+        fail_reason = "HTTP failed or latency too high"
+
     return {
         "name": name,
         "url": url,
         "http_status": status if status else "Fail",
         "latency": round(latency, 2) if latency else None,
-        "playable": playable
+        "playable": playable,
+        "fail_reason": fail_reason
     }
 
 # ===== 从 live.txt 中提取港澳台分组 =====
@@ -115,7 +121,7 @@ with open(WHITELIST_FILE, "w", encoding="utf-8") as f:
 
 # ===== 写入 test_results.csv =====
 with open(RESULTS_FILE, "w", newline="", encoding="utf-8") as f:
-    writer = csv.DictWriter(f, fieldnames=["name","url","http_status","latency","playable"])
+    writer = csv.DictWriter(f, fieldnames=["name","url","http_status","latency","playable","fail_reason"])
     writer.writeheader()
     writer.writerows(results)
 
