@@ -12,24 +12,27 @@ RESULTS_FILE = "港澳台_test_results.csv"
 RETRIES = 2
 TIMEOUT = 3
 CONCURRENT_WORKERS = 50
-FFPROBE_INITIAL = "3000000"  # 初测 3 秒
-FFPROBE_RETRY = "5000000"    # 重测 5 秒
+FFPROBE_STAGE = [("3s", "3000000"), ("5s", "5000000"), ("10s", "10000000")]  # (阶段名, 微秒)
 MAX_LATENCY = 20             # 最大允许延迟（秒）
+
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+}
 
 # ===== HTTP + 延迟测试 =====
 def test_http_latency(url):
     for _ in range(RETRIES):
         try:
             start = time.time()
-            r = requests.head(url, timeout=TIMEOUT)
+            r = requests.head(url, timeout=TIMEOUT, headers=HEADERS)
             latency = time.time() - start
             if r.status_code == 200:
                 return r.status_code, latency
         except:
             try:
                 start = time.time()
-                r = requests.get(url, stream=True, timeout=TIMEOUT)
-                r.iter_content(1024)
+                r = requests.get(url, stream=True, timeout=TIMEOUT, headers=HEADERS)
+                r.iter_content(10240)  # 前 10 KB
                 latency = time.time() - start
                 if r.status_code == 200:
                     return r.status_code, latency
@@ -37,7 +40,7 @@ def test_http_latency(url):
                 time.sleep(0.2)
     return None, None
 
-# ===== ffprobe 播放检测（初测/重测） =====
+# ===== ffprobe 播放检测 =====
 def test_playable(url, analyzeduration):
     try:
         result = subprocess.run(
@@ -65,23 +68,34 @@ def test_source(line):
     status, latency = test_http_latency(url)
     playable = False
     fail_reason = ""
+    stage_passed = ""
+    retry_count = 0
+
     if status == 200 and latency <= MAX_LATENCY:
-        # 初测 3 秒
-        playable = test_playable(url, FFPROBE_INITIAL)
+        # 三阶段检测
+        for stage_name, duration in FFPROBE_STAGE:
+            retry_count += 1
+            playable = test_playable(url, duration)
+            if playable:
+                stage_passed = stage_name
+                break
         if not playable:
-            # 初测失败，重测 5 秒
-            playable = test_playable(url, FFPROBE_RETRY)
-            if not playable:
-                fail_reason = "ffprobe failed"
+            fail_reason = "ffprobe failed after all stages"
     else:
         fail_reason = "HTTP failed or latency too high"
+
+    # 运行日志
+    print(f"[{name}] HTTP: {status}, Latency: {round(latency,2) if latency else 'N/A'}s, "
+          f"Playable: {playable}, Stage: {stage_passed}, Retries: {retry_count}, Fail: {fail_reason}")
 
     return {
         "name": name,
         "url": url,
         "http_status": status if status else "Fail",
-        "latency": round(latency, 2) if latency else None,
+        "latency": round(latency,2) if latency else None,
         "playable": playable,
+        "stage_passed": stage_passed,
+        "retry_count": retry_count,
         "fail_reason": fail_reason
     }
 
@@ -121,7 +135,9 @@ with open(WHITELIST_FILE, "w", encoding="utf-8") as f:
 
 # ===== 写入 test_results.csv =====
 with open(RESULTS_FILE, "w", newline="", encoding="utf-8") as f:
-    writer = csv.DictWriter(f, fieldnames=["name","url","http_status","latency","playable","fail_reason"])
+    writer = csv.DictWriter(f, fieldnames=[
+        "name","url","http_status","latency","playable",
+        "stage_passed","retry_count","fail_reason"])
     writer.writeheader()
     writer.writerows(results)
 
