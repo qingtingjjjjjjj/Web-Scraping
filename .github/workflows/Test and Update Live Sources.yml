@@ -2,7 +2,7 @@ name: Test and Update 港澳台 Sources
 
 on:
   schedule:
-    - cron: '0 */1 * * *'  # 每小时运行一次
+    - cron: '0 0 * * *'  # 每天 UTC 00:00 = 北京时间 08:00
   workflow_dispatch:
   push:
     branches:
@@ -11,6 +11,7 @@ on:
 jobs:
   test_guangantai:
     runs-on: ubuntu-latest
+
     steps:
       # 1️⃣ 拉取仓库
       - name: Checkout repo
@@ -26,11 +27,11 @@ jobs:
       - name: Install dependencies
         run: pip install requests
 
-      # 4️⃣ 安装 ffmpeg（用于播放检测）
+      # 4️⃣ 安装 ffmpeg
       - name: Install ffmpeg
         run: sudo apt-get update && sudo apt-get install -y ffmpeg
 
-      # 5️⃣ 运行双阶段高速高准确率测速脚本
+      # 5️⃣ 运行优化后的测速脚本
       - name: Run 港澳台 live test
         run: python3 check_guangantai_deep.py
 
