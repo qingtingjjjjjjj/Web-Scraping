@@ -6,11 +6,11 @@
   - 尝试连接并读取少量数据（判断可播放）
   - 首包响应时间测速
   - 若失败自动重试3次
+  - 指定域名免测试
   - 仅当测速结果有变化时，更新 live.txt 中的港澳台分组内容
 """
 
 import os
-import re
 import time
 import requests
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -20,6 +20,9 @@ TARGET_GROUP = "港澳台,#genre#"
 TIMEOUT = 10
 MAX_WORKERS = 8
 RETRY_COUNT = 3
+
+# 免测试域名列表
+IMMUNE_DOMAINS = ["bxtv.3a.ink"]
 
 
 def parse_live_file(filepath):
@@ -67,7 +70,13 @@ def deep_test_once(name, url):
 
 
 def deep_test(name, url):
-    """重试测速"""
+    """深度测速，失败重试最多3次，指定域名免测试"""
+    # 检查是否属于免测试域名
+    if any(domain in url for domain in IMMUNE_DOMAINS):
+        print(f"💡 {name} 属于免测试域名，直接标记为 OK")
+        return {"name": name, "url": url, "status": "OK (免测试)", "time": 0.0}
+
+    # 普通深度测速
     for attempt in range(1, RETRY_COUNT + 1):
         result = deep_test_once(name, url)
         if result["status"] == "OK":
@@ -77,6 +86,7 @@ def deep_test(name, url):
         else:
             print(f"  ⏳ [{attempt}/{RETRY_COUNT}] {name} 测速失败，重试中...")
             time.sleep(1)
+    # 全部失败
     result["status"] += " (all retries failed)"
     return result
 
@@ -138,7 +148,7 @@ def main():
     ok_list = [f"{r['name']},{r['url']}" for r in results if r["status"].startswith("OK")]
 
     if not ok_list:
-        print("❌ 无可用源，不更新。")
+        print("❌ 无可用源，不更新 live.txt。")
         return
 
     # 检查是否有变化
