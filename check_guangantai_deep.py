@@ -6,44 +6,58 @@ import csv
 import os
 
 # ===== 配置 =====
-LIVE_FILE = "live.txt"               # 根目录的总直播源文件
+LIVE_FILE = "live.txt"               # 根目录总直播源文件
 WHITELIST_FILE = "港澳台_whitelist.txt"
 RESULTS_FILE = "港澳台_test_results.csv"
 RETRIES = 2
 TIMEOUT = 3
 CONCURRENT_WORKERS = 50
-FFPROBE_ANALYZE = "500000"  # 微秒级分析，越小越快
+FFPROBE_ANALYZE = "3000000"  # 微秒级分析，3 秒
+MAX_LATENCY = 20             # 最大允许延迟（秒）
 
 # ===== HTTP + 延迟测试 =====
 def test_http_latency(url):
     for _ in range(RETRIES):
         try:
             start = time.time()
+            # 尝试 HEAD 请求
             r = requests.head(url, timeout=TIMEOUT)
             latency = time.time() - start
             if r.status_code == 200:
                 return r.status_code, latency
         except:
-            time.sleep(0.2)
+            # HEAD 请求失败，尝试 GET 前 1 KB
+            try:
+                start = time.time()
+                r = requests.get(url, stream=True, timeout=TIMEOUT)
+                r.iter_content(1024)
+                latency = time.time() - start
+                if r.status_code == 200:
+                    return r.status_code, latency
+            except:
+                time.sleep(0.2)
     return None, None
 
-# ===== ffprobe 测试播放 =====
+# ===== ffprobe 播放检测（失败重试一次） =====
 def test_playable(url):
-    try:
-        result = subprocess.run(
-            [
-                "ffprobe",
-                "-v", "error",
-                "-analyzeduration", FFPROBE_ANALYZE,
-                "-timeout", str(TIMEOUT*1000000),
-                "-i", url
-            ],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE
-        )
-        return result.returncode == 0
-    except:
-        return False
+    for attempt in range(2):
+        try:
+            result = subprocess.run(
+                [
+                    "ffprobe",
+                    "-v", "error",
+                    "-analyzeduration", FFPROBE_ANALYZE,
+                    "-timeout", str(TIMEOUT*1000000),
+                    "-i", url
+                ],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE
+            )
+            if result.returncode == 0:
+                return True
+        except:
+            time.sleep(0.2)
+    return False
 
 # ===== 测试单条源 =====
 def test_source(line):
@@ -54,7 +68,7 @@ def test_source(line):
     
     status, latency = test_http_latency(url)
     playable = False
-    if status == 200:
+    if status == 200 and latency <= MAX_LATENCY:
         playable = test_playable(url)
     
     return {
@@ -75,7 +89,7 @@ def extract_guangantai(lines):
             in_group = True
             continue
         if in_group:
-            if line.startswith("🇨🇳") or line.endswith("#genre#") or line == "":
+            if line.endswith("#genre#") or line == "" or line.startswith("🇨🇳"):
                 break
             group.append(line)
     return group
