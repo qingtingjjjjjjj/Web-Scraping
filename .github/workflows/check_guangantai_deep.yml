@@ -1,64 +1,56 @@
-name: 港澳台 深度测速
+name: 港澳台 深度测速自动更新
 
 on:
   schedule:
-    - cron: '0 3 * * *'  # 每天北京时间 11:00 自动运行
+    - cron: "0 2 * * *"   # 每天北京时间10:00运行（UTC+8）
+  workflow_dispatch:       # 手动触发
   push:
     branches:
       - main
-  workflow_dispatch:
 
 jobs:
-  deep_check:
+  deep_test:
     runs-on: ubuntu-latest
 
     steps:
-    - name: 🧩 Checkout repository
-      uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: 🐍 Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.x'
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
 
-    - name: 📦 Install dependencies
-      run: pip install requests
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install requests
 
-    - name: ⚡ Run Guangantai Deep Check (with retry)
-      run: |
-        FILE="./check_guangantai_deep.py"
-        echo "🔍 Checking for script at $FILE"
-        
-        if [ -f "$FILE" ]; then
-          echo "✅ File found, running deep test..."
-          python3 check_guangantai_deep.py
-        else
-          echo "⚠️ File not found, skipping."
-          exit 0
-        fi
+      - name: Run 港澳台深度测速
+        run: |
+          echo "🔍 Checking 港澳台 deep test script..."
+          if [ -f "./check_guangantai_deep.py" ]; then
+            echo "✅ Script found, running..."
+            python3 ./check_guangantai_deep.py
+          else
+            echo "❌ 未找到 check_guangantai_deep.py"
+            exit 1
+          fi
 
-    - name: 📤 Commit & push test results
-      if: success()
-      run: |
-        if [ -d "测速结果" ]; then
+      - name: Check for changes
+        id: git_diff
+        run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add 测速结果/* || true
-          if git diff --cached --quiet; then
-            echo "🟢 No changes to commit."
+          if git diff --quiet; then
+            echo "no_changes=true" >> $GITHUB_ENV
           else
-            git commit -m "📡 深度测速更新 港澳台 $(date -u '+%Y-%m-%d %H:%M:%S') UTC"
-            git push origin main
+            echo "no_changes=false" >> $GITHUB_ENV
           fi
-        else
-          echo "⚠️ 测速结果目录不存在，跳过推送。"
-        fi
 
-    - name: 📦 Upload test results as artifact
-      if: success() || failure()
-      uses: actions/upload-artifact@v4
-      with:
-        name: 港澳台测速结果
-        path: |
-          测速结果/
-          !__pycache__/
+      - name: Commit and push if changed
+        if: env.no_changes == 'false'
+        run: |
+          git add live.txt
+          git commit -m "✅ 自动测速更新 港澳台 $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+          git push
