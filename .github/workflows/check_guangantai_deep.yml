@@ -21,6 +21,9 @@ jobs:
       with:
         python-version: '3.x'
 
+    - name: 📦 Install dependencies
+      run: pip install requests
+
     - name: ⚡ Run Guangantai Deep Check (with retry)
       run: |
         FILE="./check_guangantai_deep.py"
