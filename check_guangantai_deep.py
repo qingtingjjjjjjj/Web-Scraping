@@ -4,6 +4,7 @@ import concurrent.futures
 import time
 import csv
 import os
+import random
 
 # ===== 配置 =====
 LIVE_FILE = "live.txt"
@@ -13,26 +14,31 @@ RETRIES = 2
 TIMEOUT = 3
 CONCURRENT_WORKERS = 50
 FFPROBE_STAGE = [("3s", "3000000"), ("5s", "5000000"), ("10s", "10000000")]  # (阶段名, 微秒)
+FFPROBE_SHORT_RETRY = "500000"  # 0.5 秒短重试
 MAX_LATENCY = 20             # 最大允许延迟（秒）
 
-HEADERS = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
-}
+USER_AGENTS = [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)",
+    "Mozilla/5.0 (X11; Linux x86_64)"
+]
 
 # ===== HTTP + 延迟测试 =====
 def test_http_latency(url):
+    headers = {"User-Agent": random.choice(USER_AGENTS)}
     for _ in range(RETRIES):
         try:
             start = time.time()
-            r = requests.head(url, timeout=TIMEOUT, headers=HEADERS)
+            r = requests.head(url, timeout=TIMEOUT, headers=headers)
             latency = time.time() - start
             if r.status_code == 200:
                 return r.status_code, latency
         except:
             try:
                 start = time.time()
-                r = requests.get(url, stream=True, timeout=TIMEOUT, headers=HEADERS)
-                r.iter_content(10240)  # 前 10 KB
+                r = requests.get(url, stream=True, timeout=TIMEOUT, headers=headers)
+                for _ in range(2):  # 读取前 5 KB ×2 次
+                    r.iter_content(5120)
                 latency = time.time() - start
                 if r.status_code == 200:
                     return r.status_code, latency
@@ -47,6 +53,7 @@ def test_playable(url, analyzeduration):
             [
                 "ffprobe",
                 "-v", "error",
+                "-probesize", "5000000",
                 "-analyzeduration", analyzeduration,
                 "-timeout", str(TIMEOUT*1000000),
                 "-i", url
@@ -79,8 +86,14 @@ def test_source(line):
             if playable:
                 stage_passed = stage_name
                 break
+        # 对仍失败源增加短重试 0.5 秒
         if not playable:
-            fail_reason = "ffprobe failed after all stages"
+            retry_count += 1
+            playable = test_playable(url, FFPROBE_SHORT_RETRY)
+            if playable:
+                stage_passed = "short_retry_0.5s"
+            else:
+                fail_reason = "ffprobe failed after all stages + short retry"
     else:
         fail_reason = "HTTP failed or latency too high"
 
