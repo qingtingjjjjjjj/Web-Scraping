@@ -1,18 +1,22 @@
+翡翠台,http://php.jdshipin.com/smt.php?id=jade_twn
+千禧经典台,http://php.jdshipin.com/smt.php?id=Tvbclassic
+TVB娱乐新闻台,http://php.jdshipin.com/smt.php?id=Tvbentertainment
 TVB plus备3,https://vdm6-hw.nbgdsygs.com/live/h6-2.flv
 香港C+,http://ottproxy2.ist.ooo/livehls/MOB-U1-NO/index.m3u8
-🔴TVB娱乐新闻台,http://php.jdshipin.com/smt.php?id=Tvbentertainment
+🔴凤凰卫视,http://php.jdshipin.com:8880/smt.php?id=phoenixtv_hd
 🔴凤凰资讯,http://php.jdshipin.com:8880/smt.php?id=phoenixinfo_hd
 🔴华丽翡翠台,http://php.jdshipin.com/smt.php?id=Tvbjade
 🔴美亚电影国,http://php.jdshipin.com:8880/smt.php?id=meiyamovie_twn
-🔴天映,http://php.jdshipin.com/smt.php?id=Celestial
-🔴无线新闻台,http://php.jdshipin.com/smt.php?id=inews_twn
+🔴天映经典,http://php.jdshipin.com/smt.php?id=Celestial2
+🔴Astro QJ,http://php.jdshipin.com:8880/smt.php?id=Quanjia
 🔴C+,http://ottproxy2.ist.ooo/livehls/MOB-U1-NO/03.m3u8
 🔴RTHK31,https://rthktv31-live.akamaized.net/hls/live/2036818/RTHKTV31/stream5/streamPlaylist.m3u8
 🔴RTHK32,http://php.jdshipin.com:8880/smt.php?id=rhk32_twn
 🔴RTHK32,https://rthktv32-live.akamaized.net/hls/live/2036819/RTHKTV32/stream5/streamPlaylist.m3u8
-🔴TVBS亚洲,http://php.jdshipin.com:8880/smt.php?id=Xinhe
-🔴爱奇艺,http://php.jdshipin.com:8880/smt.php?id=Qiyi
+🔴TVB J2,http://php.jdshipin.com:8880/PLTV/iptv.php?id=j2
+🔴翡翠台,http://php.jdshipin.com/PLTV/iptv.php?id=fct3
 🔴凤凰电影,http://iot-mqqt.111yao.cn:8080/live/diyp_fhdy.m3u8
+🔴凤凰香港,http://php.jdshipin.com:8880/smt.php?id=hkphoenix_twn
 🔴龙华电影,https://cdn8.163189.xyz/live/lhdy/stream.m3u8
 🔴龙华经典,https://cdn8.163189.xyz/live/lhjd/stream.m3u8
 🔴龙华卡通,https://cdn8.163189.xyz/live/lhkt/stream.m3u8
@@ -20,15 +24,8 @@ TVB plus备3,https://vdm6-hw.nbgdsygs.com/live/h6-2.flv
 🔴龙华日韩,https://cdn8.163189.xyz/live/lhrh/stream.m3u8
 🔴龙华戏剧,https://cdn8.163189.xyz/live/lhxj/stream.m3u8
 🔴龙华洋片,https://cdn8.163189.xyz/live/lhyp/stream.m3u8
-🔴美亚电影台,http://php.jdshipin.com:8880/smt.php?id=meiyamovie_twn
 🔴明珠台,http://o12.1678520.xyz/hls/mzt/playlist.m3u8
-🔴千禧经典,http://php.jdshipin.com/TVOD/iptv.php?id=tvbc
-🔴千禧经典,http://php.jdshipin.com:8880/smt.php?id=Tvbclassic
-🔴天映CM+,http://php.jdshipin.com/TVOD/iptv.php?id=aod
-🔴天映电影,http://php.jdshipin.com/smt.php?id=Celestial
-🔴天映经典,http://php.jdshipin.com:8880/smt.php?id=Celestial2
 🔴天映频道,http://php.jdshipin.com/smt.php?id=Celestial
-🔴天映频道,http://php.jdshipin.com:8880/smt.php?id=Celestial
 🔴亞洲新聞台,https://d2e1asnsl7br7b.cloudfront.net/7782e205e72f43aeb4a48ec97f66ebbe/index_4.m3u8
 🔴亞洲新聞台,https://d2e1asnsl7br7b.cloudfront.net/7782e205e72f43aeb4a48ec97f66ebbe/index_5.m3u8
 凤凰中文,http://203.205.191.53/qctv.fengshows.cn/live/0701pcc72.m3u8
@@ -127,6 +124,7 @@ TVB plus备3,https://vdm6-hw.nbgdsygs.com/live/h6-2.flv
 凤凰香港,https://stream1.freetv.fun/feng-huang-xiang-gang-9.m3u8
 凤凰香港,https://stream1.freetv.fun/feng-huang-xiang-gang-9.ctv
 凤凰香港,https://epg.pw/stream/8770e89223a086eb1b8a0c931e42296d772a8069ad3eb72540e0c434e7cb3e93.m3u8
+凤凰香港,http://bziyunshao.synology.me:8890/bysid/85
 凤凰香港,https://stream1.freetv.fun/1c05547dc203d9dacaad0c0552f2cc54b0e6726a2b6c38c6a4d7235db8468d2f.m3u8
 星空卫视,https://stream1.freetv.fun/xing-kong-wei-shi-13.m3u8
 星空卫视,https://stream1.freetv.fun/xing-kong-wei-shi-12.m3u8
