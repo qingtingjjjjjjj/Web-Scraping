@@ -6,6 +6,7 @@
   - 尝试连接
   - 读取少量数据流（判断能否播放）
   - 统计首包响应时间
+  - 若测速失败，自动重试最多3次
 输出：
   - 测速结果/港澳台_test_results.csv
   - 测速结果/港澳台_whitelist.txt
@@ -26,6 +27,7 @@ RESULT_FILE = os.path.join(OUTPUT_DIR, "港澳台_test_results.csv")
 TARGET_GROUP = "港澳台,#genre#"
 TIMEOUT = 10
 MAX_WORKERS = 8
+RETRY_COUNT = 3  # 重试次数
 
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
@@ -50,8 +52,8 @@ def parse_live_file(filepath):
     return entries
 
 
-def deep_test(name, url):
-    """深度测速：连接+读取前几KB数据"""
+def deep_test_once(name, url):
+    """单次测速"""
     start = time.time()
     try:
         with requests.get(url, stream=True, timeout=TIMEOUT, headers={
@@ -85,6 +87,22 @@ def deep_test(name, url):
         }
 
 
+def deep_test(name, url):
+    """深度测速，失败重试最多3次"""
+    for attempt in range(1, RETRY_COUNT + 1):
+        result = deep_test_once(name, url)
+        if result["status"] == "OK":
+            if attempt > 1:
+                result["status"] += f" (retry {attempt-1})"
+            return result
+        else:
+            print(f"  ⏳ [{attempt}/{RETRY_COUNT}] {name} 失败，重试中...")
+            time.sleep(1)  # 小延迟避免过于频繁
+    # 全部失败
+    result["status"] += " (all retries failed)"
+    return result
+
+
 def main():
     if not os.path.exists(LIVE_FILE):
         print(f"❌ 未找到 {LIVE_FILE}")
@@ -103,7 +121,7 @@ def main():
         for fut in as_completed(futures):
             res = fut.result()
             results.append(res)
-            status = "✅" if res["status"] == "OK" else "❌"
+            status = "✅" if res["status"].startswith("OK") else "❌"
             print(f"{status} {res['name']} - {res['url']}  [{res['status']}]  {res['time']}s")
 
     # 写入CSV
@@ -113,7 +131,7 @@ def main():
         writer.writerows(results)
 
     # 白名单
-    ok_list = [r for r in results if r["status"] == "OK"]
+    ok_list = [r for r in results if r["status"].startswith("OK")]
     with open(WHITELIST_FILE, "w", encoding="utf-8") as f:
         for r in ok_list:
             f.write(f"{r['name']},{r['url']}\n")
