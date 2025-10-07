@@ -53,10 +53,15 @@ jobs:
             echo "no_changes=false" >> $GITHUB_ENV
           fi
 
-      # 只有有变化时才提交
+      # 只有有变化时才提交，自动拉取最新远程分支解决 push 被拒
       - name: Commit and push if changed
         if: env.no_changes == 'false'
         run: |
           git add live.txt
-          git commit -m "✅ 自动测速更新 港澳台 $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
-          git push
+          if ! git diff --cached --quiet; then
+            git commit -m "✅ 自动测速更新 港澳台 $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+            git pull --rebase origin main
+            git push origin main
+          else
+            echo "🟢 内容无变化，不提交"
+          fi
