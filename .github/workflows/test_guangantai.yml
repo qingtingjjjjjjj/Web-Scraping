@@ -1,0 +1,45 @@
+name: 港澳台直播源深度测速
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+  schedule:
+    - cron: '30 0 * * *' # 每天 08:30 北京时间
+
+permissions:
+  contents: write
+
+jobs:
+  test-streams:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install system deps (ffmpeg)
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y ffmpeg
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install Python deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests m3u8
+
+      - name: Run 港澳台 深度测速
+        run: python check_guangantai_deep.py
+
+      - name: Commit and push results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add 测速结果/* || true
+          git commit -m "📡 深度测速更新 港澳台 $(date -u '+%Y-%m-%d %H:%M:%S UTC')" || echo "No changes"
+          git push
