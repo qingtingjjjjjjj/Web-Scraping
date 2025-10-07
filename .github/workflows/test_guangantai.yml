@@ -1,0 +1,45 @@
+name: Test and Update 港澳台 Sources
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # UTC 00:00 = 北京时间 08:00
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  test_guangantai:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 拉取仓库
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      # 设置 Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+
+      # 安装依赖
+      - name: Install dependencies
+        run: pip install requests
+
+      # 安装 ffmpeg
+      - name: Install ffmpeg
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+
+      # 运行测速脚本
+      - name: Run 港澳台深度测速
+        run: python3 check_guangantai_deep.py
+
+      # 强制推送 whitelist 和 CSV
+      - name: Commit and push results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add 港澳台_whitelist.txt 港澳台_test_results.csv
+          git commit -m "✅ 自动测速更新港澳台直播源" || echo "No changes to commit"
+          git push origin main --force
