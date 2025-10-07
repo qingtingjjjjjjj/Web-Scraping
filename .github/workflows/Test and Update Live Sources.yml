@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  test_live:
+  test_guangantai:
     runs-on: ubuntu-latest
     steps:
       # 1️⃣ 拉取仓库
