@@ -1,4 +1,4 @@
-name: Test and Update Live Sources
+name: Test and Update 港澳台 Sources
 
 on:
   schedule:
@@ -26,19 +26,19 @@ jobs:
       - name: Install dependencies
         run: pip install requests
 
-      # 4️⃣ 安装 ffmpeg（用于播放测试）
+      # 4️⃣ 安装 ffmpeg（用于播放检测）
       - name: Install ffmpeg
         run: sudo apt-get update && sudo apt-get install -y ffmpeg
 
-      # 5️⃣ 运行优化后的测速脚本
-      - name: Run live source test
+      # 5️⃣ 运行高速测速脚本
+      - name: Run 港澳台 live test
         run: python3 check_guangantai_deep.py
 
-      # 6️⃣ 强制推送更新后的文件
-      - name: Force push checked live sources
+      # 6️⃣ 强制推送生成的文件
+      - name: Force push results
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add live_checked.txt
-          git commit -m "✅ 自动测速更新直播源" || echo "No changes to commit"
+          git add 港澳台_whitelist.txt 港澳台_test_results.csv
+          git commit -m "✅ 自动测速更新港澳台直播源" || echo "No changes to commit"
           git push origin main --force
