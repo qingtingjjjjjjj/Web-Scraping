@@ -1,14 +1,18 @@
 TVB plus备3,https://vdm6-hw.nbgdsygs.com/live/h6-2.flv
 香港C+,http://ottproxy2.ist.ooo/livehls/MOB-U1-NO/index.m3u8
+🔴TVB娱乐新闻台,http://php.jdshipin.com/smt.php?id=Tvbentertainment
+🔴凤凰资讯,http://php.jdshipin.com:8880/smt.php?id=phoenixinfo_hd
+🔴华丽翡翠台,http://php.jdshipin.com/smt.php?id=Tvbjade
 🔴美亚电影国,http://php.jdshipin.com:8880/smt.php?id=meiyamovie_twn
+🔴天映,http://php.jdshipin.com/smt.php?id=Celestial
+🔴无线新闻台,http://php.jdshipin.com/smt.php?id=inews_twn
 🔴C+,http://ottproxy2.ist.ooo/livehls/MOB-U1-NO/03.m3u8
+🔴RTHK31,https://rthktv31-live.akamaized.net/hls/live/2036818/RTHKTV31/stream5/streamPlaylist.m3u8
+🔴RTHK32,http://php.jdshipin.com:8880/smt.php?id=rhk32_twn
 🔴RTHK32,https://rthktv32-live.akamaized.net/hls/live/2036819/RTHKTV32/stream5/streamPlaylist.m3u8
-🔴ViuTV,http://php.jdshipin.com:8880/smt.php?id=viu1_twn
-🔴ViuTVSix,http://php.jdshipin.com:8880/smt.php?id=viusix_twn
-🔴爱奇艺,http://php.jdshipin.com/smt.php?id=Qiyi
+🔴TVBS亚洲,http://php.jdshipin.com:8880/smt.php?id=Xinhe
 🔴爱奇艺,http://php.jdshipin.com:8880/smt.php?id=Qiyi
 🔴凤凰电影,http://iot-mqqt.111yao.cn:8080/live/diyp_fhdy.m3u8
-🔴华丽翡翠台,http://php.jdshipin.com:8880/smt.php?id=Tvbjade
 🔴龙华电影,https://cdn8.163189.xyz/live/lhdy/stream.m3u8
 🔴龙华经典,https://cdn8.163189.xyz/live/lhjd/stream.m3u8
 🔴龙华卡通,https://cdn8.163189.xyz/live/lhkt/stream.m3u8
@@ -16,9 +20,15 @@ TVB plus备3,https://vdm6-hw.nbgdsygs.com/live/h6-2.flv
 🔴龙华日韩,https://cdn8.163189.xyz/live/lhrh/stream.m3u8
 🔴龙华戏剧,https://cdn8.163189.xyz/live/lhxj/stream.m3u8
 🔴龙华洋片,https://cdn8.163189.xyz/live/lhyp/stream.m3u8
+🔴美亚电影台,http://php.jdshipin.com:8880/smt.php?id=meiyamovie_twn
 🔴明珠台,http://o12.1678520.xyz/hls/mzt/playlist.m3u8
+🔴千禧经典,http://php.jdshipin.com/TVOD/iptv.php?id=tvbc
+🔴千禧经典,http://php.jdshipin.com:8880/smt.php?id=Tvbclassic
+🔴天映CM+,http://php.jdshipin.com/TVOD/iptv.php?id=aod
+🔴天映电影,http://php.jdshipin.com/smt.php?id=Celestial
 🔴天映经典,http://php.jdshipin.com:8880/smt.php?id=Celestial2
-🔴无线新闻,http://php.jdshipin.com/smt.php?id=inews_twn
+🔴天映频道,http://php.jdshipin.com/smt.php?id=Celestial
+🔴天映频道,http://php.jdshipin.com:8880/smt.php?id=Celestial
 🔴亞洲新聞台,https://d2e1asnsl7br7b.cloudfront.net/7782e205e72f43aeb4a48ec97f66ebbe/index_4.m3u8
 🔴亞洲新聞台,https://d2e1asnsl7br7b.cloudfront.net/7782e205e72f43aeb4a48ec97f66ebbe/index_5.m3u8
 凤凰中文,http://203.205.191.53/qctv.fengshows.cn/live/0701pcc72.m3u8
@@ -37,6 +47,7 @@ TVB plus备3,https://vdm6-hw.nbgdsygs.com/live/h6-2.flv
 凤凰中文,https://stream1.freetv.fun/91dffd2dca60b65821a94747f2f3020dfc9642bb89f86ed7fa6d8b0b7487c5d2.m3u8
 凤凰中文,https://stream1.freetv.fun/4e695e885cc20b20b7e3ec874fe52ed75e27443778c8ff29e498c4c9d7cec4a0.m3u8
 凤凰中文,https://stream1.freetv.fun/feng-huang-zhong-wen-11.m3u8
+凤凰中文,http://smart.cityq.xyz:8278/phoenixtv_hd/playlist.m3u8?tid=MF6F2163882521638825&ct=19249&tsum=2375037c2689c4190d14c8a52bc35c83
 凤凰中文,http://58.19.180.108:9981/stream/channelid/1749482778?profile=pass
 凤凰中文,https://stream1.freetv.fun/feng-huang-zhong-wen-12.m3u8
 凤凰中文,https://stream1.freetv.fun/feng-huang-zhong-wen-7.m3u8
@@ -80,6 +91,7 @@ TVB plus备3,https://vdm6-hw.nbgdsygs.com/live/h6-2.flv
 凤凰资讯,https://stream1.freetv.fun/feng-huang-zi-xun-1.ctv
 凤凰资讯,https://stream1.freetv.fun/feng-huang-zi-xun-18.m3u8
 凤凰资讯,https://stream1.freetv.fun/feng-huang-zi-xun-21.ctv
+凤凰资讯,http://smart.cityq.xyz:8278/phoenixinfo_hd/playlist.m3u8?tid=MB5B7253262872532628&ct=19249&tsum=e2b2dcd00f39adb64b6c03601da1e0e0
 凤凰资讯,http://58.19.180.108:9981/stream/channelid/708272803?profile=pass
 凤凰资讯,https://stream1.freetv.fun/feng-huang-zi-xun-14.ctv
 凤凰资讯,https://stream1.freetv.fun/a5857ad51b58a0f7a8c9cbdf291571692b0eed9f5ab2cfce97a211260533c0d8.m3u8
@@ -109,6 +121,7 @@ TVB plus备3,https://vdm6-hw.nbgdsygs.com/live/h6-2.flv
 凤凰香港,https://epg.pw/stream/5f16dc7fc8aaaed3205516c63e4a8c24bca9dbba1181684244729cf574505b0e.m3u8
 凤凰香港,https://stream1.freetv.fun/feng-huang-xiang-gang-14.m3u8
 凤凰香港,https://stream1.freetv.fun/feng-huang-xiang-gang-6.ctv
+凤凰香港,http://smart.cityq.xyz:8278/hkphoenix_twn/playlist.m3u8?tid=MD0D2495250724952507&ct=19249&tsum=b1c0a577a7f4aaa9af143d124ba24a40
 凤凰香港,http://api.mg.itv888.cn:8080/hls/e9660dce9a6/index.m3u8
 凤凰香港,https://stream1.freetv.fun/feng-huang-xiang-gang-7.m3u8
 凤凰香港,https://stream1.freetv.fun/feng-huang-xiang-gang-9.m3u8
@@ -140,10 +153,11 @@ TVB明珠,http://cdn9.163189.xyz/smt1.1.php?id=pearl_twn
 TVB明珠,https://stream1.freetv.fun/ming-zhu-10.m3u8
 TVB明珠,https://stream1.freetv.fun/ming-zhu-7.m3u8
 TVB明珠,http://202.168.168.50:5000/tsfile/live/1044_1.m3u8?key=txiptv&playlive=1&authid=0
-TVB明珠,http://1b6467f415.iok.la:9931/tsfile/live/1009_1.m3u8
 TVB明珠,http://api.mg.itv888.cn:8080/hls/63e9ea6e5df/index.m3u8
 TVB明珠,https://mytv.cdn.loc.cc/o12.php?id=mzt
 TVB明珠,http://121.37.185.74:18180/TV00000000000000000056@HHZT
+TVB星河,http://smart.cityq.xyz:8278/Xinhe/playlist.m3u8?tid=MCFC2010151520101515&ct=19249&tsum=a8fd0cb32ef01d8472773a604402a683
+TVB星河,http://cdn9.163189.xyz/smt1.1.php?id=Xinhe
 TVB无线新闻,http://cdn9.163189.xyz/smt1.1.php?id=inews_twn
 TVB无线新闻,https://stream1.freetv.fun/wu-xian-xin-wen-10.m3u8
 TVB无线新闻,https://stream1.freetv.fun/wu-xian-xin-wen-8.m3u8
@@ -173,6 +187,7 @@ VIUTV,https://stream1.freetv.fun/viutv-5.m3u8
 天映经典,https://smt.1789.dpdns.org/smt3.2.1.php?id=Celestial2
 天映经典,https://stream1.freetv.fun/tian-ying-jing-dian-10.ctv
 美亚电影,https://stream1.freetv.fun/mei-ya-dian-ying-7.m3u8
+美亚电影,http://smart.cityq.xyz:8278/meiyamovie_twn/playlist.m3u8?tid=ME9E6301165163011651&ct=19249&tsum=c2c246af848b424b68e94e4b35cfa337
 美亚电影,https://stream1.freetv.fun/mei-ya-dian-ying-1.m3u8
 美亚电影,https://stream1.freetv.fun/mei-ya-dian-ying-4.ctv
 天映,https://stream1.freetv.fun/tian-ying-4.m3u8
@@ -186,6 +201,8 @@ VIUTV,https://stream1.freetv.fun/viutv-5.m3u8
 香港佛陀,https://js1.amtb.cn/liveedge/_definst_/livetv/playlist.m3u8
 八大第一,https://stream1.freetv.fun/ba-da-di-yi-1.m3u8
 八大综合,https://stream1.freetv.fun/ba-da-zong-he-1.m3u8
+八大综合,http://smart.cityq.xyz:8278/badazhonghe/playlist.m3u8?tid=MCFC9951205299512052&ct=19249&tsum=dc4ca0de5e57c9f4caee0bb4e80c098a
+八大综合,http://smart.cityq.xyz:8278/badazhonghe/playlist.m3u8?tid=MC7C4692263546922635&ct=19225&tsum=ffdc7a6397b511103e0df0b92e678790
 三立新闻,https://stream1.freetv.fun/san-li-xin-wen-5.ctv
 三立新闻,https://stream1.freetv.fun/san-li-xin-wen-7.m3u8
 三立新闻,https://stream1.freetv.fun/san-li-xin-wen-4.m3u8
@@ -223,6 +240,7 @@ VIUTV,https://stream1.freetv.fun/viutv-5.m3u8
 中天新闻,http://jnzq.ohoyee.com:9080/live/fc.m3u8
 中天娱乐,https://stream1.freetv.fun/zhong-tian-yu-le-1.m3u8
 中天娱乐,https://stream1.freetv.fun/zhong-tian-yu-le-3.m3u8
+中天娱乐,http://smart.cityq.xyz:8278/ctient/playlist.m3u8?tid=MC9C7081133170811331&ct=19249&tsum=8b08b54208f3ee30e12f419d587f46ac
 中天娱乐,https://stream1.freetv.fun/zhong-tian-yu-le-4.m3u8
 中天亚洲,https://stream1.freetv.fun/zhong-tian-ya-zhou-6.m3u8
 中视新闻,http://123.51.136.80:8302/0.ts
