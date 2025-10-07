@@ -1,41 +1,44 @@
-name: 港澳台直播源深度测速
+name: Test and Update Live Sources
 
 on:
+  schedule:
+    - cron: '0 */1 * * *'  # 每小时运行一次
+  workflow_dispatch:
   push:
     branches:
       - main
-  workflow_dispatch:
-  schedule:
-    - cron: '30 0 * * *'  # 每天 08:30 北京时间运行
-
-permissions:
-  contents: write
 
 jobs:
-  test-streams:
+  test_live:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      # 1️⃣ 拉取仓库
+      - name: Checkout repo
+        uses: actions/checkout@v3
 
+      # 2️⃣ 设置 Python
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.11'
+          python-version: 3.11
 
+      # 3️⃣ 安装依赖
       - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install requests
+        run: pip install requests
 
-      - name: Run 港澳台深度测速
-        run: python check_guangantai_deep.py
+      # 4️⃣ 安装 ffmpeg（用于播放测试）
+      - name: Install ffmpeg
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
 
-      - name: Commit and push results
+      # 5️⃣ 运行优化后的测速脚本
+      - name: Run live source test
+        run: python3 test_live.py
+
+      # 6️⃣ 强制推送更新后的文件
+      - name: Force push checked live sources
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add 测速结果/* || true
-          git commit -m "📡 更新 港澳台深度测速结果 $(date -u '+%Y-%m-%d %H:%M:%S UTC')" || echo "No changes"
-          git push
+          git add live_checked.txt
+          git commit -m "✅ 自动测速更新直播源" || echo "No changes to commit"
+          git push origin main --force
