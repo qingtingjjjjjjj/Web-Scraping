@@ -13,29 +13,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ 拉取仓库
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      # 2️⃣ 设置 Python
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: 3.11
 
-      # 3️⃣ 安装 Python 依赖
       - name: Install dependencies
         run: pip install requests
 
-      # 4️⃣ 安装 ffmpeg
       - name: Install ffmpeg
         run: sudo apt-get update && sudo apt-get install -y ffmpeg
 
-      # 5️⃣ 运行优化后的测速脚本
       - name: Run 港澳台 live test
         run: python3 check_guangantai_deep.py
 
-      # 6️⃣ 强制推送生成的 whitelist 和 CSV 文件
       - name: Force push whitelist and CSV
         run: |
           git config user.name "github-actions[bot]"
