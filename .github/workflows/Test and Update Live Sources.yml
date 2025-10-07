@@ -35,8 +35,8 @@ jobs:
       - name: Run 港澳台 live test
         run: python3 check_guangantai_deep.py
 
-      # 6️⃣ 强制推送生成的文件
-      - name: Force push results
+      # 6️⃣ 强制推送生成的 whitelist 和 CSV 文件
+      - name: Force push whitelist and CSV
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
