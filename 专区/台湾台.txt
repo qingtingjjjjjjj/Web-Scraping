@@ -1,49 +1,49 @@
 ⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛
-🔵澳视综艺[1920x1080],http://103.233.191.132:1935/ch6/hd_ch6.live/playlist.m3u8
-🔵澳视Macau[1920x1080],http://103.233.191.133:1935/ch3/ch3.live/playlist.m3u8
-🔵澳视葡文[1920x1080],http://103.233.191.134:1935/ch2/ch2.live/playlist.m3u8
-🔵澳视卫星[1920x1080],http://103.233.191.134:1935/ch3/ch3.live/playlist.m3u8
-🔵澳视资讯[1920x1080],http://103.233.191.134:1935/ch5/info_ch5.live/playlist.m3u8
-🔵ATV[1280x720],http://116.202.238.88/ATV_TR/tracks-v1a1/index.m3u8
-🔵生命电视,http://61.216.67.119:1935/lifetv/lifetv.stream/manifest.m3u8
-🔵番薯111,http://61.216.67.119:1935/TWHG/E1/chunklist_w705811302.m3u8
-🔵纬来精采,http://61.221.215.25:8800/hls/48/index.m3u8
-🔵tvbs闽南,http://61.221.215.25:8800/hls/9/index.m3u8
-🔵无线功夫,http://j.s.bkpcp.top/js/tvbgftg
-🔵无线功夫,http://j.s.bkpcp.top/js/tvbgfty
-🔵CHC动作电影,http://113.195.172.192:808/hls/114/index.m3u8
-🔵CHC家庭影院,http://113.195.172.192:808/hls/113/index.m3u8
-🔵CHC影迷电影,http://113.195.172.192:808/hls/112/index.m3u8
-🔵TVBS亚洲,http://d2e1asnsl7br7b.cloudfront.net/7782e205e72f43aeb4a48ec97f66ebbe/index_5.m3u8?zshijd$LR•IPV4『线路8』
-🔵TVB明珠台,http://36.36.200.198:44330/tsfile/live/1009_1.m3u8?key=txiptv&playlive=0&authid=0
-🔵澳门莲花,http://1033946631.cloudvdn.com/a.m3u8?domain=live-hdl.macaulotustv.com&player=1&streamid=lotustv:lotustv/macaulotustv&v3=1
-🔵澳门莲花,http://live-hls.macaulotustv.com/lotustv/macaulotustv.m3u8
-🔵澳视澳门,http://103.233.191.132:1935/ch1/ch1.live/playlist.m3u8
-🔵动物星球国,http://61.221.215.25:8800/hls/57/index.m3u8
-🔵法国时装,http://lb.streaming.sk/fashiontv/stream/chunklist_w1702070444.m3u8
-🔵番薯111,http://61.216.67.119:1935/TWHG/E1/chunklist_w7058102.m3u8
-🔵翡翠台,http://36.36.200.198:44330/tsfile/live/1008_1.m3u8?key=txiptv&playlive=0&authid=0
-🔵凤凰香港,http://203.205.191.53/qctv.fengshows.cn/live/0701phk72.flv
-🔵凤凰中文,http://m.061899.xyz/mg/fhzw
-🔵韩国新闻,http://amdlive.ctnd.com.edgesuite.net:80/arirang_1ch/smil:arirang_1ch.smil/chunklist_b2256000_sleng.m3u8
-🔵华藏卫视,https://sg1.amtb.de/liveedge/_definst_/smil:livetv.smil/chunklist_w1071093527_b828000.m3u8
-🔵环球电视台,http://utv1.hqtvzb.com:9999/hls/world.m3u8
-🔵寰宇新闻,http://222.128.55.152:9080/live/hy.m3u8
-🔵寰宇新闻,https://stream1.freetv.fun/huan-yu-xin-wen-1.m3u8
-🔵莲花卫视,http://live-hdl.macaulotustv.com/lotustv/macaulotustv.m3u8
-🔵龙华经典,https://cdn8.163189.xyz/live/lhjd/stream.m3u8
-🔵龙华偶像,https://cdn8.163189.xyz/live/lhox/stream.m3u8
-🔵龙华日韩,https://cdn8.163189.xyz/live/lhrh/stream.m3u8
-🔵民视,rtmp://f13h.mine.nu/sat/tv051
-🔵人间卫视,http://61.216.67.119:1935/bltvhd/bltv1/chunklist_w1266569526.m3u
-🔵三立戏剧,http://61.221.215.25:8800/hls/41/index.m3u8
-🔵三立戏剧台,http://61.221.215.25:8800/hls/41/index.m3u8?txiptv&playlive
-🔵沭阳综合,http://shuyang-tv-hls.cm.jstv.com/shuyang-tv/shuyangzh.m3u8
-🔵台视新闻,http://222.128.55.152:9080/live/ts.m3u8
-🔵唯心电视,http://mobile.ccdntech.com/transcoder/_definst_/vod164_Live/live/chunklist_w1177047531.m3u8
-🔵新闻综合,http://tvdrs.wsrtv.com.cn:8100/channellive/ch1.flv
-🔵亞洲衛視,https://p2hs.vzan.com/slowlive/821481626725612419/live.m3u8
-🔵中视,rtmp://f13h.mine.nu/sat/tv091
-🔵中天新闻,http://222.128.55.152:9080/live/fc.m3u8
-🔵中天娱乐,http://61.221.215.25:8800/hls/47/index.m3u8
+澳视综艺[1920x1080],http://103.233.191.132:1935/ch6/hd_ch6.live/playlist.m3u8
+澳视Macau[1920x1080],http://103.233.191.133:1935/ch3/ch3.live/playlist.m3u8
+澳视葡文[1920x1080],http://103.233.191.134:1935/ch2/ch2.live/playlist.m3u8
+澳视卫星[1920x1080],http://103.233.191.134:1935/ch3/ch3.live/playlist.m3u8
+澳视资讯[1920x1080],http://103.233.191.134:1935/ch5/info_ch5.live/playlist.m3u8
+ATV[1280x720],http://116.202.238.88/ATV_TR/tracks-v1a1/index.m3u8
+生命电视,http://61.216.67.119:1935/lifetv/lifetv.stream/manifest.m3u8
+番薯111,http://61.216.67.119:1935/TWHG/E1/chunklist_w705811302.m3u8
+纬来精采,http://61.221.215.25:8800/hls/48/index.m3u8
+tvbs闽南,http://61.221.215.25:8800/hls/9/index.m3u8
+无线功夫,http://j.s.bkpcp.top/js/tvbgftg
+无线功夫,http://j.s.bkpcp.top/js/tvbgfty
+CHC动作电影,http://113.195.172.192:808/hls/114/index.m3u8
+CHC家庭影院,http://113.195.172.192:808/hls/113/index.m3u8
+CHC影迷电影,http://113.195.172.192:808/hls/112/index.m3u8
+TVBS亚洲,http://d2e1asnsl7br7b.cloudfront.net/7782e205e72f43aeb4a48ec97f66ebbe/index_5.m3u8?zshijd$LR•IPV4『线路8』
+TVB明珠台,http://36.36.200.198:44330/tsfile/live/1009_1.m3u8?key=txiptv&playlive=0&authid=0
+澳门莲花,http://1033946631.cloudvdn.com/a.m3u8?domain=live-hdl.macaulotustv.com&player=1&streamid=lotustv:lotustv/macaulotustv&v3=1
+澳门莲花,http://live-hls.macaulotustv.com/lotustv/macaulotustv.m3u8
+澳视澳门,http://103.233.191.132:1935/ch1/ch1.live/playlist.m3u8
+动物星球国,http://61.221.215.25:8800/hls/57/index.m3u8
+法国时装,http://lb.streaming.sk/fashiontv/stream/chunklist_w1702070444.m3u8
+番薯111,http://61.216.67.119:1935/TWHG/E1/chunklist_w7058102.m3u8
+翡翠台,http://36.36.200.198:44330/tsfile/live/1008_1.m3u8?key=txiptv&playlive=0&authid=0
+凤凰香港,http://203.205.191.53/qctv.fengshows.cn/live/0701phk72.flv
+凤凰中文,http://m.061899.xyz/mg/fhzw
+韩国新闻,http://amdlive.ctnd.com.edgesuite.net:80/arirang_1ch/smil:arirang_1ch.smil/chunklist_b2256000_sleng.m3u8
+华藏卫视,https://sg1.amtb.de/liveedge/_definst_/smil:livetv.smil/chunklist_w1071093527_b828000.m3u8
+环球电视台,http://utv1.hqtvzb.com:9999/hls/world.m3u8
+寰宇新闻,http://222.128.55.152:9080/live/hy.m3u8
+寰宇新闻,https://stream1.freetv.fun/huan-yu-xin-wen-1.m3u8
+莲花卫视,http://live-hdl.macaulotustv.com/lotustv/macaulotustv.m3u8
+龙华经典,https://cdn8.163189.xyz/live/lhjd/stream.m3u8
+龙华偶像,https://cdn8.163189.xyz/live/lhox/stream.m3u8
+龙华日韩,https://cdn8.163189.xyz/live/lhrh/stream.m3u8
+民视,rtmp://f13h.mine.nu/sat/tv051
+人间卫视,http://61.216.67.119:1935/bltvhd/bltv1/chunklist_w1266569526.m3u
+三立戏剧,http://61.221.215.25:8800/hls/41/index.m3u8
+三立戏剧台,http://61.221.215.25:8800/hls/41/index.m3u8?txiptv&playlive
+沭阳综合,http://shuyang-tv-hls.cm.jstv.com/shuyang-tv/shuyangzh.m3u8
+台视新闻,http://222.128.55.152:9080/live/ts.m3u8
+唯心电视,http://mobile.ccdntech.com/transcoder/_definst_/vod164_Live/live/chunklist_w1177047531.m3u8
+新闻综合,http://tvdrs.wsrtv.com.cn:8100/channellive/ch1.flv
+亞洲衛視,https://p2hs.vzan.com/slowlive/821481626725612419/live.m3u8
+中视,rtmp://f13h.mine.nu/sat/tv091
+中天新闻,http://222.128.55.152:9080/live/fc.m3u8
+中天娱乐,http://61.221.215.25:8800/hls/47/index.m3u8
 ⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛
