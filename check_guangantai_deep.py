@@ -7,6 +7,7 @@
   - 首包响应时间测速
   - 若失败自动重试3次
   - 指定域名免测试
+  - 按直播源链接去重（保留第一个）
   - 仅当测速结果有变化时，更新 live.txt 中的港澳台分组内容
 """
 
@@ -134,7 +135,16 @@ def main():
         print("⚠️ 未找到 '港澳台,#genre#' 分组内容。")
         return
 
-    print(f"发现 {len(entries)} 条港澳台直播源，开始深度测速...\n")
+    # ✅ 按 URL 去重（保留第一个）
+    seen_urls = set()
+    unique_entries = []
+    for name, url in entries:
+        if url not in seen_urls:
+            seen_urls.add(url)
+            unique_entries.append((name, url))
+    entries = unique_entries
+
+    print(f"发现 {len(entries)} 条港澳台直播源（去重后），开始深度测速...\n")
 
     results = []
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
