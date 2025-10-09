@@ -17,7 +17,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0   # 确保可进行 rebase
+          fetch-depth: 0
 
       # 安装 Python
       - name: Set up Python
@@ -58,19 +58,16 @@ jobs:
             echo "🟡 检测到 live.txt 有变化"
           fi
 
-      # 只有有变化时才提交并推送
-      - name: Commit and push if changed
+      # 有变化时直接强制推送
+      - name: Commit and force push if changed
         if: env.no_changes == 'false'
         run: |
-          echo "📦 提交并推送更新..."
+          echo "📦 提交并强制推送更新..."
           git add live.txt
           git commit -m "✅ 自动测速更新 港澳台 $(date -u '+%Y-%m-%d %H:%M:%S UTC')" || echo "⚠️ 无需提交"
-          
-          echo "🔄 拉取最新 main 分支..."
-          git pull --rebase origin main || true
-          
-          echo "🚀 推送到远程仓库..."
-          git push origin main || (echo "⚠️ 推送失败，重试中..." && git pull --rebase origin main && git push origin main)
+
+          echo "🚀 强制推送到远程仓库..."
+          git push origin main --force
 
       # 无变化时输出提示
       - name: No changes message
