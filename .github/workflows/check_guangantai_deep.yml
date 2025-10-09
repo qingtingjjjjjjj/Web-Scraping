@@ -3,7 +3,7 @@ name: 港澳台 深度测速自动更新
 on:
   schedule:
     - cron: "0 2 * * *"   # 每天北京时间10:00运行（UTC+8）
-  workflow_dispatch:       # 支持手动触发
+  workflow_dispatch:       # 手动触发
   push:
     branches:
       - main
@@ -16,6 +16,8 @@ jobs:
       # 拉取仓库代码
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # 确保可进行 rebase
 
       # 安装 Python
       - name: Set up Python
@@ -47,21 +49,30 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          if git diff --quiet; then
+
+          if git diff --quiet live.txt; then
             echo "no_changes=true" >> $GITHUB_ENV
+            echo "🟢 没有检测到 live.txt 变化"
           else
             echo "no_changes=false" >> $GITHUB_ENV
+            echo "🟡 检测到 live.txt 有变化"
           fi
 
-      # 只有有变化时才提交，自动拉取最新远程分支解决 push 被拒
+      # 只有有变化时才提交并推送
       - name: Commit and push if changed
         if: env.no_changes == 'false'
         run: |
+          echo "📦 提交并推送更新..."
           git add live.txt
-          if ! git diff --cached --quiet; then
-            git commit -m "✅ 自动测速更新 港澳台 $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
-            git pull --rebase origin main
-            git push origin main
-          else
-            echo "🟢 内容无变化，不提交"
-          fi
+          git commit -m "✅ 自动测速更新 港澳台 $(date -u '+%Y-%m-%d %H:%M:%S UTC')" || echo "⚠️ 无需提交"
+          
+          echo "🔄 拉取最新 main 分支..."
+          git pull --rebase origin main || true
+          
+          echo "🚀 推送到远程仓库..."
+          git push origin main || (echo "⚠️ 推送失败，重试中..." && git pull --rebase origin main && git push origin main)
+
+      # 无变化时输出提示
+      - name: No changes message
+        if: env.no_changes == 'true'
+        run: echo "🟢 内容无变化，不执行提交。"
