@@ -1,0 +1,54 @@
+name: 自动更新 Top3 每节目最快直播源
+
+on:
+  workflow_dispatch:   # 手动触发
+  schedule:
+    - cron: '0 */6 * * *'  # 每6小时触发一次（北京时间 00/06/12/18）
+
+permissions:
+  contents: write  # 允许推送文件
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ 检出仓库
+      - name: 检出仓库
+        uses: actions/checkout@v4
+
+      # 2️⃣ 设置 Python
+      - name: 设置 Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      # 3️⃣ 安装依赖
+      - name: 安装依赖
+        run: |
+          pip install --upgrade pip
+          pip install aiohttp requests
+
+      # 4️⃣ 运行测速脚本
+      - name: 运行测速脚本
+        run: python update_live_top3.py
+
+      # 5️⃣ 查看生成文件
+      - name: 查看生成文件
+        run: |
+          echo "📁 当前目录文件："
+          ls -la cmlive
+          echo ""
+          echo "📜 文件内容预览："
+          head -n 20 cmlive/cmlive_top3_per_program.txt || echo "⚠️ 文件未生成"
+
+      # 6️⃣ 提交并强制推送
+      - name: 提交并强制推送更新
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git add cmlive/cmlive_top3_per_program.txt
+          git diff --cached --quiet || git commit -m "📺 自动更新 Top3 每节目最快直播源 $(date '+%Y-%m-%d %H:%M:%S')"
+          git push --force
