@@ -2,7 +2,7 @@ name: 港澳台 深度测速自动更新
 
 on:
   schedule:
-    - cron: "0 2 * * *"   # 每天北京时间10:00运行（UTC+8）
+    - cron: "0 0 * * *"   # 每天北京时间08:00运行（UTC+8）
   workflow_dispatch:       # 手动触发
   push:
     branches:
