@@ -158,10 +158,6 @@ weishi = temp_weishi_new + weishi
 weishi_detail = temp_weishi_detail_new + weishi_detail
 
 # ===== live.txt 更新逻辑 =====
-if not yangshi and not weishi:
-    print(f"{RED}抓取到的直播源为空，保留旧的 live.txt 文件{RESET}")
-    exit(0)
-
 if os.path.exists(live_file):
     with open(live_file, "r", encoding="utf-8") as f:
         old_lines = f.read().splitlines()
@@ -171,30 +167,27 @@ else:
 yangshi_tag = "央视频道,#genre#"
 weishi_tag = "卫视频道,#genre#"
 
-def insert_group_front(existing_lines, tag, new_records):
+# ===== 改进版插入函数 =====
+def insert_group_front_fixed(existing_lines, tag, new_records):
     if tag not in existing_lines:
-        return existing_lines
+        # 如果分组不存在，新增分组
+        return existing_lines + [tag, "# BEGIN_AUTO_UPDATE"] + new_records + ["# END_AUTO_UPDATE"]
     idx = existing_lines.index(tag) + 1
+    # 查找分组结束位置
     end_idx = idx
-    while end_idx < len(existing_lines) and existing_lines[end_idx].strip() != "" and not existing_lines[end_idx].endswith(",#genre#"):
+    while end_idx < len(existing_lines) and not existing_lines[end_idx].startswith("# END_AUTO_UPDATE") and not existing_lines[end_idx].endswith(",#genre#"):
         end_idx += 1
+    # 提取原有分组内容
     group_lines = existing_lines[idx:end_idx]
-    new_group = []
-    skip = False
-    for line in group_lines:
-        if line.strip() == "# BEGIN_AUTO_UPDATE":
-            skip = True
-            continue
-        if line.strip() == "# END_AUTO_UPDATE":
-            skip = False
-            continue
-        if not skip:
-            new_group.append(line)
+    # 移除旧的自动更新标记内容
+    new_group = [line for line in group_lines if line not in ["# BEGIN_AUTO_UPDATE", "# END_AUTO_UPDATE"]]
+    # 构建新的分组
     updated_group = ["# BEGIN_AUTO_UPDATE"] + new_records + ["# END_AUTO_UPDATE"] + new_group
+    # 拼接回原有文件
     return existing_lines[:idx] + updated_group + existing_lines[end_idx:]
 
-lines_after_yangshi = insert_group_front(old_lines, yangshi_tag, yangshi)
-lines_after_weishi = insert_group_front(lines_after_yangshi, weishi_tag, weishi)
+lines_after_yangshi = insert_group_front_fixed(old_lines, yangshi_tag, yangshi)
+lines_after_weishi = insert_group_front_fixed(lines_after_yangshi, weishi_tag, weishi)
 lines_final = lines_after_weishi
 
 with open(live_file, "w", encoding="utf-8") as f:
@@ -250,4 +243,4 @@ def log_channels(name, records, detail_list, color):
 
 log_channels("央视频道", yangshi, yangshi_detail, GREEN)
 log_channels("卫视频道", weishi, weishi_detail, YELLOW)
-print(f"{RED}更新完成 ✅ 本次抓取的直播源已覆盖上一次抓取源，保留组内其他源和分组不变。未新增新的央视频道或卫视频道分组。{RESET}")
+print(f"{RED}更新完成 ✅ 新增接口源已插入分组最前面，保留原有其他源{RESET}")
