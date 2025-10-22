@@ -16,7 +16,8 @@ live_file = "live.txt"
 sources = {
     "TXT": "https://hk.gh-proxy.com/https://raw.githubusercontent.com/AnonymousOrz/IPTV/main/Live/collect/央卫内地主流频道cs推流250824(4).txt",
     "M3U": "https://raw.githubusercontent.com/develop202/migu_video/refs/heads/main/interface.txt",
-    "M3U_NEW": "https://ghfast.top/https://raw.githubusercontent.com/kakaxi-1/IPTV/refs/heads/main/ipv6.m3u"  # 新增M3U源
+    "M3U_NEW": "https://ghfast.top/https://raw.githubusercontent.com/kakaxi-1/IPTV/refs/heads/main/ipv6.m3u",
+    "NEW_INTERFACE": "https://raw.githubusercontent.com/xiaolin330328/ctv/refs/heads/main/%E7%AC%AC%E4%BA%8C"  # 新增接口
 }
 
 # ===== 工具函数 =====
@@ -127,22 +128,49 @@ for line in lines_m3u:
             weishi.append(record)
             weishi_detail.append(f"{current_name} -> {line.strip()} (M3U)")
 
+# ===== 新增接口抓取，只提取指定域名 =====
+lines_new_interface = fetch_source("NEW_INTERFACE", sources["NEW_INTERFACE"], BLUE)
+temp_yangshi_new, temp_yangshi_detail_new = [], []
+temp_weishi_new, temp_weishi_detail_new = [], []
+
+TARGET_DOMAIN = "litao1100.wicp.io:9901"
+
+for line in lines_new_interface:
+    if not line or "," not in line:
+        continue
+    name, url = line.split(",", 1)
+    url = url.strip()
+    if TARGET_DOMAIN not in url:
+        continue
+    name = simplify_name(name.strip())
+    record = f"{name},{url}"
+    if name.startswith("CCTV") or "央视" in name:
+        temp_yangshi_new.append(record)
+        temp_yangshi_detail_new.append(f"{name} -> {url} (NEW_INTERFACE)")
+    elif "卫视" in name:
+        temp_weishi_new.append(record)
+        temp_weishi_detail_new.append(f"{name} -> {url} (NEW_INTERFACE)")
+
+# ===== 插入到主列表最前面 =====
+yangshi = temp_yangshi_new + yangshi
+yangshi_detail = temp_yangshi_detail_new + yangshi_detail
+weishi = temp_weishi_new + weishi
+weishi_detail = temp_weishi_detail_new + weishi_detail
+
+# ===== live.txt 更新逻辑 =====
 if not yangshi and not weishi:
     print(f"{RED}抓取到的直播源为空，保留旧的 live.txt 文件{RESET}")
     exit(0)
 
-# ===== 读取原有 live.txt =====
 if os.path.exists(live_file):
     with open(live_file, "r", encoding="utf-8") as f:
         old_lines = f.read().splitlines()
 else:
     old_lines = []
 
-# ===== 分组标签 =====
 yangshi_tag = "央视频道,#genre#"
 weishi_tag = "卫视频道,#genre#"
 
-# ===== 插入分组函数：只更新已有分组，不新增 =====
 def insert_group_front(existing_lines, tag, new_records):
     if tag not in existing_lines:
         return existing_lines
@@ -165,12 +193,10 @@ def insert_group_front(existing_lines, tag, new_records):
     updated_group = ["# BEGIN_AUTO_UPDATE"] + new_records + ["# END_AUTO_UPDATE"] + new_group
     return existing_lines[:idx] + updated_group + existing_lines[end_idx:]
 
-# ===== 更新分组 =====
 lines_after_yangshi = insert_group_front(old_lines, yangshi_tag, yangshi)
 lines_after_weishi = insert_group_front(lines_after_yangshi, weishi_tag, weishi)
 lines_final = lines_after_weishi
 
-# ===== 写回 live.txt =====
 with open(live_file, "w", encoding="utf-8") as f:
     f.write("\n".join(lines_final))
 
@@ -178,6 +204,7 @@ with open(live_file, "w", encoding="utf-8") as f:
 txt_count = len(lines_txt)
 m3u_count = len(lines_m3u)
 m3u_new_count = len(lines_m3u_new)
+new_interface_count = len(temp_yangshi_new + temp_weishi_new)
 total_count = len(lines_final)
 
 # ===== 日志输出 =====
@@ -185,6 +212,7 @@ print("\n" + "="*50)
 print(f"{GREEN}>>> TXT 本次抓取: {txt_count} 条源 {'➤'*3}{RESET}")
 print(f"{BLUE}>>> M3U 本次抓取: {m3u_count} 条源 {'➤'*3}{RESET}")
 print(f"{BLUE}>>> 新M3U 本次抓取: {m3u_new_count} 条源 {'➤'*3}{RESET}")
+print(f"{BLUE}>>> 新接口 本次抓取: {new_interface_count} 条源 {'➤'*3}{RESET}")
 print(f"{YELLOW}>>> 总计直播源: {total_count} 条 {'➤'*5}{RESET}")
 print("="*50 + "\n")
 
@@ -192,7 +220,7 @@ print("="*50 + "\n")
 beijing_tz = timezone(timedelta(hours=8))
 timestamp = datetime.now(beijing_tz).strftime("%Y-%m-%d %H:%M:%S")
 header = f"## ✨于 {timestamp} 更新"
-subline = f"**🎉最新可用IPTV源，TXT: {txt_count} 条，M3U: {m3u_count} 条，新M3U: {m3u_new_count} 条，总计: {total_count} 条**"
+subline = f"**🎉最新可用IPTV源，TXT: {txt_count} 条，M3U: {m3u_count} 条，新M3U: {m3u_new_count} 条，新接口: {new_interface_count} 条，总计: {total_count} 条**"
 statline = f"📺 当前共收录 {total_count} 条直播源"
 
 if os.path.exists("README.md"):
