@@ -167,24 +167,31 @@ else:
 yangshi_tag = "央视频道,#genre#"
 weishi_tag = "卫视频道,#genre#"
 
-# ===== 改进版插入函数 =====
+# ===== 改进版插入函数（覆盖旧自动更新块） =====
 def insert_group_front_fixed(existing_lines, tag, new_records):
     if tag not in existing_lines:
-        # 如果分组不存在，新增分组
+        # 分组不存在，新增分组
         return existing_lines + [tag, "# BEGIN_AUTO_UPDATE"] + new_records + ["# END_AUTO_UPDATE"]
+
+    # 找到分组起始位置
     idx = existing_lines.index(tag) + 1
-    # 查找分组结束位置
-    end_idx = idx
-    while end_idx < len(existing_lines) and not existing_lines[end_idx].startswith("# END_AUTO_UPDATE") and not existing_lines[end_idx].endswith(",#genre#"):
-        end_idx += 1
-    # 提取原有分组内容
-    group_lines = existing_lines[idx:end_idx]
-    # 移除旧的自动更新标记内容
-    new_group = [line for line in group_lines if line not in ["# BEGIN_AUTO_UPDATE", "# END_AUTO_UPDATE"]]
-    # 构建新的分组
-    updated_group = ["# BEGIN_AUTO_UPDATE"] + new_records + ["# END_AUTO_UPDATE"] + new_group
-    # 拼接回原有文件
-    return existing_lines[:idx] + updated_group + existing_lines[end_idx:]
+    # 找到自动更新块的开始和结束位置
+    begin_idx, end_idx = None, None
+    for i in range(idx, len(existing_lines)):
+        if existing_lines[i] == "# BEGIN_AUTO_UPDATE":
+            begin_idx = i
+        if existing_lines[i] == "# END_AUTO_UPDATE":
+            end_idx = i
+            break
+
+    if begin_idx is not None and end_idx is not None:
+        # 替换旧的自动更新块
+        updated_lines = existing_lines[:begin_idx] + ["# BEGIN_AUTO_UPDATE"] + new_records + ["# END_AUTO_UPDATE"] + existing_lines[end_idx+1:]
+    else:
+        # 如果之前没有自动更新块，直接插入到分组后面
+        updated_lines = existing_lines[:idx] + ["# BEGIN_AUTO_UPDATE"] + new_records + ["# END_AUTO_UPDATE"] + existing_lines[idx:]
+
+    return updated_lines
 
 lines_after_yangshi = insert_group_front_fixed(old_lines, yangshi_tag, yangshi)
 lines_after_weishi = insert_group_front_fixed(lines_after_yangshi, weishi_tag, weishi)
@@ -243,4 +250,4 @@ def log_channels(name, records, detail_list, color):
 
 log_channels("央视频道", yangshi, yangshi_detail, GREEN)
 log_channels("卫视频道", weishi, weishi_detail, YELLOW)
-print(f"{RED}更新完成 ✅ 新增接口源已插入分组最前面，保留原有其他源{RESET}")
+print(f"{RED}更新完成 ✅ 新增接口源已插入分组最前面，旧源保留，重复源不会累加{RESET}")
