@@ -1,11 +1,11 @@
 {
-	"spider": "https://www.shqsy.com/tv/sx.jar;md5;f337645f8219976c50e8c8567c388d93",
+	"spider": "",
 	"wallpaper": "http://110.40.33.162:99/bizhi.php",
 	"logo": "https://www.shqsy.com/tv/web-logo.png",
-	"warningText": "秋水视频完全免费，切勿付费购买!",
+	"warningText": "塔利班视频完全免费，切勿付费购买!",
 	"sites": [{
 			"key": "gongzhong",
-			"name": "秋水视频💖永久免费无广告",
+			"name": "塔利班视频💖永久免费无广告",
 			"type": 3,
 			"api": "csp_Douban",
 			"searchable": 0
@@ -1717,4 +1717,5 @@
 	"ads": [
 		"static-mozai.4gtv.tv"
 	]
+
 }
