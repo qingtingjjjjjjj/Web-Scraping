@@ -12951,6 +12951,8 @@ CETV4,http://[2409:8087:1e02:20::1a]/PLTV/11/224/3221226153/1.m3u8
 
 
 港澳台,#genre#
+PopC,https://live.tvfix.org/live/popc/2/v4000000/index.m3u8
+PopC,https://live.tvfix.org/live/popc/index.m3u8
 Now爆谷,http://104.250.141.226/live/1d8a863e4c56f888/index.m3u8
 Now星影,http://104.250.141.226/live/lx84p2j5ch8ci98a/index.m3u8
 凤凰资讯,http://iptv.4666888.xyz/iptv2A.php?id=凤凰资讯
