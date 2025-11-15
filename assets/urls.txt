@@ -1,4 +1,5 @@
 https://raw.githubusercontent.com/adminouyang/231006/refs/heads/main/py/%E4%BC%98%E8%B4%A8%E6%BA%90/output/ipv4/result.txt
+http://bxtv.3a.ink/live.txt
 https://raw.githubusercontent.com/Supprise0901/TVBox_live/refs/heads/main/live.txt
 https://raw.bgithub.xyz/wwb521/live/refs/heads/main/tv.txt
 https://raw.githubusercontent.com/XO-TV/iptv/refs/heads/master/output/iptv.txt
