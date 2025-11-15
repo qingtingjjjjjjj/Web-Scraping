@@ -539,7 +539,7 @@ beijing_time = utc_time + timedelta(hours=8)
 # 格式化为所需的格式
 formatted_time = beijing_time.strftime("%Y%m%d %H:%M")
 about_video1="https://d.kstore.dev/download/8880/%E5%85%AC%E5%91%8A.mp4"
-about_video2="https://d.kstore.dev/download/8880/downloadfile.mp4"
+about_video2="https://d.kstore.dev/download/8880/%E6%B1%9F%E6%B9%BE%E9%B8%A3%E7%BF%A0103%E5%B9%B3%E8%A3%85%E4%BF%AE%E8%AE%BE%E8%AE%A1%E5%9B%BE%28%E5%8E%9F%E8%A7%86%E9%A2%91%29.mp4"
 version=formatted_time+","+about_video1
 about="关于本源(塔利班维护),"+about_video2
 
@@ -685,6 +685,7 @@ print(f"others.txt行数: {other_lines_hj} ")
 #备用1：http://tonkiang.us
 #备用2：https://www.zoomeye.hk,https://www.shodan.io,https://tv.cctv.com/live/
 #备用3：(BlackList检测对象)http,rtmp,p3p,rtp（rtsp，p2p）
+
 
 
 
