@@ -148,9 +148,7 @@ CCTV14,http://cdn6.bkpcp.top/tl/tuiliu.php?id=cctv14
 CCTV15,http://cdn6.bkpcp.top/tl/tuiliu.php?id=cctv15
 CCTV16,http://cdn6.bkpcp.top/tl/tuiliu.php?id=cctv16
 CCTV17,http://cdn6.bkpcp.top/tl/tuiliu.php?id=cctv17
-CCTV1,http://pull-hls-f1.douyincdn.com/media/stream-406998791514227372/playlist.m3u8?arch_hrchy=w1&exp_hrchy=w1&keeptime=00093a80&major_anchor_level=common&t_id=037-20260131070129E2774A445E3AA116052E-WXaHcK&wsSecret=438aa00b4d772152c51e13119c1a2636&wsTime=697d384a
 CCTV1,http://play.kankanlive.com/live/1698234869325962.m3u8
-CCTV1,http://pull-hls-f1.douyincdn.com/media/stream-406998791514227372/playlist.m3u8?arch_hrchy=w1&exp_hrchy=w1&keeptime=00093a80&major_anchor_level=common&t_id=037-20260131070129E2774A445E3AA116052E-WXaHcK&wsSecret=438aa00b4d772152c51e13119c1a2636&wsTime=697d384a
 # END_AUTO_UPDATE
 
 CCTV1,http://ottrrs.hl.chinamobile.com/PLTV/88888888/224/3221226016/index.m3u8
