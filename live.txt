@@ -101,6 +101,62 @@ CCTV16,http://nas.201606.xyz:4022/udp/239.11.0.67:5140
 
 
 央视频道,#genre#
+# BEGIN_AUTO_UPDATE
+CCTV1,https://zby.130519.xyz/PLTV/11/224/3221225673/index.m3u8
+CCTV1,https://zby.130519.xyz/PLTV/11/224/3221225723/index.m3u8
+CCTV1,https://zby.130519.xyz/PLTV/11/224/3221225770/index.m3u8
+CCTV1,https://zby.130519.xyz/PLTV/11/224/3221226163/index.m3u8
+CCTV2,https://zby.130519.xyz/PLTV/11/224/3221226122/index.m3u8
+CCTV3,https://zby.130519.xyz/PLTV/11/224/3221225766/index.m3u8
+CCTV3,https://zby.130519.xyz/PLTV/11/224/3221226165/index.m3u8
+CCTV4,https://zby.130519.xyz/PLTV/11/224/3221226124/index.m3u8
+CCTV5,https://zby.130519.xyz/PLTV/11/224/3221225734/index.m3u8
+CCTV5,https://zby.130519.xyz/PLTV/11/224/3221226146/index.m3u8
+CCTV6,https://zby.130519.xyz/PLTV/11/224/3221225741/index.m3u8
+CCTV6,https://zby.130519.xyz/PLTV/11/224/3221226148/index.m3u8
+CCTV7,https://zby.130519.xyz/PLTV/11/224/3221225701/index.m3u8
+CCTV7,https://zby.130519.xyz/PLTV/11/224/3221226143/index.m3u8
+CCTV7,https://zby.130519.xyz/PLTV/11/224/3221226137/index.m3u8
+CCTV8,https://zby.130519.xyz/PLTV/11/224/3221225736/index.m3u8
+CCTV8,https://zby.130519.xyz/PLTV/11/224/3221226167/index.m3u8
+CCTV10,https://zby.130519.xyz/PLTV/11/224/3221225743/index.m3u8
+CCTV10,https://zby.130519.xyz/PLTV/11/224/3221226169/index.m3u8
+CCTV11,https://zby.130519.xyz/PLTV/11/224/3221226101/index.m3u8
+CCTV11,https://zby.130519.xyz/PLTV/11/224/3221226145/index.m3u8
+CCTV12,https://zby.130519.xyz/PLTV/11/224/3221226103/index.m3u8
+CCTV12,https://zby.130519.xyz/PLTV/11/224/3221226126/index.m3u8
+CCTV13,https://zby.130519.xyz/PLTV/11/224/3221226128/index.m3u8
+CCTV14,https://zby.130519.xyz/PLTV/11/224/3221225738/index.m3u8
+CCTV14,https://zby.130519.xyz/PLTV/11/224/3221226150/index.m3u8
+CCTV15,https://zby.130519.xyz/PLTV/11/224/3221226147/index.m3u8
+CCTV16,https://zby.130519.xyz/PLTV/11/224/3221226120/index.m3u8
+CCTV1,http://cdn6.bkpcp.top/tl/tuiliu.php?id=cctv1
+CCTV2,http://cdn6.bkpcp.top/tl/tuiliu.php?id=cctv2
+CCTV3,http://cdn6.bkpcp.top/tl/tuiliu.php?id=cctv3
+CCTV4,http://cdn6.bkpcp.top/tl/tuiliu.php?id=cctv4
+CCTV5,http://cdn6.bkpcp.top/tl/tuiliu.php?id=cctv5
+CCTV5,http://cdn6.bkpcp.top/tl/tuiliu.php?id=cctv5p
+CCTV6,http://cdn6.bkpcp.top/tl/tuiliu.php?id=cctv6
+CCTV7,http://cdn6.bkpcp.top/tl/tuiliu.php?id=cctv7
+CCTV8,http://cdn6.bkpcp.top/tl/tuiliu.php?id=cctv8
+CCTV9,http://cdn6.bkpcp.top/tl/tuiliu.php?id=cctv9
+CCTV10,http://cdn6.bkpcp.top/tl/tuiliu.php?id=cctv10
+CCTV11,http://cdn6.bkpcp.top/tl/tuiliu.php?id=cctv11
+CCTV12,http://cdn6.bkpcp.top/tl/tuiliu.php?id=cctv12
+CCTV13,http://cdn6.bkpcp.top/tl/tuiliu.php?id=cctv13
+CCTV14,http://cdn6.bkpcp.top/tl/tuiliu.php?id=cctv14
+CCTV15,http://cdn6.bkpcp.top/tl/tuiliu.php?id=cctv15
+CCTV16,http://cdn6.bkpcp.top/tl/tuiliu.php?id=cctv16
+CCTV17,http://cdn6.bkpcp.top/tl/tuiliu.php?id=cctv17
+更新日期: 2026-2-9 22:16:00,http://play.kankanlive.com/live/1698234869325962.m3u8
+CCTV1,http://play.kankanlive.com/live/1698234869325962.m3u8
+CCTV2,http://pull-hls-f1.douyincdn.com/media/stream-695106910011261612/playlist.m3u8?arch_hrchy=w1&exp_hrchy=w1&keeptime=00093a80&major_anchor_level=common&t_id=037-202602060901440319625F0A338763618F-7sT6Ki&wsSecret=3dac956b4fbe07d7ef6dfef53eaa5ab2&wsTime=69853d78
+CCTV2,http://pull-flv-f1.douyincdn.com/media/stream-695106910011261612.flv?arch_hrchy=w1&exp_hrchy=w1&keeptime=00093a80&major_anchor_level=common&t_id=037-202602060901440319625F0A338763618F-7sT6Ki&unique_id=stream-695106910011261612_684_flv&wsSecret=bbf37003c0e4945f50c24773724b6ae3&wsTime=69853d78
+CCTV16,http://74.91.26.218:82/live/cctv16hd.m3u8
+CCTV2,http://pull-hls-f1.douyincdn.com/media/stream-695106910011261612/playlist.m3u8?arch_hrchy=w1&exp_hrchy=w1&keeptime=00093a80&major_anchor_level=common&t_id=037-20260201084152FCA02A28E82C926FE0D6-TkujMo&wsSecret=85bb061c39ad9227e9c420993c2e56b8&wsTime=697ea150
+CCTV2,http://pull-flv-f1.douyincdn.com/media/stream-695106910011261612.flv?arch_hrchy=w1&exp_hrchy=w1&keeptime=00093a80&major_anchor_level=common&t_id=037-20260201084152FCA02A28E82C926FE0D6-TkujMo&unique_id=stream-695106910011261612_684_flv&wsSecret=52d181562d8e2a5dee20184a94272ef3&wsTime=697ea150
+CCTV16,http://74.91.26.218:82/live/cctv16hd.m3u8
+# END_AUTO_UPDATE
 
 CCTV1,http://ottrrs.hl.chinamobile.com/PLTV/88888888/224/3221226016/index.m3u8
 CCTV1,http://ottrrs.hl.chinamobile.com/PLTV/88888888/224/3221226559/index.m3u8
@@ -5936,6 +5992,71 @@ CETV4,http://home.kaijuns.cn:4000/rtp/239.121.4.199:9178
 
 
 卫视频道,#genre#
+# BEGIN_AUTO_UPDATE
+北京卫视,https://zby.130519.xyz/PLTV/11/224/3221225724/index.m3u8
+东方卫视,https://zby.130519.xyz/PLTV/11/224/3221225725/index.m3u8
+东方卫视,https://zby.130519.xyz/PLTV/11/224/3221226106/index.m3u8
+浙江卫视,https://zby.130519.xyz/PLTV/11/224/3221225727/index.m3u8
+江苏卫视,https://zby.130519.xyz/PLTV/11/224/3221225720/index.m3u8
+湖南卫视,https://zby.130519.xyz/PLTV/11/224/3221225726/index.m3u8
+广东卫视,https://zby.130519.xyz/PLTV/11/224/3221225731/index.m3u8
+深圳卫视,https://zby.130519.xyz/PLTV/11/224/3221225728/index.m3u8
+天津卫视,https://zby.130519.xyz/PLTV/11/224/3221225742/index.m3u8
+安徽卫视,https://zby.130519.xyz/PLTV/11/224/3221225739/index.m3u8
+山东卫视,https://zby.130519.xyz/PLTV/11/224/3221225733/index.m3u8
+山西卫视,https://zby.130519.xyz/PLTV/11/224/3221226113/index.m3u8
+辽宁卫视,https://zby.130519.xyz/PLTV/11/224/3221225747/index.m3u8
+河北卫视,https://zby.130519.xyz/PLTV/11/224/3221226107/index.m3u8
+河南卫视,https://zby.130519.xyz/PLTV/11/224/3221226132/index.m3u8
+江西卫视,https://zby.130519.xyz/PLTV/11/224/3221225740/index.m3u8
+四川卫视,https://zby.130519.xyz/PLTV/11/224/3221226152/index.m3u8
+重庆卫视,https://zby.130519.xyz/PLTV/11/224/3221226171/index.m3u8
+贵州卫视,https://zby.130519.xyz/PLTV/11/224/3221226173/index.m3u8
+湖北卫视,https://zby.130519.xyz/PLTV/11/224/3221225729/index.m3u8
+广西卫视,https://zby.130519.xyz/PLTV/11/224/3221226084/index.m3u8
+广西卫视,https://zby.130519.xyz/PLTV/11/224/3221226130/index.m3u8
+云南卫视,https://zby.130519.xyz/PLTV/11/224/3221226109/index.m3u8
+云南卫视,https://zby.130519.xyz/PLTV/11/224/3221226151/index.m3u8
+东南卫视,https://zby.130519.xyz/PLTV/11/224/3221225745/index.m3u8
+海南卫视,https://zby.130519.xyz/PLTV/11/224/3221226154/index.m3u8
+甘肃卫视,https://zby.130519.xyz/PLTV/11/224/3221226090/index.m3u8
+青海卫视,https://zby.130519.xyz/PLTV/11/224/3221226105/index.m3u8
+吉林卫视,https://zby.130519.xyz/PLTV/11/224/3221226149/index.m3u8
+吉林卫视,https://zby.130519.xyz/PLTV/11/224/3221226082/index.m3u8
+北京卫视,http://cdn6.bkpcp.top/tl/tuiliu.php?id=bjws
+东方卫视,http://cdn6.bkpcp.top/tl/tuiliu.php?id=dfws
+浙江卫视,http://cdn6.bkpcp.top/tl/tuiliu.php?id=zjws
+江苏卫视,http://cdn6.bkpcp.top/tl/tuiliu.php?id=jsws
+湖南卫视,http://cdn6.bkpcp.top/tl/tuiliu.php?id=hunws
+广东卫视,http://cdn6.bkpcp.top/tl/tuiliu.php?id=gdws
+深圳卫视,http://cdn6.bkpcp.top/tl/tuiliu.php?id=szws
+天津卫视,http://cdn6.bkpcp.top/tl/tuiliu.php?id=tjws
+安徽卫视,http://cdn6.bkpcp.top/tl/tuiliu.php?id=ahws
+山东卫视,http://cdn6.bkpcp.top/tl/tuiliu.php?id=sdws
+辽宁卫视,http://cdn6.bkpcp.top/tl/tuiliu.php?id=lnws
+河北卫视,http://cdn6.bkpcp.top/tl/tuiliu.php?id=hbws
+河南卫视,http://cdn6.bkpcp.top/tl/tuiliu.php?id=hnws
+江西卫视,http://cdn6.bkpcp.top/tl/tuiliu.php?id=jxws
+四川卫视,http://cdn6.bkpcp.top/tl/tuiliu.php?id=scws
+重庆卫视,http://cdn6.bkpcp.top/tl/tuiliu.php?id=cqws
+贵州卫视,http://cdn6.bkpcp.top/tl/tuiliu.php?id=gzws
+湖北卫视,http://cdn6.bkpcp.top/tl/tuiliu.php?id=hubws
+广西卫视,http://cdn6.bkpcp.top/tl/tuiliu.php?id=gxws
+东南卫视,http://cdn6.bkpcp.top/tl/tuiliu.php?id=dnws
+海南卫视,http://cdn6.bkpcp.top/tl/tuiliu.php?id=hinws
+青海卫视,http://cdn6.bkpcp.top/tl/tuiliu.php?id=qhws
+吉林卫视,http://cdn6.bkpcp.top/tl/tuiliu.php?id=jlws
+浙江卫视,http://ali-xwl.cztv.com/live/channel011080Plxw.m3u8
+浙江卫视,http://ali-xwl.cztv.com/live/channel01720Plxw.m3u8
+农林卫视,http://gxlive.snrtv.com/nlws-SD.m3u8
+浙江卫视超清,http://ali-xwl.cztv.com/live/channel011080Plxw.m3u8
+浙江卫视超清,http://ali-xwl.cztv.com/live/channel01720Plxw.m3u8
+湖南卫视4K,http://hlsal-ldvt.qing.mgtv.com/nn_live/nn_x64/Y2RuZXhfaWQ9YWxfaGxzX2xkdnQmZT02OTE0NjA0JnY9MSZpZD1ITldTWkdTVCZzPTcwN2RiYTc2YzJjNmJmMTQ4MmUyZGYzOWU2NWM3YWFi/HNWSZGST.m3u8
+湖南卫视4K,http://hlsal-ldvt.qing.mgtv.com/nn_live/nn_x64/dWlwPTEyNy4wLjAuMSZ1aWQ9cWluZy1jbXMmbm5fdGltZXpvbmU9OCZjZG5leF9pZD1hbF9obHNfbGR2dCZ1dWlkPTliODY4NmU5ZTM2YzYwMmMmZT02OTE0NjA0JnY9MSZpZD1ITldTWkdTVCZzPTcwN2RiYTc2YzJjNmJmMTQ4MmUyZGYzOWU2NWM3YWFi/HNWSZGST.m3u8
+浙江卫视4K,http://ali-xwl.cztv.com/live/channel4k2160p.m3u8
+浙江卫视4K,https://bd-xwl.cztv.com/live/channel4k2160p.m3u8
+浙江卫视4K,http://play-qukan.cztv.com/live/1758879019692345.m3u8
+# END_AUTO_UPDATE
 
 湖南卫视,http://ottrrs.hl.chinamobile.com/PLTV/88888888/224/3221226307/index.m3u8
 湖南卫视,http://ottrrs.hl.chinamobile.com/PLTV/88888888/224/3221226430/index.m3u8
