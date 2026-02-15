@@ -148,20 +148,22 @@ CCTV14,http://cdn6.bkpcp.top/tl/tuiliu.php?id=cctv14
 CCTV15,http://cdn6.bkpcp.top/tl/tuiliu.php?id=cctv15
 CCTV16,http://cdn6.bkpcp.top/tl/tuiliu.php?id=cctv16
 CCTV17,http://cdn6.bkpcp.top/tl/tuiliu.php?id=cctv17
-更新日期: 2026-2-15 20:01:18,http://play.kankanlive.com/live/1698234869325962.m3u8
+更新日期: 2026-2-15 20:28:53,http://38.75.136.137:98/gslb/dsdqpub/cctv1hd.m3u8?auth=testpub
+CCTV1,http://38.75.136.137:98/gslb/dsdqpub/cctv1hd.m3u8?auth=testpub
+CCTV1,http://74.91.26.218:82/live/cctv1hd.m3u8
 CCTV1,http://play.kankanlive.com/live/1698234869325962.m3u8
 CCTV2,http://pull-hls-f11.douyincdn.com/media/stream-407062262674621100.m3u8?arch_hrchy=w1&exp_hrchy=w1&expire=1771372284&major_anchor_level=common&sign=6f90250717a66a61060dfac48f5152de&t_id=037-20260211075123D0C67CD1A4FC77163F38-si39gG
 CCTV3,http://74.91.26.218:82/live/cctv3hd.m3u8
-CCTV3,http://38.75.136.137:98/gslb/dsdqpub/cctv3hd.m3u8?auth=testpub
 CCTV5,http://74.91.26.218:82/live/cctv5hd.m3u8
 CCTV5,http://38.75.136.137:98/gslb/dsdqpub/cctv5hd.m3u8?auth=testpub
 CCTV6,http://74.91.26.218:82/live/cctv6hd.m3u8
 CCTV16,http://74.91.26.218:82/live/cctv16hd.m3u8
 CCTV1,http://38.75.136.137:98/gslb/dsdqpub/cctv1hd.m3u8?auth=testpub
+CCTV1,http://74.91.26.218:82/live/cctv1hd.m3u8
 CCTV2,http://pull-hls-f11.douyincdn.com/media/stream-407062262674621100.m3u8?arch_hrchy=w1&exp_hrchy=w1&expire=1771372284&major_anchor_level=common&sign=6f90250717a66a61060dfac48f5152de&t_id=037-20260211075123D0C67CD1A4FC77163F38-si39gG
-CCTV3,http://74.91.26.218:82/live/cctv3hd.m3u8
 CCTV3,http://38.75.136.137:98/gslb/dsdqpub/cctv3hd.m3u8?auth=testpub
 CCTV5,http://74.91.26.218:82/live/cctv5hd.m3u8
+CCTV5,http://38.75.136.137:98/gslb/dsdqpub/cctv5hd.m3u8?auth=testpub
 CCTV6,http://74.91.26.218:82/live/cctv6hd.m3u8
 CCTV16,http://74.91.26.218:82/live/cctv16hd.m3u8
 # END_AUTO_UPDATE
@@ -5936,6 +5938,7 @@ CETV4,http://home.kaijuns.cn:4000/rtp/239.121.4.199:9178
 海南卫视,http://cdn6.bkpcp.top/tl/tuiliu.php?id=hinws
 青海卫视,http://cdn6.bkpcp.top/tl/tuiliu.php?id=qhws
 吉林卫视,http://cdn6.bkpcp.top/tl/tuiliu.php?id=jlws
+湖南卫视,http://74.91.26.218:82/live/hnwshd.m3u8
 湖南卫视,http://38.75.136.137:98/gslb/dsdqpub/hnwshd.m3u8?auth=testpub
 湖南卫视,https://hlsbkmgsplive.miguvideo.com/wd-hunanhd-2500/01.m3u8?&HlsSubType=&encrypt=
 湖南卫视,https://hlsbkmgsplive.miguvideo.com/wd-hunanhd-1200/01.m3u8?&HlsSubType=&encrypt=
@@ -5944,6 +5947,7 @@ CETV4,http://home.kaijuns.cn:4000/rtp/239.121.4.199:9178
 江苏卫视,https://hlsbkmgsplive.miguvideo.com/migu/kailu/jswshd265/55/20200407/01.m3u8?&HlsSubType=&encrypt=
 广东卫视,http://pull-hls-f11.douyincdn.com/media/stream-695307307283120812.m3u8?arch_hrchy=w1&exp_hrchy=w1&expire=1771761006&major_anchor_level=common&sign=6fa95d2a1a747bc6082b03c7bdc931d2&t_id=037-20260215195005FE023297D662D6D253F0-aoPBUH
 安徽卫视,http://pull-hls-f11.douyincdn.com/media/stream-407077894014370476.m3u8?arch_hrchy=w1&exp_hrchy=w1&expire=1771761254&major_anchor_level=common&sign=7e0d517238128b57895bb0f65e5cd8ad&t_id=037-202602151954147B0C79865E97FBB1BF99-mLy0Un
+山东卫视,http://pull-f3.douyincdn.com/media/stream-118860101369463474.m3u8?auth_key=1771759064-0-0-97f2feba4b52201b4d8e81c05b03c2dd&major_anchor_level=common&t_id=037-20260215194743E5FC0128D19CA708A295-cEf2zp
 山东卫视,https://hlsbkmgsplive.miguvideo.com/wd_r4/yg/shandongwshd/3000/01.m3u8?&HlsSubType=&encrypt=
 山东卫视,https://hlsbkmgsplive.miguvideo.com/wd-shandonghd-1200/01.m3u8?&HlsSubType=&encrypt=
 辽宁卫视,https://hlsbkmgsplive.miguvideo.com/migu/kailu/lnwshd265/54/20200407/01.m3u8?&HlsSubType=&encrypt=
@@ -5967,7 +5971,6 @@ CETV4,http://home.kaijuns.cn:4000/rtp/239.121.4.199:9178
 山东卫视超清,https://hlsbkmgsplive.miguvideo.com/wd-shandonghd-1200/01.m3u8?&HlsSubType=&encrypt=
 安徽卫视超清,http://pull-hls-f11.douyincdn.com/media/stream-407077894014370476.m3u8?arch_hrchy=w1&exp_hrchy=w1&expire=1771761254&major_anchor_level=common&sign=7e0d517238128b57895bb0f65e5cd8ad&t_id=037-202602151954147B0C79865E97FBB1BF99-mLy0Un
 辽宁卫视超清,https://hlsbkmgsplive.miguvideo.com/migu/kailu/lnwshd265/54/20200407/01.m3u8?&HlsSubType=&encrypt=
-重庆卫视超清,http://pull-hls-f26.douyincdn.com/media/stream-118853614155858604.m3u8?arch_hrchy=w1&exp_hrchy=w1&expire=699aef0a&major_anchor_level=common&sign=b7c0b52b977a5ab9acac7dd058134679&t_id=037-202602151956579B4CC6A94C1335EAC4BD-MtCr3e
 东南卫视超清,https://hlsbkmgsplive.miguvideo.com/migu/kailu/dongnanws/51/20230724/01.m3u8?&HlsSubType=&encrypt=
 广西卫视超清,http://pull-hls-f11.douyincdn.com/media/stream-695314078702240428.m3u8?arch_hrchy=w1&exp_hrchy=w1&expire=1771760950&major_anchor_level=common&sign=d9c21ca1151fa649e68dc18c13ac2e23&t_id=037-2026021519491078C5C8D15B8DDFD19426-OM31JH
 河南卫视超清,http://38.75.136.137:98/gslb/dsdqpub/hawshd.m3u8?auth=testpub
