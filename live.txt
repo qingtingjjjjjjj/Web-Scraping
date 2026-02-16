@@ -148,18 +148,15 @@ CCTV14,http://cdn6.bkpcp.top/tl/tuiliu.php?id=cctv14
 CCTV15,http://cdn6.bkpcp.top/tl/tuiliu.php?id=cctv15
 CCTV16,http://cdn6.bkpcp.top/tl/tuiliu.php?id=cctv16
 CCTV17,http://cdn6.bkpcp.top/tl/tuiliu.php?id=cctv17
-更新日期: 2026-2-16 06:45:28,http://38.75.136.137:98/gslb/dsdqpub/cctv1hd.m3u8?auth=testpub
+更新日期: 2026-2-16 10:49:21,http://38.75.136.137:98/gslb/dsdqpub/cctv1hd.m3u8?auth=testpub
 CCTV1,http://38.75.136.137:98/gslb/dsdqpub/cctv1hd.m3u8?auth=testpub
-CCTV1,http://74.91.26.218:82/live/cctv1hd.m3u8
 CCTV1,http://play.kankanlive.com/live/1698234869325962.m3u8
 CCTV2,http://pull-hls-f11.douyincdn.com/media/stream-407062262674621100.m3u8?arch_hrchy=w1&exp_hrchy=w1&expire=1771769775&major_anchor_level=common&sign=98406f42e949db5477a402c85cbee007&t_id=037-20260215221614EEA56BB994BB42D25308-a6AVAz
 CCTV3,http://74.91.26.218:82/live/cctv3hd.m3u8
 CCTV3,http://38.75.136.137:98/gslb/dsdqpub/cctv3hd.m3u8?auth=testpub
 CCTV5,http://74.91.26.218:82/live/cctv5hd.m3u8
-CCTV5,http://38.75.136.137:98/gslb/dsdqpub/cctv5hd.m3u8?auth=testpub
 CCTV6,http://74.91.26.218:82/live/cctv6hd.m3u8
 CCTV16,http://74.91.26.218:82/live/cctv16hd.m3u8
-CCTV1,http://38.75.136.137:98/gslb/dsdqpub/cctv1hd.m3u8?auth=testpub
 CCTV1,http://74.91.26.218:82/live/cctv1hd.m3u8
 CCTV2,http://pull-hls-f11.douyincdn.com/media/stream-407062262674621100.m3u8?arch_hrchy=w1&exp_hrchy=w1&expire=1771769775&major_anchor_level=common&sign=98406f42e949db5477a402c85cbee007&t_id=037-20260215221614EEA56BB994BB42D25308-a6AVAz
 CCTV3,http://74.91.26.218:82/live/cctv3hd.m3u8
@@ -167,7 +164,6 @@ CCTV3,http://38.75.136.137:98/gslb/dsdqpub/cctv3hd.m3u8?auth=testpub
 CCTV5,http://74.91.26.218:82/live/cctv5hd.m3u8
 CCTV5,http://38.75.136.137:98/gslb/dsdqpub/cctv5hd.m3u8?auth=testpub
 CCTV6,http://74.91.26.218:82/live/cctv6hd.m3u8
-CCTV13,http://pull-hls-f1.douyinliving.com/media/stream-118861284635312978/playlist.m3u8?arch_hrchy=s2&keeptime=00093a80&major_anchor_level=vip&s_anchor=1&t_id=037-20260216064412F16BC325E0D38E14A163-YYpu0y&wsSecret=d85baf1931eae9e5b63e2164b5e28151&wsTime=69924c3c
 CCTV16,http://74.91.26.218:82/live/cctv16hd.m3u8
 # END_AUTO_UPDATE
 
