@@ -148,8 +148,11 @@ CCTV14,http://cdn6.bkpcp.top/tl/tuiliu.php?id=cctv14
 CCTV15,http://cdn6.bkpcp.top/tl/tuiliu.php?id=cctv15
 CCTV16,http://cdn6.bkpcp.top/tl/tuiliu.php?id=cctv16
 CCTV17,http://cdn6.bkpcp.top/tl/tuiliu.php?id=cctv17
-更新日期: 2026-2-17 08:45:48,http://play.kankanlive.com/live/1698234869325962.m3u8
+更新日期: 2026-2-17 11:00:28,http://38.75.136.137:98/gslb/dsdqpub/cctv1hd.m3u8?auth=testpub
+CCTV1,http://38.75.136.137:98/gslb/dsdqpub/cctv1hd.m3u8?auth=testpub
 CCTV1,http://play.kankanlive.com/live/1698234869325962.m3u8
+CCTV2,http://pull-hls-f1.douyincdn.com/media/stream-407062262674621100/playlist.m3u8?arch_hrchy=w1&exp_hrchy=w1&keeptime=00093a80&major_anchor_level=common&t_id=037-2026021706395558F2F10AA5E3F12280D0-sgXKcX&wsSecret=b69a50dfd754a332493dacd30de076ee&wsTime=69939cbc
+CCTV2,http://pull-flv-f1.douyincdn.com/media/stream-407062262674621100.flv?arch_hrchy=w1&exp_hrchy=w1&keeptime=00093a80&major_anchor_level=common&t_id=037-2026021706395558F2F10AA5E3F12280D0-sgXKcX&unique_id=stream-407062262674621100_684_flv&wsSecret=a45caa446d41366171d8da0f6037aa78&wsTime=69939cbc
 CCTV3,http://38.75.136.137:98/gslb/dsdqpub/cctv3hd.m3u8?auth=testpub
 CCTV5,http://38.75.136.137:98/gslb/dsdqpub/cctv5hd.m3u8?auth=testpub
 CCTV1,http://38.75.136.137:98/gslb/dsdqpub/cctv1hd.m3u8?auth=testpub
@@ -5881,10 +5884,12 @@ CETV4,http://home.kaijuns.cn:4000/rtp/239.121.4.199:9178
 东南卫视,https://hlsbkmgsplive.miguvideo.com/migu/kailu/dongnanws/51/20230724/01.m3u8?&HlsSubType=&encrypt=
 重庆卫视,https://hlsbkmgsplive.miguvideo.com/envivo_x/2018/SD/chongqing/1000/01.m3u8?&HlsSubType=&encrypt=
 吉林卫视,https://hlsbkmgsplive.miguvideo.com/envivo_v/2018/SD/jilin/1000/01.m3u8?&HlsSubType=&encrypt=
+河南卫视,http://38.75.136.137:98/gslb/dsdqpub/hawshd.m3u8?auth=testpub
 兵团卫视,https://hlsbkmgsplive.miguvideo.com/migu/kailu/btws/51/20250804/01.m3u8?&HlsSubType=&encrypt=
 农林卫视,http://gxlive.snrtv.com/nlws-SD.m3u8
 海峡卫视,https://hlsbkmgsplive.miguvideo.com/migu/kailu/haixiaws/51/20230724/01.m3u8?&HlsSubType=&encrypt=
 湖南卫视超清,http://hlsal-ldvt.qing.mgtv.com/nn_live/nn_x64/Y2RuZXhfaWQ9YWxfaGxzX2xkdnQmZT02OTE0NjA0JnY9MSZpZD1ITldTWkdTVCZzPTcwN2RiYTc2YzJjNmJmMTQ4MmUyZGYzOWU2NWM3YWFi/HNWSZGST.m3u8
+湖南卫视超清,http://38.75.136.137:98/gslb/dsdqpub/hnwshd.m3u8?auth=testpub
 湖南卫视超清,https://hlsbkmgsplive.miguvideo.com/wd-hunanhd-2500/01.m3u8?&HlsSubType=&encrypt=
 湖南卫视超清,https://hlsbkmgsplive.miguvideo.com/wd-hunanhd-1200/01.m3u8?&HlsSubType=&encrypt=
 浙江卫视超清,http://ali-xwl.cztv.com/live/channel011080Plxw.m3u8
