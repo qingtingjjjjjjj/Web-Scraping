@@ -148,16 +148,16 @@ CCTV14,http://cdn6.bkpcp.top/tl/tuiliu.php?id=cctv14
 CCTV15,http://cdn6.bkpcp.top/tl/tuiliu.php?id=cctv15
 CCTV16,http://cdn6.bkpcp.top/tl/tuiliu.php?id=cctv16
 CCTV17,http://cdn6.bkpcp.top/tl/tuiliu.php?id=cctv17
-更新日期: 2026-2-20 13:08:34,http://pull-hls-f11.douyincdn.com/media/stream-118887378976768684.m3u8?arch_hrchy=w1&exp_hrchy=w1&expire=1772168882&major_anchor_level=common&sign=22dab21cc115d794497b9616315583ca&t_id=037-2026022013080254B030316C5A9F6CBEED-CjxhXL
-CCTV1,http://pull-hls-f11.douyincdn.com/media/stream-118887378976768684.m3u8?arch_hrchy=w1&exp_hrchy=w1&expire=1772168882&major_anchor_level=common&sign=22dab21cc115d794497b9616315583ca&t_id=037-2026022013080254B030316C5A9F6CBEED-CjxhXL
+更新日期: 2026-2-20 20:51:04,http://38.75.136.137:98/gslb/dsdqpub/cctv1hd.m3u8?auth=testpub
 CCTV1,http://38.75.136.137:98/gslb/dsdqpub/cctv1hd.m3u8?auth=testpub
 CCTV1,http://play.kankanlive.com/live/1698234869325962.m3u8
 CCTV3,http://38.75.136.137:98/gslb/dsdqpub/cctv3hd.m3u8?auth=testpub
 CCTV5,http://38.75.136.137:98/gslb/dsdqpub/cctv5hd.m3u8?auth=testpub
+CCTV15,http://pull-hls-f26.douyincdn.com/media/stream-695349902016774828.m3u8?arch_hrchy=w1&exp_hrchy=w1&expire=69a191bf&major_anchor_level=common&sign=5ad27854acd9df43956065d2f63fb2c5&t_id=037-2026022020444656C12FEC201C3BB4F957-VD6oom
+CCTV17,http://pull-hls-f26.douyincdn.com/media/stream-407114775226483372.m3u8?arch_hrchy=w1&exp_hrchy=w1&expire=69a0d33a&major_anchor_level=common&sign=01cb7902aaf97c4ccfdd47e1a0c69993&t_id=037-2026022007115431AEF4908D471723773C-fk2LDJ
 CCTV1,http://38.75.136.137:98/gslb/dsdqpub/cctv1hd.m3u8?auth=testpub
 CCTV3,http://38.75.136.137:98/gslb/dsdqpub/cctv3hd.m3u8?auth=testpub
 CCTV5,http://38.75.136.137:98/gslb/dsdqpub/cctv5hd.m3u8?auth=testpub
-CCTV17,http://pull-hls-f26.douyincdn.com/media/stream-407114775226483372.m3u8?arch_hrchy=w1&exp_hrchy=w1&expire=69a0d33a&major_anchor_level=common&sign=01cb7902aaf97c4ccfdd47e1a0c69993&t_id=037-2026022007115431AEF4908D471723773C-fk2LDJ
 # END_AUTO_UPDATE
 
 CCTV1,http://ottrrs.hl.chinamobile.com/PLTV/88888888/224/3221226016/index.m3u8
