@@ -148,17 +148,15 @@ CCTV14,http://cdn6.bkpcp.top/tl/tuiliu.php?id=cctv14
 CCTV15,http://cdn6.bkpcp.top/tl/tuiliu.php?id=cctv15
 CCTV16,http://cdn6.bkpcp.top/tl/tuiliu.php?id=cctv16
 CCTV17,http://cdn6.bkpcp.top/tl/tuiliu.php?id=cctv17
-更新日期: 2026-2-21 20:41:13,http://38.75.136.137:98/gslb/dsdqpub/cctv1hd.m3u8?auth=testpub
+更新日期: 2026-2-22 07:18:53,http://38.75.136.137:98/gslb/dsdqpub/cctv1hd.m3u8?auth=testpub
 CCTV1,http://38.75.136.137:98/gslb/dsdqpub/cctv1hd.m3u8?auth=testpub
 CCTV1,http://play.kankanlive.com/live/1698234869325962.m3u8
 CCTV3,http://38.75.136.137:98/gslb/dsdqpub/cctv3hd.m3u8?auth=testpub
-CCTV4,http://pull-hls-f11.douyincdn.com/media/stream-695355672847450796.m3u8?arch_hrchy=w1&exp_hrchy=w1&expire=1772282184&major_anchor_level=common&sign=472fe0662e2599801081838de1ab15a3&t_id=037-202602212036241A323093D1BEBDE87AB0-aGhIqa
 CCTV5,http://38.75.136.137:98/gslb/dsdqpub/cctv5hd.m3u8?auth=testpub
 CCTV1,http://38.75.136.137:98/gslb/dsdqpub/cctv1hd.m3u8?auth=testpub
 CCTV3,http://38.75.136.137:98/gslb/dsdqpub/cctv3hd.m3u8?auth=testpub
-CCTV4,http://pull-hls-f11.douyincdn.com/media/stream-695355672847450796.m3u8?arch_hrchy=w1&exp_hrchy=w1&expire=1772282184&major_anchor_level=common&sign=472fe0662e2599801081838de1ab15a3&t_id=037-202602212036241A323093D1BEBDE87AB0-aGhIqa
 CCTV5,http://38.75.136.137:98/gslb/dsdqpub/cctv5hd.m3u8?auth=testpub
-CCTV13,http://hlsztemgsplive.miguvideo.com:8080/envivo_x/2018/SD/cctv13/2000/index.m3u8?msisdn=4f89b0f1d885527a227fd4a636419cfe&mdspid=&spid=699004&netType=4&sid=2202208864&pid=2028597139&timestamp=20260221172531&Channel_ID=0116_2600031500-99000-200300140100004&ProgramID=608807423&ParentNodeID=-99&assertID=2202208864&client_ip=123.4.227.234&SecurityKey=20260221172531&promotionId=&mvid=2202208864&mcid=500020&playurlVersion=WX-A1-9.2.1-RELEASE&userid=&jmhm=&videocodec=h264&appCode=miguvideo_android&bean=mgspad&tid=android&conFee=0&encrypt=0a33dfaaa98d09fb8b48439c4dd47362&sv=10004&ct=android&playUrlSsn=4f89b0f1d885527a227fd4a636419cfe1771665928913&prlId=4f89b0f1d885527a227fd4a636419cfe1771665928928&jid=4f89b0f1d885527a227fd4a636419cfe1771665928060V&is_advertise=0&sjid=subsession_1771665971159
+CCTV13,http://pull-f3.douyincdn.com/media/stream-118897788371075756.m3u8?arch_hrchy=w1&auth_key=1772318401-0-0-0495d9ea53eaeee0817a9833e7c242ac&exp_hrchy=w1&major_anchor_level=common&t_id=037-20260222071000E40F471219EACC3094BD-I6na7c
 # END_AUTO_UPDATE
 
 CCTV1,http://ottrrs.hl.chinamobile.com/PLTV/88888888/224/3221226016/index.m3u8
@@ -5872,6 +5870,7 @@ CETV4,http://home.kaijuns.cn:4000/rtp/239.121.4.199:9178
 东南卫视,https://hlsbkmgsplive.miguvideo.com/migu/kailu/dongnanws/51/20230724/01.m3u8?&HlsSubType=&encrypt=
 重庆卫视,https://hlsbkmgsplive.miguvideo.com/envivo_x/2018/SD/chongqing/1000/01.m3u8?&HlsSubType=&encrypt=
 吉林卫视,https://hlsbkmgsplive.miguvideo.com/envivo_v/2018/SD/jilin/1000/01.m3u8?&HlsSubType=&encrypt=
+河南卫视,http://38.75.136.137:98/gslb/dsdqpub/hawshd.m3u8?auth=testpub
 兵团卫视,https://hlsbkmgsplive.miguvideo.com/migu/kailu/btws/51/20250804/01.m3u8?&HlsSubType=&encrypt=
 农林卫视,http://gxlive.snrtv.com/nlws-SD.m3u8
 海峡卫视,https://hlsbkmgsplive.miguvideo.com/migu/kailu/haixiaws/51/20230724/01.m3u8?&HlsSubType=&encrypt=
