@@ -189,13 +189,15 @@ CCTV14,http://cdn6.bkpcp.top/tl/tuiliu.php?id=cctv14
 CCTV15,http://cdn6.bkpcp.top/tl/tuiliu.php?id=cctv15
 CCTV16,http://cdn6.bkpcp.top/tl/tuiliu.php?id=cctv16
 CCTV17,http://cdn6.bkpcp.top/tl/tuiliu.php?id=cctv17
-更新日期: 2026-3-1 18:24:22,http://38.75.136.137:98/gslb/dsdqpub/cctv1hd.m3u8?auth=testpub
+更新日期: 2026-3-2 07:05:27,http://pull-hls-f11.douyincdn.com/media/stream-407172513745863340.m3u8?arch_hrchy=w1&exp_hrchy=w1&expire=1773010902&major_anchor_level=common&sign=aa90e55485504af127f53d5650098dfd&t_id=037-20260302070141A366E492B4E00DF778F8-t3Phaa
+CCTV1,http://pull-hls-f11.douyincdn.com/media/stream-407172513745863340.m3u8?arch_hrchy=w1&exp_hrchy=w1&expire=1773010902&major_anchor_level=common&sign=aa90e55485504af127f53d5650098dfd&t_id=037-20260302070141A366E492B4E00DF778F8-t3Phaa
 CCTV1,http://38.75.136.137:98/gslb/dsdqpub/cctv1hd.m3u8?auth=testpub
 CCTV1,http://play.kankanlive.com/live/1698234869325962.m3u8
 CCTV2,http://116.115.6.103:1234/631780532?reptoken=R/mg&auth=
 CCTV3,http://38.75.136.137:98/gslb/dsdqpub/cctv3hd.m3u8?auth=testpub
+CCTV4,http://116.115.6.103:1234/631780421?reptoken=R/mg&auth=
 CCTV5,http://38.75.136.137:98/gslb/dsdqpub/cctv5hd.m3u8?auth=testpub
-CCTV5,http://116.115.6.103:1234/641886683?reptoken=R/mg&auth=
+CCTV6,http://aliyun-qhbu-live.bestvcdn.com.cn/live/program/live/cctv6hd/4000000/mnf.m3u8
 CCTV6,http://116.115.6.103:1234/624878396?reptoken=R/mg&auth=
 CCTV8,http://116.115.6.103:1234/624878356?reptoken=R/mg&auth=
 CCTV5,http://116.115.6.103:1234/641886773?reptoken=R/mg&auth=
@@ -204,11 +206,15 @@ CCTV13,http://pull-hls-f26.douyincdn.com/media/stream-695395192179262124.m3u8?ar
 CCTV13,http://116.115.6.103:1234/608807423?reptoken=R/mg&auth=
 CCTV15,http://116.115.6.103:1234/673168223?reptoken=R/mg&auth=
 CCTV16,http://69.30.246.194/live/cctv16.m3u8
+CCTV16,http://38.75.136.137:98/gslb/dsdqpub/cctv16hd.m3u8?auth=testpub
+CCTV1,http://pull-hls-f11.douyincdn.com/media/stream-407172513745863340.m3u8?arch_hrchy=w1&exp_hrchy=w1&expire=1773010902&major_anchor_level=common&sign=aa90e55485504af127f53d5650098dfd&t_id=037-20260302070141A366E492B4E00DF778F8-t3Phaa
 CCTV1,http://38.75.136.137:98/gslb/dsdqpub/cctv1hd.m3u8?auth=testpub
 CCTV2,http://116.115.6.103:1234/631780532?reptoken=R/mg&auth=
 CCTV3,http://38.75.136.137:98/gslb/dsdqpub/cctv3hd.m3u8?auth=testpub
-CCTV5,http://116.115.6.103:1234/641886683?reptoken=R/mg&auth=
-CCTV9,http://116.115.6.103:1234/673168140?reptoken=R/mg&auth=
+CCTV4,http://116.115.6.103:1234/631780421?reptoken=R/mg&auth=
+CCTV5,http://38.75.136.137:98/gslb/dsdqpub/cctv5hd.m3u8?auth=testpub
+CCTV6,http://116.115.6.103:1234/624878396?reptoken=R/mg&auth=
+CCTV8,http://116.115.6.103:1234/624878356?reptoken=R/mg&auth=
 CCTV10,http://116.115.6.103:1234/624878405?reptoken=R/mg&auth=
 CCTV12,http://116.115.6.103:1234/673168185?reptoken=R/mg&auth=
 CCTV13,http://pull-hls-f26.douyincdn.com/media/stream-695395192179262124.m3u8?arch_hrchy=w1&exp_hrchy=w1&expire=69acd116&major_anchor_level=common&sign=fe2032f1715898d3111f9e5417cf4321&t_id=037-20260301092957E62EF27526A11E456A49-CNRxcf
