@@ -102,13 +102,11 @@ CCTV16,http://nas.201606.xyz:4022/udp/239.11.0.67:5140
 
 央视频道,#genre#
 # BEGIN_AUTO_UPDATE
-更新日期: 2026-4-3 18:34:12,http://play.kankanlive.com/live/1698234869325962.m3u8
+更新日期: 2026-4-4 08:38:45,http://play.kankanlive.com/live/1698234869325962.m3u8
 CCTV1,http://play.kankanlive.com/live/1698234869325962.m3u8
-CCTV6,http://pull-hls-f11.douyincdn.com/media/stream-695587329821377196.m3u8?arch_hrchy=w1&exp_hrchy=w1&expire=1775812129&major_anchor_level=common&sign=e35cee45305242ce14c155c9908cac68&t_id=037-2026040317084888CD726900AC3C8990DB-Wef3rj
 CCTV13,http://pull-hls-f11.douyincdn.com/media/stream-695553383939179180.m3u8?arch_hrchy=w1&exp_hrchy=w1&expire=1775812647&major_anchor_level=common&sign=a16a13163e5a1bb150e2fdd5448bc59d&t_id=037-2026040317172716CCE7A11D64BD3CD9C0-IOLuIy
 CCTV16,http://69.30.246.194/live/cctv16.m3u8
 CCTV16,http://38.75.136.137:98/gslb/dsdqpub/cctv16hd.m3u8?auth=testpub
-CCTV6,http://pull-hls-f11.douyincdn.com/media/stream-695587329821377196.m3u8?arch_hrchy=w1&exp_hrchy=w1&expire=1775812129&major_anchor_level=common&sign=e35cee45305242ce14c155c9908cac68&t_id=037-2026040317084888CD726900AC3C8990DB-Wef3rj
 CCTV6,http://pull-hls-f11.douyincdn.com/media/stream-695550183385334444.m3u8?arch_hrchy=w1&exp_hrchy=w1&expire=1775212079&major_anchor_level=common&sign=df934e7ccd289742a9dcd9e796a21e73&t_id=037-20260327182759E3D672881FBE8BC84271-smZh1q
 CCTV13,http://pull-hls-f11.douyincdn.com/media/stream-695553383939179180.m3u8?arch_hrchy=w1&exp_hrchy=w1&expire=1775812647&major_anchor_level=common&sign=a16a13163e5a1bb150e2fdd5448bc59d&t_id=037-2026040317172716CCE7A11D64BD3CD9C0-IOLuIy
 CCTV16,http://69.30.246.194/live/cctv16.m3u8
