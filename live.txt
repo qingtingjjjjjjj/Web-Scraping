@@ -102,7 +102,7 @@ CCTV16,http://nas.201606.xyz:4022/udp/239.11.0.67:5140
 
 央视频道,#genre#
 # BEGIN_AUTO_UPDATE
-更新日期: 2026-4-8 06:21:39,http://play.kankanlive.com/live/1698234869325962.m3u8
+更新日期: 2026-4-8 09:12:25,http://play.kankanlive.com/live/1698234869325962.m3u8
 CCTV1,http://play.kankanlive.com/live/1698234869325962.m3u8
 CCTV13,http://pull-hls-f11.douyincdn.com/media/stream-695579599148417708.m3u8?arch_hrchy=w1&exp_hrchy=w1&expire=1776158026&major_anchor_level=common&sign=570d99ae8e46e223e5dcf8866006b64d&t_id=037-2026040717134608B5CC3E9E05A50957E4-1VdjWb
 CCTV13,http://pull-hls-f11.douyincdn.com/media/stream-695553383939179180.m3u8?arch_hrchy=w1&exp_hrchy=w1&expire=1776158091&major_anchor_level=common&sign=b6ff08dbb56dc9d66ae8fbe7a039d11e&t_id=037-202604071714506C37CC7AC813301C7CED-7CmlV9
