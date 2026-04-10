@@ -102,12 +102,14 @@ CCTV16,http://nas.201606.xyz:4022/udp/239.11.0.67:5140
 
 央视频道,#genre#
 # BEGIN_AUTO_UPDATE
-更新日期: 2026-4-9 18:18:07,http://play.kankanlive.com/live/1698234869325962.m3u8
+更新日期: 2026-4-10 06:38:32,http://pull-hls-f11.douyincdn.com/media/stream-407398690351481516.m3u8?arch_hrchy=w1&exp_hrchy=w1&expire=1776379047&major_anchor_level=common&sign=dee15aed80e044e6f608c9c5d80ccf58&t_id=037-20260410063727AD978DD8D6B0EDD0DB5F-Pz3xEX
+CCTV1,http://pull-hls-f11.douyincdn.com/media/stream-407398690351481516.m3u8?arch_hrchy=w1&exp_hrchy=w1&expire=1776379047&major_anchor_level=common&sign=dee15aed80e044e6f608c9c5d80ccf58&t_id=037-20260410063727AD978DD8D6B0EDD0DB5F-Pz3xEX
 CCTV1,http://play.kankanlive.com/live/1698234869325962.m3u8
 CCTV13,http://pull-hls-f11.douyincdn.com/media/stream-695579599148417708.m3u8?arch_hrchy=w1&exp_hrchy=w1&expire=1776158026&major_anchor_level=common&sign=570d99ae8e46e223e5dcf8866006b64d&t_id=037-2026040717134608B5CC3E9E05A50957E4-1VdjWb
 CCTV13,http://pull-hls-f11.douyincdn.com/media/stream-695553383939179180.m3u8?arch_hrchy=w1&exp_hrchy=w1&expire=1776158091&major_anchor_level=common&sign=b6ff08dbb56dc9d66ae8fbe7a039d11e&t_id=037-202604071714506C37CC7AC813301C7CED-7CmlV9
 CCTV16,http://69.30.246.194/live/cctv16.m3u8
 CCTV16,http://38.75.136.137:98/gslb/dsdqpub/cctv16hd.m3u8?auth=testpub
+CCTV1,http://pull-hls-f11.douyincdn.com/media/stream-407398690351481516.m3u8?arch_hrchy=w1&exp_hrchy=w1&expire=1776379047&major_anchor_level=common&sign=dee15aed80e044e6f608c9c5d80ccf58&t_id=037-20260410063727AD978DD8D6B0EDD0DB5F-Pz3xEX
 CCTV6,http://pull-hls-f11.douyincdn.com/media/stream-695550183385334444.m3u8?arch_hrchy=w1&exp_hrchy=w1&expire=1775212079&major_anchor_level=common&sign=df934e7ccd289742a9dcd9e796a21e73&t_id=037-20260327182759E3D672881FBE8BC84271-smZh1q
 CCTV13,http://pull-hls-f11.douyincdn.com/media/stream-695579599148417708.m3u8?arch_hrchy=w1&exp_hrchy=w1&expire=1776158026&major_anchor_level=common&sign=570d99ae8e46e223e5dcf8866006b64d&t_id=037-2026040717134608B5CC3E9E05A50957E4-1VdjWb
 CCTV13,http://pull-hls-f11.douyincdn.com/media/stream-695553383939179180.m3u8?arch_hrchy=w1&exp_hrchy=w1&expire=1776158091&major_anchor_level=common&sign=b6ff08dbb56dc9d66ae8fbe7a039d11e&t_id=037-202604071714506C37CC7AC813301C7CED-7CmlV9
