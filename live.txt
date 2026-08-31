@@ -101,6 +101,8 @@ CCTV16,http://nas.201606.xyz:4022/udp/239.11.0.67:5140
 
 
 央视频道,#genre#
+# BEGIN_AUTO_UPDATE
+# END_AUTO_UPDATE
 
 CCTV1,http://ottrrs.hl.chinamobile.com/PLTV/88888888/224/3221226016/index.m3u8
 CCTV1,http://ottrrs.hl.chinamobile.com/PLTV/88888888/224/3221226559/index.m3u8
@@ -4249,6 +4251,8 @@ CETV4,http://home.kaijuns.cn:4000/rtp/239.121.4.199:9178
 
 
 卫视频道,#genre#
+# BEGIN_AUTO_UPDATE
+# END_AUTO_UPDATE
 
 湖南卫视,http://ottrrs.hl.chinamobile.com/PLTV/88888888/224/3221226307/index.m3u8
 湖南卫视,http://ottrrs.hl.chinamobile.com/PLTV/88888888/224/3221226430/index.m3u8
